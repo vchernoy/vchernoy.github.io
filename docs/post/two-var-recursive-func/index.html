@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="theme" content="hugo-academic">
+  <meta name="generator" content="Hugo 0.24.1" />
+  <meta name="author" content="Slava Chernoy">
+  
+
+  
+  
+  
+    
+  
+  
+    
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/idea.min.css">
+    
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha512-6MXa8B6uaO18Hid6blRMetEIoPqHf7Ux1tnyIQdpt9qI5OACx7C+O3IVTr98vwGnlcg0LOLa02i9Y1HpVhlfiw==" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.0/css/academicons.min.css" integrity="sha512-GGGNUPDhnG8LEAEDsjqYIQns+Gu8RBs4j5XGlxl7UfRaZBhCCm5jenJkeJL8uPuOXGqgl8/H1gjlWQDRjd3cUQ==" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather%7CRoboto+Mono">
+  <link rel="stylesheet" href="/css/hugo-academic.css">
+  
+
+  
+
+  <link rel="alternate" href="https://vchernoy.xyz/index.xml" type="application/rss+xml" title="">
+  <link rel="feed" href="https://vchernoy.xyz/index.xml" type="application/rss+xml" title="">
+
+  <link rel="icon" type="image/png" href="/img/icon.png">
+  <link rel="apple-touch-icon" type="image/png" href="/img/apple-touch-icon.png">
+
+  <link rel="canonical" href="https://vchernoy.xyz/post/two-var-recursive-func/">
+
+  
+
+  <title>Solving a Two Variable Recursive Equation Using Generating Functions | </title>
+
+</head>
+<body id="top" data-spy="scroll" data-target="#navbar-main" data-offset="71">
+
+<nav class="navbar navbar-default navbar-fixed-top" id="navbar-main">
+  <div class="container">
+
+    
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+              data-target=".navbar-collapse" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/"></a>
+    </div>
+
+    
+    <div class="collapse navbar-collapse">
+
+      
+      <ul class="nav navbar-nav navbar-right">
+        
+
+        
+
+        <li class="nav-item">
+          <a href="/#about">
+            
+            <span>Home</span>
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        <li class="nav-item">
+          <a href="/#posts">
+            
+            <span>Posts</span>
+          </a>
+        </li>
+
+        
+        
+
+        
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+<article class="article" itemscope itemtype="http://schema.org/Article">
+
+  
+
+
+  <div class="article-container">
+    <h1 itemprop="name">Solving a Two Variable Recursive Equation Using Generating Functions</h1>
+    
+
+<div class="article-metadata">
+
+  <span class="article-date">
+    <time datetime="2017-07-04 07:29:43 &#43;0000 UTC" itemprop="datePublished">
+      Tue, Jul 4, 2017
+    </time>
+  </span>
+
+  
+
+  
+  
+  
+  <span class="article-tags">
+    <i class="fa fa-tags"></i>
+    
+    <a href="/tags/math">math</a
+    >
+    
+  </span>
+  
+  
+
+  
+  
+
+  
+
+</div>
+
+    <div class="article-style" itemprop="articleBody">
+      
+
+<p>In this post, we consider a combinatorial problem.
+It has a nice recursive solution, which could be implemented efficiently using Dynamic Programming technique.
+Then using generating function, we find the closed formula, expressed with the binomial coefficients.
+Finaly, we show that the closed formula gives us much faster way to compute the result than the the DP solution.</p>
+
+<p>Generating functions is the well-known technique, and usualy, it is applied to the case of single variable recursive function.
+But actually, the technique may be extended to multivariate recursive functions, or even for a system of recursive functions.</p>
+
+<p>Sometime the generating functions may give a fantastic result, and here we discuss one of such cases.</p>
+
+<h2 id="the-problem">The Problem</h2>
+
+<p>We consider a problem that has a nice DP (Dynamic Programming) solution.
+Similar questions might be asked on coding interviews or may be suggested as trivial questions on coding contests.</p>
+
+<p><strong>Problem:</strong> Compute the number of ways to choose m elements from n elements in a way that resulted elements are not adjacent.</p>
+
+<p>For example, $F_{4,2}=3$ since from the 4-elements set: $\lbrace 1,2,3,4 \rbrace$, there are three feasible 2-elements combinations: $\lbrace 1,4 \rbrace$, $\lbrace 2,4 \rbrace$, $\lbrace 1,3 \rbrace$.
+And $F_{5,3}=1$, since there is only one feasible 3-elements combination: $\lbrace 1,3,5 \rbrace$.</p>
+
+<p>Let&rsquo;s assume that $ F_{n&rsquo;, m&rsquo;} $ gives as the answer for all $n&rsquo;$, $m&rsquo;$ such that $n&rsquo; \leq n$, $m&rsquo; \leq m$, and either $n&rsquo; &lt; n$ or $m&rsquo; &lt; m$.
+There are two options:</p>
+
+<ul>
+<li>Skip the $n$-th element, then $ F_{n, m} = F_{n-1, m} $.</li>
+<li>Pick the $n$-th element, then $ F_{n, m} = F_{n-2, m-1} $.</li>
+</ul>
+
+<p>So we get the following recursive function: $ F_{n, m} = F_{n - 1, m} + F_{n - 2, m - 1} $,
+with the corner cases: $F_{0, 0} = F_{1, 1} = 1$.</p>
+
+<p>Here is very simple code in Python that computes the function, using the DP technique:</p>
+
+<pre><code class="language-python">def f_dp(n, m):
+    assert n &gt;= 0 and m &gt;= 0
+
+    if n+1 &lt; 2*m:
+        return 0
+
+    table = [[0] * (m+1) for _ in range(n+1)]
+ 
+    table[0][0] = 1
+    if n &gt;= 1:
+        table[1][0] = 1
+        if m &gt;= 1:
+            table[1][1] = 1
+
+    for i in range(2, n+1):
+        table[i][0] = 1 
+        for j in range(1, min(m, (i + 1) // 2) + 1):
+            table[i][j] = table[i-1][j] + table[i-2][j-1]
+
+    return table[n][m]
+</code></pre>
+
+<p>The time and space complexities are $O(n\cdot m) $.
+More accurate upper bound for the running time is $O(n\cdot \min(n,m))$.
+It is not hard to see how to improve the space consumption to $O(m)$.</p>
+
+<h2 id="the-generating-function">The Generating Function</h2>
+
+<p>Let&rsquo;s introduce the generating function: $\Phi(x,y) = \sum_{n,m} F_{n,m}\cdot x^n y^m$.
+Sustituting the definition of $F_{n,m}$ and simplifying the sums, we will get:</p>
+
+<p>$$ \Phi(x,y) = \sum_{n,m} F_{n,m}\cdot x^n y^m $$</p>
+
+<p>$$ = \sum_{n,m} \left(F_{n - 1, m} + F_{n - 2, m - 1} + [n=m=1] + [n=m=0] \right)\cdot x^n y^m$$</p>
+
+<p>$$ = \sum_{n,m} F_{n - 1, m} \cdot x^n y^m  + \sum_{n,m} F_{n - 2, m - 1} \cdot x^n y^m + x \cdot y + 1 $$</p>
+
+<p>$$ = x\cdot\sum_{n,m} F_{n - 1, m} \cdot x^{n-1} y^m + x^2y\cdot\sum_{n,m} F_{n - 2, m - 1} \cdot x^{n-2} y^{m-1} + x \cdot y + 1 $$</p>
+
+<p>$$ = x\cdot \Phi(x,y)  + x^2y\cdot \Phi(x,y) + x \cdot y + 1 $$</p>
+
+<p>Now we find the simple representation: $\Phi(x, y) = \frac{1 + x \cdot y}{1 - x - x^2 \cdot y}$.
+We can convert it to an infinit series, using: $ \frac{1}{1-z} = \sum_{k\geq 0} z^k $:</p>
+
+<p>$$\Phi(x, y) = \frac{1 + x \cdot y}{1 - x - x^2 \cdot y}$$</p>
+
+<p>$$ = (1 + x \cdot y) \cdot \sum_{k\geq 0} (x+x^2\cdot y)^k  $$</p>
+
+<p>$$ = (1 + x \cdot y) \cdot \sum_{0 \leq i \leq k} {k \choose i} \cdot x^{k+i} \cdot y^i  $$</p>
+
+<p>Introduce $n=k+i, m=i$, then</p>
+
+<p>$$
+\sum_{0 \leq i \leq k} {k \choose i} \cdot x^{k+i} \cdot y^i
+ = \sum_{m \geq 0, n \geq 2m} {n-m \choose m} \cdot x^{n} \cdot y^m
+$$</p>
+
+<p>Introduce $n=k+i+1, m=i+1$, then</p>
+
+<p>$$
+x\cdot y \cdot \sum_{0 \leq i \leq k} {k \choose i} \cdot x^{k+i} \cdot y^i
+ = \sum_{0 \leq i \leq k} {k \choose i} \cdot x^{k+i+1} \cdot y^{i+1}
+$$</p>
+
+<p>$$ = \sum_{m \geq 1, n \geq 2m-1} {n-m \choose m-1} \cdot x^n \cdot y^m$$</p>
+
+<p>The last two transformations give us the closed form: $F_{n, m} = {n - m \choose m} + {n - m \choose m - 1}$.
+Which actually equals to $F_{n, m} = {n - m + 1 \choose m}$.</p>
+
+<p>Now we can implement the solution in very trivial Python code:</p>
+
+<pre><code class="language-Python">import math
+
+def f_binom(n, m):
+    assert n &gt;= 0 and m &gt;= 0
+
+    return binom(n-m+1, m) if n+1 &gt;= 2*m else 0
+
+def binom(n, m):
+    assert 0 &lt;= m &lt;= n
+
+    return math.factorial(n) // math.factorial(m) // math.factorial(n-m)
+</code></pre>
+
+<p>This implementation runs much faster than our initial DP solution. The reason for this is that <code>math.factorial()</code> is implemented in C. If we know the limits on $n$ am $m$, we can do memoization for factorial with just $O(\max(n,m))$ extra memory, which may give even more boost in time.</p>
+
+<h2 id="faster-implementations-using-scipy-and-sympy">Faster Implementations Using <code>scipy</code> and <code>sympy</code></h2>
+
+<p>But more promissing optimization is to find a library implementing binomial coefficient, let&rsquo;s look at <code>scipy.special.comb()</code>:</p>
+
+<pre><code class="language-Python">import scipy.special
+
+def f_sci(n, m):
+    assert n &gt;= 0 and m &gt;= 0
+
+    return scipy.special.comb(n-m+1, m, exact=True) if n+1 &gt;= 2*m else 0
+</code></pre>
+
+<p>and <code>sympy.binomial()</code>:</p>
+
+<pre><code class="language-Python">import sympy 
+
+def f_sym(n, m):
+    assert n &gt;= 0 and m &gt;= 0
+
+    return sympy.binomial(n-m+1, m) if n+1 &gt;= 2*m else 0
+</code></pre>
+
+<p>You can easily install both by running:</p>
+
+<pre><code class="language-bash">pip install scipy sympy
+</code></pre>
+
+<p>In order to measure the time and to check the correctness, let&rsquo;s use the following helper function:</p>
+
+<pre><code class="language-python">import timeit
+
+def test(n, m, funcs, number=100, module='__main__'):
+    results = []
+    func_times = []
+    for func in funcs:
+        results.append(func(n, m))
+
+        stmt='{}({},{})'.format(func.__name__, n, m)
+        setup='from {} import {}'.format(module, func.__name__)
+        t = timeit.timeit(stmt=stmt, setup=setup, number=number)
+        func_times.append(t)
+
+    assert len(set(results)) &lt;= 1
+
+    if results:
+        print('f({},{}): {}'.format(n, m, results[0]))
+
+    best_time = min(func_times)
+    for i, func in enumerate(funcs):
+        func_time = func_times[i]
+        print('{:&gt;8}: {:6.3f} sec, x {:.1f}'.format(func.__name__, func_time, func_time/best_time))
+</code></pre>
+
+<p>We can run it as following:</p>
+
+<pre><code class="language-python">funcs = [f_dp, f_binom, f_sci, f_sym]
+test(1000, 200, funcs)
+</code></pre>
+
+<p>It runs by one the four discussed implementations on the same input: $n=1000$ and $m=200$, compares the results, and prints the absolute and relative times.</p>
+
+<p>Let&rsquo;s test the functions on different $m$:</p>
+
+<pre><code class="language-python">test(1000, 100, funcs)
+test(1000, 200, funcs)
+test(1000, 300, funcs)
+</code></pre>
+
+<p>The output shows that the implementations using the closed form work much faster than the DP approach. The code benefits from libraries&rsquo; functionality, which is very well optimized and written in C.</p>
+
+<pre><code>f(1000,100): 1055554268626824420007558704051435171794370568248714546059151891116400068098669888824348337982251284084060970452636576818160835738923780
+    f_dp:  3.047 sec, x 28776.0
+ f_binom:  0.009 sec, x 85.0
+   f_sci:  0.002 sec, x 16.1
+   f_sym:  0.000 sec, x 1.0
+
+f(1000,200): 102959559398876709101987749103496956192748291997545179868396950180980024279315520736658787450735140705066645604315981112602395264722448393108564244943632128016608965665225093459140490108467690800
+    f_dp:  5.715 sec, x 54069.2
+ f_binom:  0.007 sec, x 68.6
+   f_sci:  0.004 sec, x 37.5
+   f_sym:  0.000 sec, x 1.0
+
+f(1000,300): 216041785281835022932717773340894622391167159765932233268357621588611118890447413630526105759449201694312865174825389570985567896663730782942657696701009691262132150170383821261834224318912512938247596625130
+    f_dp:  7.786 sec, x 71123.4
+ f_binom:  0.005 sec, x 47.8
+   f_sci:  0.007 sec, x 66.5
+   f_sym:  0.000 sec, x 1.0
+</code></pre>
+
+<p>More refined comparizons for fast implementations:</p>
+
+<pre><code class="language-python">test(1000, 100, funcs[1:], number=10**5)
+test(1000, 200, funcs[1:], number=10**5)
+test(1000, 300, funcs[1:], number=10**5)
+</code></pre>
+
+<p>It looks like absolute winner is <code>sympy</code> library:</p>
+
+<pre><code>f(1000,100): 1055554268626824420007558704051435171794370568248714546059151891116400068098669888824348337982251284084060970452636576818160835738923780
+ f_binom:  8.538 sec, x 72.9
+   f_sci:  1.867 sec, x 15.9
+   f_sym:  0.117 sec, x 1.0
+
+f(1000,200): 102959559398876709101987749103496956192748291997545179868396950180980024279315520736658787450735140705066645604315981112602395264722448393108564244943632128016608965665225093459140490108467690800
+ f_binom:  7.024 sec, x 62.7
+   f_sci:  4.467 sec, x 39.9
+   f_sym:  0.112 sec, x 1.0
+
+f(1000,300): 216041785281835022932717773340894622391167159765932233268357621588611118890447413630526105759449201694312865174825389570985567896663730782942657696701009691262132150170383821261834224318912512938247596625130
+ f_binom:  5.527 sec, x 48.7
+   f_sci:  7.760 sec, x 68.3
+   f_sym:  0.114 sec, x 1.0
+</code></pre>
+
+    </div>
+  </div>
+
+</article>
+
+<div class="container">
+  <nav>
+  <ul class="pager">
+    
+
+    
+  </ul>
+</nav>
+
+</div>
+
+<div class="article-container">
+  
+
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <p class="powered-by">
+
+      
+
+      Powered by the <a href="https://github.com/gcushen/hugo-academic" target="_blank">Academic
+      theme</a> for <a href="http://gohugo.io" target="_blank">Hugo</a>.
+
+      <span class="pull-right" aria-hidden="true">
+        <a href="#" id="back_to_top">
+          <span class="button_icon">
+            <i class="fa fa-chevron-up fa-2x"></i>
+          </span>
+        </a>
+      </span>
+
+    </p>
+  </div>
+</footer>
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js" integrity="sha512-jGsMH83oKe9asCpkOVkBnUrDDTp8wl+adkB2D+//JtlxO4SrLoJdhbOysIFQJloQFD+C4Fl1rMsQZF76JjV0eQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.2/imagesloaded.pkgd.min.js" integrity="sha512-iHzEu7GbSc705hE2skyH6/AlTpOfBmkx7nUqTLGzPYR+C1tRaItbRlJ7hT/D3YQ9SV0fqLKzp4XY9wKulTBGTw==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/TweenMax.min.js" integrity="sha512-Z5heTz36xTemt1TbtbfXtTq5lMfYnOkXM2/eWcTTiLU01+Sw4ku1i7vScDc8fWhrP2abz9GQzgKH5NGBLoYlAw==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/plugins/ScrollToPlugin.min.js" integrity="sha512-CDeU7pRtkPX6XJtF/gcFWlEwyaX7mcAp5sO3VIu/ylsdR74wEw4wmBpD5yYTrmMAiAboi9thyBUr1vXRPA7t0Q==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha512-iztkobsvnjKfAtTNdHkGVjAYTrrtlC7mGp/54c40wowO7LhURYl3gVzzcEqGl/qKXQltJ2HwMrdLcNUdo+N/RQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.4/isotope.pkgd.min.js" integrity="sha512-VDBOIlDbuC4VWxGJNmuFRQ0Li0SKkDpmGyuhAG5LTDLd/dJ/S0WMVxriR2Y+CyPL5gzjpN4f/6iqWVBJlht0tQ==" crossorigin="anonymous"></script>
+    
+    <script src="/js/hugo-academic.js"></script>
+    
+
+    
+    
+      
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+      
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+      
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/python.min.js"></script>
+      
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/rust.min.js"></script>
+      
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/scala.min.js"></script>
+      
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/bash.min.js"></script>
+      
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/cpp.min.js"></script>
+      
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/java.min.js"></script>
+      
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+      
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/ebnf.min.js"></script>
+      
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/protobuf.min.js"></script>
+      
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/sql.min.js"></script>
+      
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/thrift.min.js"></script>
+      
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+      
+
+      
+
+      <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+    </script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML" integrity="sha512-tOav5w1OjvsSJzePRtt2uQPFwBoHt1VZcUq8l8nm5284LEKE9FSJBQryzMBzHxY5P0zRdNqEcpLIRVYFNgu1jw==" crossorigin="anonymous"></script>
+    
+    
+
+  </body>
+</html>
+

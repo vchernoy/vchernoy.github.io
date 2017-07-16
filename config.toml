@@ -1,0 +1,99 @@
+baseurl = "https://vchernoy.xyz/"  # End your URL with a `/` trailing slash.
+publishDir = "docs"
+themesDir = "themes"
+theme = "academic"
+enableEmoji = true
+footnotereturnlinkcontents = "<sup>^</sup>"
+
+# Enable comments by entering your Disqus shortname
+disqusShortname = ""
+
+# Enable analytics by entering your Google Analytics tracking ID
+googleAnalytics = ""
+
+# Default language to use (if you setup multilingual support)
+defaultContentLanguage = "en"
+defaultContentLanguageInSubdir = false
+
+[blackfriday]
+  hrefTargetBlank = true
+
+[params]
+  name = "Slava Chernoy"
+  #role = "Software Engineer"
+
+  # Date format (refer to Go's date format: http://flippinggodateformat.com )
+  #   Examples: "Mon, Jan 2, 2006" or "2006-01-02"
+  date_format = "Mon, Jan 2, 2006"
+
+  # Enable global LaTeX math rendering?
+  math = true 
+
+ highlight = true
+  highlight_languages = ["go", "python", "rust", "scala", "bash", "cpp", "java", "dockerfile", "ebnf", "protobuf", "sql", "thrift", "yaml"]
+  highlight_version = "9.12.0"
+  highlight_style = "idea"
+
+  # Enable native social sharing buttons?
+  sharing = false 
+
+  # Link custom CSS and JS assets
+  #   (relative to /static/css and /static/js respectively)
+  custom_css = []
+  custom_js  = []
+
+  # Social/Academic Networking
+  [[params.social]]
+    icon = "linkedin"
+    icon_pack = "fa"
+    link = "https://linkedin.com/in/slava-chernoy-9859a81/"
+
+  [[params.social]]
+    icon = "google-scholar"
+    icon_pack = "ai"
+    link = "https://scholar.google.co.uk/citations?user=3tWEfksAAAAJ"
+
+  [[params.social]]
+    icon = "github"
+    icon_pack = "fa"
+    link = "https://github.com/vchernoy"
+
+  [[params.social]]
+    icon = "stack-overflow"
+    icon_pack = "fa"
+    link = "https://stackoverflow.com/users/276287/slava"
+
+  [[params.social]]
+    icon = "dblp"
+    icon_pack = "ai"
+    link = "http://dblp.uni-trier.de/pers/hd/c/Chernoy:Viacheslav"
+
+  [[params.social]]
+    icon = "springer"
+    icon_pack = "ai"
+    link = "https://link.springer.com/search?query=Viacheslav+Chernoy"
+
+# Navigation Links
+#   To link a homepage widget, specify the URL as a hash `#` followed by the filename of the
+#     desired widget in your `content/home/` folder.
+#   The weight parameter defines the order that the links will appear in.
+
+[[menu.main]]
+  name = "Home"
+  url = "#about"
+  weight = 1
+
+[[menu.main]]
+  name = "Posts"
+  url = "#posts"
+  weight = 3
+
+# Taxonomies.
+[taxonomies]
+  tag = "tags"
+  category = "categories"
+  publication_type = "publication_types"
+
+# Configure the English version of the website.
+[languages.en]
+  languageCode = "en-us"
