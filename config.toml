@@ -1,5 +1,5 @@
 baseurl = "https://vchernoy.xyz/"  # End your URL with a `/` trailing slash.
-publishDir = "docs"
+publishDir = "public"
 themesDir = "themes"
 theme = "academic"
 enableEmoji = true
@@ -9,7 +9,7 @@ footnotereturnlinkcontents = "<sup>^</sup>"
 disqusShortname = ""
 
 # Enable analytics by entering your Google Analytics tracking ID
-googleAnalytics = ""
+googleAnalytics = "UA-102853829-1"
 
 # Default language to use (if you setup multilingual support)
 defaultContentLanguage = "en"
@@ -20,7 +20,7 @@ defaultContentLanguageInSubdir = false
 
 [params]
   name = "Slava Chernoy"
-  #role = "Software Engineer"
+  role = "Software Engineer"
 
   # Date format (refer to Go's date format: http://flippinggodateformat.com )
   #   Examples: "Mon, Jan 2, 2006" or "2006-01-02"
