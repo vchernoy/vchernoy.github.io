@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Math on </title>
+    <link>https://vchernoy.xyz/tags/math/</link>
+    <description>Recent content in Math on </description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 04 Jul 2017 07:29:43 +0000</lastBuildDate>
+    <atom:link href="/tags/math/" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Solving a Two Variable Recursive Equation Using Generating Functions</title>
+      <link>https://vchernoy.xyz/post/two-var-recursive-func/</link>
+      <pubDate>Tue, 04 Jul 2017 07:29:43 +0000</pubDate>
+      
+      <guid>https://vchernoy.xyz/post/two-var-recursive-func/</guid>
+      <description>
+
+&lt;p&gt;In this post, we consider a combinatorial problem.
+It has a nice recursive solution, which could be implemented efficiently using Dynamic Programming technique.
+Then using generating function, we find the closed formula, expressed with the binomial coefficients.
+Finaly, we show that the closed formula gives us much faster way to compute the result than the the DP solution.&lt;/p&gt;
+
+&lt;p&gt;Generating functions is the well-known technique, and usualy, it is applied to the case of single variable recursive function.
+But actually, the technique may be extended to multivariate recursive functions, or even for a system of recursive functions.&lt;/p&gt;
+
+&lt;p&gt;Sometime the generating functions may give a fantastic result, and here we discuss one of such cases.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-problem&#34;&gt;The Problem&lt;/h2&gt;
+
+&lt;p&gt;We consider a problem that has a nice DP (Dynamic Programming) solution.
+Similar questions might be asked on coding interviews or may be suggested as trivial questions on coding contests.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Problem:&lt;/strong&gt; Compute the number of ways to choose m elements from n elements in a way that resulted elements are not adjacent.&lt;/p&gt;
+
+&lt;p&gt;For example, $F_{4,2}=3$ since from the 4-elements set: $\lbrace 1,2,3,4 \rbrace$, there are three feasible 2-elements combinations: $\lbrace 1,4 \rbrace$, $\lbrace 2,4 \rbrace$, $\lbrace 1,3 \rbrace$.
+And $F_{5,3}=1$, since there is only one feasible 3-elements combination: $\lbrace 1,3,5 \rbrace$.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s assume that $ F_{n&amp;rsquo;, m&amp;rsquo;} $ gives as the answer for all $n&amp;rsquo;$, $m&amp;rsquo;$ such that $n&amp;rsquo; \leq n$, $m&amp;rsquo; \leq m$, and either $n&amp;rsquo; &amp;lt; n$ or $m&amp;rsquo; &amp;lt; m$.
+There are two options:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Skip the $n$-th element, then $ F_{n, m} = F_{n-1, m} $.&lt;/li&gt;
+&lt;li&gt;Pick the $n$-th element, then $ F_{n, m} = F_{n-2, m-1} $.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;So we get the following recursive function: $ F_{n, m} = F_{n - 1, m} + F_{n - 2, m - 1} $,
+with the corner cases: $F_{0, 0} = F_{1, 1} = 1$.&lt;/p&gt;
+
+&lt;p&gt;Here is very simple code in Python that computes the function, using the DP technique:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;def f_dp(n, m):
+    assert n &amp;gt;= 0 and m &amp;gt;= 0
+
+    if n+1 &amp;lt; 2*m:
+        return 0
+
+    table = [[0] * (m+1) for _ in range(n+1)]
+ 
+    table[0][0] = 1
+    if n &amp;gt;= 1:
+        table[1][0] = 1
+        if m &amp;gt;= 1:
+            table[1][1] = 1
+
+    for i in range(2, n+1):
+        table[i][0] = 1 
+        for j in range(1, min(m, (i + 1) // 2) + 1):
+            table[i][j] = table[i-1][j] + table[i-2][j-1]
+
+    return table[n][m]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The time and space complexities are $O(n\cdot m) $.
+More accurate upper bound for the running time is $O(n\cdot \min(n,m))$.
+It is not hard to see how to improve the space consumption to $O(m)$.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-generating-function&#34;&gt;The Generating Function&lt;/h2&gt;
+
+&lt;p&gt;Let&amp;rsquo;s introduce the generating function: $\Phi(x,y) = \sum_{n,m} F_{n,m}\cdot x^n y^m$.
+Sustituting the definition of $F_{n,m}$ and simplifying the sums, we will get:&lt;/p&gt;
+
+&lt;p&gt;$$ \Phi(x,y) = \sum_{n,m} F_{n,m}\cdot x^n y^m $$&lt;/p&gt;
+
+&lt;p&gt;$$ = \sum_{n,m} \left(F_{n - 1, m} + F_{n - 2, m - 1} + [n=m=1] + [n=m=0] \right)\cdot x^n y^m$$&lt;/p&gt;
+
+&lt;p&gt;$$ = \sum_{n,m} F_{n - 1, m} \cdot x^n y^m  + \sum_{n,m} F_{n - 2, m - 1} \cdot x^n y^m + x \cdot y + 1 $$&lt;/p&gt;
+
+&lt;p&gt;$$ = x\cdot\sum_{n,m} F_{n - 1, m} \cdot x^{n-1} y^m + x^2y\cdot\sum_{n,m} F_{n - 2, m - 1} \cdot x^{n-2} y^{m-1} + x \cdot y + 1 $$&lt;/p&gt;
+
+&lt;p&gt;$$ = x\cdot \Phi(x,y)  + x^2y\cdot \Phi(x,y) + x \cdot y + 1 $$&lt;/p&gt;
+
+&lt;p&gt;Now we find the simple representation: $\Phi(x, y) = \frac{1 + x \cdot y}{1 - x - x^2 \cdot y}$.
+We can convert it to an infinit series, using: $ \frac{1}{1-z} = \sum_{k\geq 0} z^k $:&lt;/p&gt;
+
+&lt;p&gt;$$\Phi(x, y) = \frac{1 + x \cdot y}{1 - x - x^2 \cdot y}$$&lt;/p&gt;
+
+&lt;p&gt;$$ = (1 + x \cdot y) \cdot \sum_{k\geq 0} (x+x^2\cdot y)^k  $$&lt;/p&gt;
+
+&lt;p&gt;$$ = (1 + x \cdot y) \cdot \sum_{0 \leq i \leq k} {k \choose i} \cdot x^{k+i} \cdot y^i  $$&lt;/p&gt;
+
+&lt;p&gt;Introduce $n=k+i, m=i$, then&lt;/p&gt;
+
+&lt;p&gt;$$
+\sum_{0 \leq i \leq k} {k \choose i} \cdot x^{k+i} \cdot y^i
+ = \sum_{m \geq 0, n \geq 2m} {n-m \choose m} \cdot x^{n} \cdot y^m
+$$&lt;/p&gt;
+
+&lt;p&gt;Introduce $n=k+i+1, m=i+1$, then&lt;/p&gt;
+
+&lt;p&gt;$$
+x\cdot y \cdot \sum_{0 \leq i \leq k} {k \choose i} \cdot x^{k+i} \cdot y^i
+ = \sum_{0 \leq i \leq k} {k \choose i} \cdot x^{k+i+1} \cdot y^{i+1}
+$$&lt;/p&gt;
+
+&lt;p&gt;$$ = \sum_{m \geq 1, n \geq 2m-1} {n-m \choose m-1} \cdot x^n \cdot y^m$$&lt;/p&gt;
+
+&lt;p&gt;The last two transformations give us the closed form: $F_{n, m} = {n - m \choose m} + {n - m \choose m - 1}$.
+Which actually equals to $F_{n, m} = {n - m + 1 \choose m}$.&lt;/p&gt;
+
+&lt;p&gt;Now we can implement the solution in very trivial Python code:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-Python&#34;&gt;import math
+
+def f_binom(n, m):
+    assert n &amp;gt;= 0 and m &amp;gt;= 0
+
+    return binom(n-m+1, m) if n+1 &amp;gt;= 2*m else 0
+
+def binom(n, m):
+    assert 0 &amp;lt;= m &amp;lt;= n
+
+    return math.factorial(n) // math.factorial(m) // math.factorial(n-m)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This implementation runs much faster than our initial DP solution. The reason for this is that &lt;code&gt;math.factorial()&lt;/code&gt; is implemented in C. If we know the limits on $n$ am $m$, we can do memoization for factorial with just $O(\max(n,m))$ extra memory, which may give even more boost in time.&lt;/p&gt;
+
+&lt;h2 id=&#34;faster-implementations-using-scipy-and-sympy&#34;&gt;Faster Implementations Using &lt;code&gt;scipy&lt;/code&gt; and &lt;code&gt;sympy&lt;/code&gt;&lt;/h2&gt;
+
+&lt;p&gt;But more promissing optimization is to find a library implementing binomial coefficient, let&amp;rsquo;s look at &lt;code&gt;scipy.special.comb()&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-Python&#34;&gt;import scipy.special
+
+def f_sci(n, m):
+    assert n &amp;gt;= 0 and m &amp;gt;= 0
+
+    return scipy.special.comb(n-m+1, m, exact=True) if n+1 &amp;gt;= 2*m else 0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;and &lt;code&gt;sympy.binomial()&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-Python&#34;&gt;import sympy 
+
+def f_sym(n, m):
+    assert n &amp;gt;= 0 and m &amp;gt;= 0
+
+    return sympy.binomial(n-m+1, m) if n+1 &amp;gt;= 2*m else 0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You can easily install both by running:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;pip install scipy sympy
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In order to measure the time and to check the correctness, let&amp;rsquo;s use the following helper function:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;import timeit
+
+def test(n, m, funcs, number=100, module=&#39;__main__&#39;):
+    results = []
+    func_times = []
+    for func in funcs:
+        results.append(func(n, m))
+
+        stmt=&#39;{}({},{})&#39;.format(func.__name__, n, m)
+        setup=&#39;from {} import {}&#39;.format(module, func.__name__)
+        t = timeit.timeit(stmt=stmt, setup=setup, number=number)
+        func_times.append(t)
+
+    assert len(set(results)) &amp;lt;= 1
+
+    if results:
+        print(&#39;f({},{}): {}&#39;.format(n, m, results[0]))
+
+    best_time = min(func_times)
+    for i, func in enumerate(funcs):
+        func_time = func_times[i]
+        print(&#39;{:&amp;gt;8}: {:6.3f} sec, x {:.1f}&#39;.format(func.__name__, func_time, func_time/best_time))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We can run it as following:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;funcs = [f_dp, f_binom, f_sci, f_sym]
+test(1000, 200, funcs)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It runs by one the four discussed implementations on the same input: $n=1000$ and $m=200$, compares the results, and prints the absolute and relative times.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s test the functions on different $m$:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;test(1000, 100, funcs)
+test(1000, 200, funcs)
+test(1000, 300, funcs)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The output shows that the implementations using the closed form work much faster than the DP approach. The code benefits from libraries&amp;rsquo; functionality, which is very well optimized and written in C.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;f(1000,100): 1055554268626824420007558704051435171794370568248714546059151891116400068098669888824348337982251284084060970452636576818160835738923780
+    f_dp:  3.047 sec, x 28776.0
+ f_binom:  0.009 sec, x 85.0
+   f_sci:  0.002 sec, x 16.1
+   f_sym:  0.000 sec, x 1.0
+
+f(1000,200): 102959559398876709101987749103496956192748291997545179868396950180980024279315520736658787450735140705066645604315981112602395264722448393108564244943632128016608965665225093459140490108467690800
+    f_dp:  5.715 sec, x 54069.2
+ f_binom:  0.007 sec, x 68.6
+   f_sci:  0.004 sec, x 37.5
+   f_sym:  0.000 sec, x 1.0
+
+f(1000,300): 216041785281835022932717773340894622391167159765932233268357621588611118890447413630526105759449201694312865174825389570985567896663730782942657696701009691262132150170383821261834224318912512938247596625130
+    f_dp:  7.786 sec, x 71123.4
+ f_binom:  0.005 sec, x 47.8
+   f_sci:  0.007 sec, x 66.5
+   f_sym:  0.000 sec, x 1.0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;More refined comparizons for fast implementations:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;test(1000, 100, funcs[1:], number=10**5)
+test(1000, 200, funcs[1:], number=10**5)
+test(1000, 300, funcs[1:], number=10**5)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It looks like absolute winner is &lt;code&gt;sympy&lt;/code&gt; library:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;f(1000,100): 1055554268626824420007558704051435171794370568248714546059151891116400068098669888824348337982251284084060970452636576818160835738923780
+ f_binom:  8.538 sec, x 72.9
+   f_sci:  1.867 sec, x 15.9
+   f_sym:  0.117 sec, x 1.0
+
+f(1000,200): 102959559398876709101987749103496956192748291997545179868396950180980024279315520736658787450735140705066645604315981112602395264722448393108564244943632128016608965665225093459140490108467690800
+ f_binom:  7.024 sec, x 62.7
+   f_sci:  4.467 sec, x 39.9
+   f_sym:  0.112 sec, x 1.0
+
+f(1000,300): 216041785281835022932717773340894622391167159765932233268357621588611118890447413630526105759449201694312865174825389570985567896663730782942657696701009691262132150170383821261834224318912512938247596625130
+ f_binom:  5.527 sec, x 48.7
+   f_sci:  7.760 sec, x 68.3
+   f_sym:  0.114 sec, x 1.0
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
