@@ -1,7 +1,7 @@
 +++
 date = "2017-07-04T07:29:43Z"
 highlight = true
-math = true 
+math = true
 tags = ["math"]
 title = "Solving a Two Variable Recursive Equation Using Generating Functions"
 
@@ -12,33 +12,33 @@ title = "Solving a Two Variable Recursive Equation Using Generating Functions"
 +++
 
 
-In this post, we consider a combinatorial problem. 
+In this post, we consider a combinatorial problem.
 It has a nice recursive solution, which could be implemented efficiently using Dynamic Programming technique.
 Then using generating function, we find the closed formula, expressed with the binomial coefficients.
 Finaly, we show that the closed formula gives us much faster way to compute the result than the the DP solution.
 
-Generating functions is the well-known technique, and usualy, it is applied to the case of single variable recursive function.
+Generating functions are usually applied to the case of single variable recursive function.
 But actually, the technique may be extended to multivariate recursive functions, or even for a system of recursive functions.
 
-Sometime the generating functions may give a fantastic result, and here we discuss one of such cases.
+Sometimes the generating functions may give a fantastic result, and here we discuss one of such cases.
 
 ## The Problem
 
 We consider a problem that has a nice DP (Dynamic Programming) solution.
-Similar questions might be asked on coding interviews or may be suggested as trivial questions on coding contests.
+Similar questions might be asked on coding interviews or may be suggested as trivial problems on coding contests.
 
 **Problem:** Compute the number of ways to choose m elements from n elements in a way that resulted elements are not adjacent.
 
-For example, $F\_{4,2}=3$ since from the 4-elements set: $\lbrace 1,2,3,4 \rbrace$, there are three feasible 2-elements combinations: $\lbrace 1,4 \rbrace$, $\lbrace 2,4 \rbrace$, $\lbrace 1,3 \rbrace$.
+For example, $F\_{4,2}=3$ since from the 4-elements set: $\lbrace 1,2,3,4 \rbrace$,
+there are three feasible 2-elements combinations: $\lbrace 1,4 \rbrace$, $\lbrace 2,4 \rbrace$, $\lbrace 1,3 \rbrace$.
 And $F\_{5,3}=1$, since there is only one feasible 3-elements combination: $\lbrace 1,3,5 \rbrace$.
 
-Let's assume that $ F\_{n', m'} $ gives as the answer for all $n'$, $m'$ such that $n' \leq n$, $m' \leq m$, and either $n' < n$ or $m' < m$.
-There are two options:
+Let's make recursive function for $ F_{n, m} $ by looking at $n$-th element. We can either:
 
 * Skip the $n$-th element, then $ F\_{n, m} = F\_{n-1, m} $.
 * Pick the $n$-th element, then $ F\_{n, m} = F\_{n-2, m-1} $.
 
-So we get the following recursive function: $ F\_{n, m} = F\_{n - 1, m} + F\_{n - 2, m - 1} $,
+The following recursive function: $ F\_{n, m} = F\_{n - 1, m} + F\_{n - 2, m - 1} $,
 with the corner cases: $F\_{0, 0} = F\_{1, 1} = 1$.
 
 Here is very simple code in Python that computes the function, using the DP technique:
@@ -51,7 +51,7 @@ def f_dp(n, m):
         return 0
 
     table = [[0] * (m+1) for _ in range(n+1)]
- 
+
     table[0][0] = 1
     if n >= 1:
         table[1][0] = 1
@@ -59,7 +59,7 @@ def f_dp(n, m):
             table[1][1] = 1
 
     for i in range(2, n+1):
-        table[i][0] = 1 
+        table[i][0] = 1
         for j in range(1, min(m, (i + 1) // 2) + 1):
             table[i][j] = table[i-1][j] + table[i-2][j-1]
 
@@ -68,12 +68,12 @@ def f_dp(n, m):
 
 The time and space complexities are $O(n\cdot m) $.
 More accurate upper bound for the running time is $O(n\cdot \min(n,m))$.
-It is not hard to see how to improve the space consumption to $O(m)$.
+One can also improve space consumption to $O(m)$.
 
-## The Generating Function 
+## The Generating Function
 
 Let's introduce the generating function: $\Phi(x,y) = \sum_{n,m} F\_{n,m}\cdot x^n y^m$.
-Sustituting the definition of $F\_{n,m}$ and simplifying the sums, we will get:
+Substituting the definition of $F\_{n,m}$ and simplifying the sums, we will get:
 
 $$ \Phi(x,y) = \sum_{n,m} F\_{n,m}\cdot x^n y^m $$
 
@@ -86,7 +86,7 @@ $$ = x\cdot\sum\_{n,m} F\_{n - 1, m} \cdot x^{n-1} y^m + x^2y\cdot\sum\_{n,m} F\
 $$ = x\cdot \Phi(x,y)  + x^2y\cdot \Phi(x,y) + x \cdot y + 1 $$
 
 Now we find the simple representation: $\Phi(x, y) = \frac{1 + x \cdot y}{1 - x - x^2 \cdot y}$.
-We can convert it to an infinit series, using: $ \frac{1}{1-z} = \sum\_{k\geq 0} z^k $:
+We can convert it to an infinite series, using: $ \frac{1}{1-z} = \sum\_{k\geq 0} z^k $:
 
 $$\Phi(x, y) = \frac{1 + x \cdot y}{1 - x - x^2 \cdot y}$$
 
@@ -94,14 +94,14 @@ $$ = (1 + x \cdot y) \cdot \sum\_{k\geq 0} (x+x^2\cdot y)^k  $$
 
 $$ = (1 + x \cdot y) \cdot \sum\_{0 \leq i \leq k} {k \choose i} \cdot x^{k+i} \cdot y^i  $$
 
-Introduce $n=k+i, m=i$, then 
+Introduce $n=k+i, m=i$, then
 
 $$
 \sum\_{0 \leq i \leq k} {k \choose i} \cdot x^{k+i} \cdot y^i
  = \sum\_{m \geq 0, n \geq 2m} {n-m \choose m} \cdot x^{n} \cdot y^m
 $$
 
-Introduce $n=k+i+1, m=i+1$, then 
+Introduce $n=k+i+1, m=i+1$, then
 
 $$
 x\cdot y \cdot \sum\_{0 \leq i \leq k} {k \choose i} \cdot x^{k+i} \cdot y^i
@@ -131,7 +131,7 @@ def binom(n, m):
 
 This implementation runs much faster than our initial DP solution. The reason for this is that `math.factorial()` is implemented in C. If we know the limits on $n$ am $m$, we can do memoization for factorial with just $O(\max(n,m))$ extra memory, which may give even more boost in time.
 
-## Faster Implementations Using `scipy` and `sympy` 
+## Faster Implementations Using `scipy` and `sympy`
 
 But more promissing optimization is to find a library implementing binomial coefficient, let's look at `scipy.special.comb()`:
 
@@ -147,7 +147,7 @@ def f_sci(n, m):
 and `sympy.binomial()`:
 
 ```Python
-import sympy 
+import sympy
 
 def f_sym(n, m):
     assert n >= 0 and m >= 0
@@ -195,7 +195,10 @@ funcs = [f_dp, f_binom, f_sci, f_sym]
 test(1000, 200, funcs)
 ```
 
-It runs by one the four discussed implementations on the same input: $n=1000$ and $m=200$, compares the results, and prints the absolute and relative times.
+It runs the four discussed implementations on the same input: $n=1000$ and $m=200$.
+The function validates that all the solutions are consistent, namely, produce the same result.
+It prints the result and the time it takes to execute each implementation `number=100` times.
+For each run, it also prints the relative factor computed based on the fastest case.
 
 Let's test the functions on different $m$:
 
