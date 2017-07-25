@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="theme" content="hugo-academic">
-  <meta name="generator" content="Hugo 0.24.1" />
+  <meta name="generator" content="Hugo 0.24" />
   <meta name="author" content="Slava Chernoy">
   <meta name="description" content="Software Engineer">
 
@@ -56,7 +56,7 @@
 
   
 
-  <title>Solving a Two Variable Recursive Equation Using Generating Functions | </title>
+  <title>Cracking Multivariate Recursive Equations Using Generating Functions | </title>
 
 </head>
 <body id="top" data-spy="scroll" data-target="#navbar-main" data-offset="71">
@@ -121,7 +121,7 @@
 
 
   <div class="article-container">
-    <h1 itemprop="name">Solving a Two Variable Recursive Equation Using Generating Functions</h1>
+    <h1 itemprop="name">Cracking Multivariate Recursive Equations Using Generating Functions</h1>
     
 
 <div class="article-metadata">
@@ -188,7 +188,39 @@ And $F_{5,3}=1$, since there is only one feasible 3-elements combination: $\lbra
 <p>The following recursive function: $ F_{n, m} = F_{n - 1, m} + F_{n - 2, m - 1} $,
 with the corner cases: $F_{0, 0} = F_{1, 1} = 1$.</p>
 
-<p>Here is very simple code in Python that computes the function, using the DP technique:</p>
+<p>The function $F$ has a straighforward recursive implementation in any programming language.
+But the naive recursive solution will have exponential in $n$ time complexity and will be very slow.
+Let&rsquo;s look at the following <code>Python 3</code> code snippet that uses memoization technique:</p>
+
+<pre><code class="language-python">import functools
+import sys
+
+sys.setrecursionlimit(100000)
+
+@functools.lru_cache(maxsize=None)
+def f_mem(n, m):
+    if n &lt; 0 or m &lt; 0:
+        return 0
+
+    if n + 1 &lt; 2 * m:
+        return 0
+
+    if n == m == 0:
+        return 1
+
+    if n == m == 1:
+        return 1
+
+    return f_mem(n-1, m) + f_mem(n-2, m-1)
+</code></pre>
+
+<p>Nice <code>@functools.lru_cache(maxsize=None)</code> notation created a wrapper on the <code>f_mem</code> function and internally caches results of all calls.
+Such caching (or memoization) improves significantly the speed of the recursion, and basically reduces the number of calls to something like $n \cdot m$.
+The recursion still may fail on the stack overflow even on relatively small values of $n$.
+That is why we increase the stack size, which is easy to do in Python by calling <code>sys.setrecursionlimit()</code>-method.</p>
+
+<p>The next implementation is iterative DP (Dynamic Programming).
+Basically, it fills out the $n \times m$ table starting from the low values of $n$ and $m$.</p>
 
 <pre><code class="language-python">def f_dp(n, m):
     assert n &gt;= 0 and m &gt;= 0
@@ -213,53 +245,113 @@ with the corner cases: $F_{0, 0} = F_{1, 1} = 1$.</p>
 </code></pre>
 
 <p>The time and space complexities are $O(n\cdot m) $.
-More accurate upper bound for the running time is $O(n\cdot \min(n,m))$.
-One can also improve space consumption to $O(m)$.</p>
+More accurate upper bound for the running time would be $O(n\cdot \min(n,m))$.
+It is not hard to notice that the space consumption could be improved to $O(m)$.</p>
 
 <h2 id="the-generating-function">The Generating Function</h2>
 
-<p>Let&rsquo;s introduce the generating function: $\Phi(x,y) = \sum_{n,m} F_{n,m}\cdot x^n y^m$.
-Substituting the definition of $F_{n,m}$ and simplifying the sums, we will get:</p>
+<p>The notion of generation function and its application for solving recursive equations are very well known.
+Let&rsquo;s consider how this works on the example of Fibonacci numbers.
+Readers who are familiar with one-variable case may jump to the next section where we discuss how to apply the generation functions on $F_{n,m}$.</p>
 
-<p>$$ \Phi(x,y) = \sum_{n,m} F_{n,m}\cdot x^n y^m $$</p>
+<p>For the Fibonacci numbers, defined by the recursion $f_n = f_{n-1} + f_{n-2} + [n=0]$.
+We assume that for any $n &lt; 0$, $f_n = 0$. The indicator $[n=0]$ equals to 1 only if $n=1$.
+Together with the main case, starting from $n=0$, it produces the following sequence: 1, 1, 2, 3, 5, 8, 13, $\dots$.</p>
 
-<p>$$ = \sum_{n,m} \left(F_{n - 1, m} + F_{n - 2, m - 1} + [n=m=1] + [n=m=0] \right)\cdot x^n y^m$$</p>
+<p>The generating function for $f_n$ is defined as an infinite sum of one variable $x$: $\Phi(x) = \sum_{n\geq 0} f_n\cdot x^n$.
+Usually, it is hard to build an intuition why it is defined that way and why it could be useful.
+So let&rsquo;s just focuse on what we can do with this and we start from substituting the defintion of Fibonacci recursion into the formular of generation function:</p>
 
-<p>$$ = \sum_{n,m} F_{n - 1, m} \cdot x^n y^m  + \sum_{n,m} F_{n - 2, m - 1} \cdot x^n y^m + x \cdot y + 1 $$</p>
+<p>$$\Phi(x) = \sum_n f_n\cdot x^n = \sum_n (f_{n-1} + f_{n-2} + [n=0]) \cdot x^n $$</p>
 
-<p>$$ = x\cdot\sum_{n,m} F_{n - 1, m} \cdot x^{n-1} y^m + x^2y\cdot\sum_{n,m} F_{n - 2, m - 1} \cdot x^{n-2} y^{m-1} + x \cdot y + 1 $$</p>
+<p>$$ = \sum_n f_{n-1}\cdot x^n  + \sum_n f_{n-2}\cdot x^n  + \sum_n [n=0]\cdot x^n  $$</p>
 
-<p>$$ = x\cdot \Phi(x,y)  + x^2y\cdot \Phi(x,y) + x \cdot y + 1 $$</p>
+<p>$$ = x \cdot \sum_n f_{n-1}\cdot x^{n-1}  + x^2\cdot \sum_n f_{n-2}\cdot x^{n-2}  + 1\cdot x^0 $$</p>
+
+<p>$$ = x \cdot \sum_n f_n\cdot x^n  + x^2\cdot \sum_n f_n\cdot x^n  + 1 =  x \cdot \Phi(x) + x^2\cdot \Phi(x)  + 1 $$</p>
+
+<p>And we can obtain the generating function for $f_n$: $\Phi(x) = \frac{1}{1 - x - x^2}$.
+Nice, but what can we do with this &ldquo;magic&rdquo; formula?
+We can hack it in different ways, and depending on our next step, we can get different expression for $f_n$.</p>
+
+<p>One of the standard ways is to split the fraction into two simple ones of the form: $\frac{A}{B-x}$.
+Note that the roots of the quadratic equation: $1 - x - x^2 = 0$ are $x_0=-\phi$ and $x_1=\phi^{-1}$, where $\phi$ is the <em>Goldan Ratio</em>:
+$\phi=\frac{1+\sqrt{5}}{2}=1.618\dots$.</p>
+
+<p>A quick test:
+$ -(x-x_0)\cdot(x-x_1) = -(x+\phi)\cdot \left(x-\phi^{-1}\right) $
+$ =-x^2 - x\cdot\left(\phi - \phi^{-1}\right) + 1 = -x^2 - x + 1 $.</p>
+
+<p>This results in $\Phi(x)=\frac{1}{1-x-x^2}$
+$ = -\frac{1}{(x+\phi)\cdot\left(x-\phi^{-1}\right)}$
+$ = \frac{A}{x+\phi} - \frac{A}{x-\phi^{-1}}$
+$ = A\cdot\phi^{-1}\cdot(1+x/\phi) + A\cdot\phi\cdot(1 - x\cdot\phi)$,
+where $A=\frac{1}{\phi+\phi^{-1}}$.</p>
+
+<p>We can apply the infinite series $\frac{1}{1-z} = \sum_n z^n$ for each expression and we will get:
+$\Phi(x) = A\cdot\phi^{-1}\cdot \sum_n (-x/\phi)^n + A\cdot\phi\cdot \sum_n (x\cdot\phi)^n $
+$ = A\cdot\phi^{-1}\cdot \sum_n (-\phi)^{-n}\cdot x^n + A\cdot\phi\cdot \sum_n \phi^n\cdot x^n $
+$ = \sum_n \left(A\cdot\phi^{-1}\cdot(-\phi)^{-n} + A\cdot\phi\cdot \phi^n \right) \cdot x^n $
+$ = \sum_n A\cdot\left(\phi^{n+1} - (-\phi)^{-n-1}\right) \cdot x^n $.</p>
+
+<p>The term before $x^n$ is nothing but $f_n$, which means that $f_n=\frac{\phi^{n+1} - (-\phi)^{-n-1}}{\phi+\phi^{-1}}$.</p>
+
+<p>Another way to crack the generating function is to apply the infinite series $\frac{1}{1-z} = \sum_n z^n$ directly to the fraction:
+$\Phi(x) = \frac{1}{1 - x - x^2} $
+$ = \frac{1}{1 - (x+x^2)}$
+$ = \sum_n (x+x^2)^n $
+$ = \sum_n (1+x)^n\cdot x^n $
+$ = \sum_{0\leq k \leq n} {n \choose k}\cdot x^{n+k} $</p>
+
+<p>Introducing the new variable $t=n+k$, we obtain
+$ = \sum_{t/2 \leq n \leq t} {n \choose t-n}\cdot x^t $
+$ = \sum_t \sum_{n=t/2}^t {n \choose t-n}\cdot x^t $</p>
+
+<p>So we receive another closed form for the fibonacci numbers: $f_t = \sum_{n=t/2}^t {n \choose t-n}$.</p>
+
+<p>Can you believe that both forms define the same well known fibonacci series?</p>
+
+<p>$$ f_n=\frac{\phi^{n+1} - (-\phi)^{-n-1}}{\phi+\phi^{-1}} $$</p>
+
+<p>$$ f_n = \sum_{i=n/2}^t {i \choose n-i} $$</p>
+
+<p>Actually, the equations have been discovered many times ago, an interested reader may find other proofs showing the truth of the relations.
+We just notice how powerful the generating functions might be and we will use them for two variable recursive functions.</p>
+
+<h1 id="the-generating-function-for-f-n-m">The Generating Function for $F_{n,m}$</h1>
+
+<p>We continue our analysis of the two variable recursion function:  $F_{n,m} = F_{n-1,m} + F_{n-2,m-1} + [n=m=0] + [n=m=1]$.
+Let&rsquo;s introduce the generating function $\Phi(x,y)$ of two (floating point) variables $x$ and $y$: $\Phi(x,y) = \sum_{n,m} F_{n,m}\cdot x^n y^m$.
+Substituting the definition of $F_{n,m}$ and simplifying the sums, we will get:
+$ \Phi(x,y) $
+$ = \sum_{n,m} F_{n,m}\cdot x^n y^m $
+$ = \sum_{n,m} \left(F_{n - 1, m} + F_{n - 2, m - 1} + [n=m=1] + [n=m=0] \right)\cdot x^n y^m$
+$ = \sum_{n,m} F_{n - 1, m} \cdot x^n y^m  + \sum_{n,m} F_{n - 2, m - 1} \cdot x^n y^m + x \cdot y + 1 $
+$ = x\cdot\sum_{n,m} F_{n - 1, m} \cdot x^{n-1} y^m + x^2y\cdot\sum_{n,m} F_{n - 2, m - 1} \cdot x^{n-2} y^{m-1} + x \cdot y + 1 $
+$ = x\cdot \Phi(x,y)  + x^2y\cdot \Phi(x,y) + x \cdot y + 1 $</p>
 
 <p>Now we find the simple representation: $\Phi(x, y) = \frac{1 + x \cdot y}{1 - x - x^2 \cdot y}$.
-We can convert it to an infinite series, using: $ \frac{1}{1-z} = \sum_{k\geq 0} z^k $:</p>
+We can convert it to an infinite series, using: $ \frac{1}{1-z} = \sum_{k\geq 0} z^k $:
+$\Phi(x, y) $
+$ = \frac{1 + x \cdot y}{1 - x - x^2 \cdot y}$
+$ = (1 + x \cdot y) \cdot \sum_{k\geq 0} (x+x^2\cdot y)^k  $
+$ = (1 + x \cdot y) \cdot \sum_{0 \leq i \leq k} {k \choose i} \cdot x^{k+i} \cdot y^i $</p>
 
-<p>$$\Phi(x, y) = \frac{1 + x \cdot y}{1 - x - x^2 \cdot y}$$</p>
+<p>Introduce $n=k+i, m=i$, then
+$\Phi(x, y) $
+$ = \sum_{0 \leq i \leq k} {k \choose i} \cdot x^{k+i} \cdot y^i $
+$ = \sum_{m \geq 0, n \geq 2m} {n-m \choose m} \cdot x^{n} \cdot y^m $</p>
 
-<p>$$ = (1 + x \cdot y) \cdot \sum_{k\geq 0} (x+x^2\cdot y)^k  $$</p>
-
-<p>$$ = (1 + x \cdot y) \cdot \sum_{0 \leq i \leq k} {k \choose i} \cdot x^{k+i} \cdot y^i  $$</p>
-
-<p>Introduce $n=k+i, m=i$, then</p>
-
-<p>$$
-\sum_{0 \leq i \leq k} {k \choose i} \cdot x^{k+i} \cdot y^i
- = \sum_{m \geq 0, n \geq 2m} {n-m \choose m} \cdot x^{n} \cdot y^m
-$$</p>
-
-<p>Introduce $n=k+i+1, m=i+1$, then</p>
-
-<p>$$
-x\cdot y \cdot \sum_{0 \leq i \leq k} {k \choose i} \cdot x^{k+i} \cdot y^i
- = \sum_{0 \leq i \leq k} {k \choose i} \cdot x^{k+i+1} \cdot y^{i+1}
-$$</p>
-
-<p>$$ = \sum_{m \geq 1, n \geq 2m-1} {n-m \choose m-1} \cdot x^n \cdot y^m$$</p>
+<p>Introduce $n=k+i+1, m=i+1$, then
+$\Phi(x, y) $
+$ = x\cdot y \cdot \sum_{0 \leq i \leq k} {k \choose i} \cdot x^{k+i} \cdot y^i $
+$ = \sum_{0 \leq i \leq k} {k \choose i} \cdot x^{k+i+1} \cdot y^{i+1} $
+$ = \sum_{m \geq 1, n \geq 2m-1} {n-m \choose m-1} \cdot x^n \cdot y^m $</p>
 
 <p>The last two transformations give us the closed form: $F_{n, m} = {n - m \choose m} + {n - m \choose m - 1}$.
 Which actually equals to $F_{n, m} = {n - m + 1 \choose m}$.</p>
 
-<p>Now we can implement the solution in very trivial Python code:</p>
+<p>Now we can reflect this idea very trivial Python code:</p>
 
 <pre><code class="language-Python">import math
 
@@ -274,11 +366,13 @@ def binom(n, m):
     return math.factorial(n) // math.factorial(m) // math.factorial(n-m)
 </code></pre>
 
-<p>This implementation runs much faster than our initial DP solution. The reason for this is that <code>math.factorial()</code> is implemented in C. If we know the limits on $n$ am $m$, we can do memoization for factorial with just $O(\max(n,m))$ extra memory, which may give even more boost in time.</p>
+<p>This implementation overperforms significantly the initial DP and memoization solutions.
+A naive implementation of <code>math.factorial()</code> could be linear in $n$, which still might be faster than DP approach.
+Actually, the actual implementation is much more advance, it is written in C and caches values for a small range of the argument.</p>
 
 <h2 id="faster-implementations-using-scipy-and-sympy">Faster Implementations Using <code>scipy</code> and <code>sympy</code></h2>
 
-<p>But more promissing optimization is to find a library implementing binomial coefficient, let&rsquo;s look at <code>scipy.special.comb()</code>:</p>
+<p>More promissing implementation for computing binomial coeffitients could be found the 3rd party libraries, let&rsquo;s take a look at <code>scipy.special.comb()</code> and <code>sympy.binomial()</code>:</p>
 
 <pre><code class="language-Python">import scipy.special
 
@@ -286,11 +380,8 @@ def f_sci(n, m):
     assert n &gt;= 0 and m &gt;= 0
 
     return scipy.special.comb(n-m+1, m, exact=True) if n+1 &gt;= 2*m else 0
-</code></pre>
 
-<p>and <code>sympy.binomial()</code>:</p>
-
-<pre><code class="language-Python">import sympy
+import sympy
 
 def f_sym(n, m):
     assert n &gt;= 0 and m &gt;= 0
@@ -303,20 +394,22 @@ def f_sym(n, m):
 <pre><code class="language-bash">pip install scipy sympy
 </code></pre>
 
-<p>In order to measure the time and to check the correctness, let&rsquo;s use the following helper function:</p>
+<p>In order to measure the time and check the correctness, let&rsquo;s use the following helper function:</p>
 
 <pre><code class="language-python">import timeit
 
-def test(n, m, funcs, number=100, module='__main__'):
+M=1000000007
+
+def test(n, m, funcs, number=1, module=__name__, M=M):
+    f_mem.cache_clear()
     results = []
     func_times = []
     for func in funcs:
-        results.append(func(n, m))
-
         stmt='{}({},{})'.format(func.__name__, n, m)
         setup='from {} import {}'.format(module, func.__name__)
         t = timeit.timeit(stmt=stmt, setup=setup, number=number)
         func_times.append(t)
+        results.append(func(n, m) % M)
 
     assert len(set(results)) &lt;= 1
 
@@ -326,71 +419,68 @@ def test(n, m, funcs, number=100, module='__main__'):
     best_time = min(func_times)
     for i, func in enumerate(funcs):
         func_time = func_times[i]
-        print('{:&gt;8}: {:6.3f} sec, x {:.1f}'.format(func.__name__, func_time, func_time/best_time))
+        print('{:&gt;8}: {:8.4f} sec, x {:.2f}'.format(func.__name__, func_time, func_time/best_time))
 </code></pre>
 
 <p>We can run it as following:</p>
 
-<pre><code class="language-python">funcs = [f_dp, f_binom, f_sci, f_sym]
-test(1000, 200, funcs)
+<pre><code class="language-python">funcs = [f_mem, f_dp, f_binom, f_sci, f_sym]
+test(6000, 2000, funcs)
 </code></pre>
 
-<p>It runs the four discussed implementations on the same input: $n=1000$ and $m=200$.
-The function validates that all the solutions are consistent, namely, produce the same result.
-It prints the result and the time it takes to execute each implementation <code>number=100</code> times.
-For each run, it also prints the relative factor computed based on the fastest case.</p>
+<p>Which prints the following output:</p>
 
-<p>Let&rsquo;s test the functions on different $m$:</p>
-
-<pre><code class="language-python">test(1000, 100, funcs)
-test(1000, 200, funcs)
-test(1000, 300, funcs)
+<pre><code>f(6000,2000): 192496093
+   f_mem:   6.7195 sec, x 4195.10
+    f_dp:   5.3249 sec, x 3324.43
+ f_binom:   0.0016 sec, x 1.00
+   f_sci:   0.0021 sec, x 1.32
+   f_sym:   0.0043 sec, x 2.69
 </code></pre>
 
-<p>The output shows that the implementations using the closed form work much faster than the DP approach. The code benefits from libraries&rsquo; functionality, which is very well optimized and written in C.</p>
+<p>The function <code>test()</code> computes $F_{6000, 2000}$ using five different ways.
+It validates that all the solutions are consistent and produce the same result.
+It also measures the time it takes to execute each method.
+For each run, it also prints the relative factor computed based on the fastest case.
+The function&rsquo;s result is printed modulo $M$.</p>
 
-<pre><code>f(1000,100): 1055554268626824420007558704051435171794370568248714546059151891116400068098669888824348337982251284084060970452636576818160835738923780
-    f_dp:  3.047 sec, x 28776.0
- f_binom:  0.009 sec, x 85.0
-   f_sci:  0.002 sec, x 16.1
-   f_sym:  0.000 sec, x 1.0
+<p>This is not a surprise that the first two methods (memoization and DP) are much slower than the other three, which are based on the binomial coefficients.
+Memoization and DP techniques have $Theta(n \cdot m) time complexity.
+The <code>f_binom</code>-method uses $factorial$ as a subroutine, which is linear in $n$ implemented in a naive way.
+Note that we ignore here a lot of interesting details, for example, Python has builtin integer long arithmetics, which is used here and definetely not cheap.
+Also <code>factorial</code>-function may use memoization for storing its value.
+Other methods based on <code>sympy</code> and <code>scipy.special</code>, may (and actually do) use memoization as well.
+The impact of C-impementation is also out of scope of the current discassion as well as some other hard-core optimizations that one can apply.</p>
 
-f(1000,200): 102959559398876709101987749103496956192748291997545179868396950180980024279315520736658787450735140705066645604315981112602395264722448393108564244943632128016608965665225093459140490108467690800
-    f_dp:  5.715 sec, x 54069.2
- f_binom:  0.007 sec, x 68.6
-   f_sci:  0.004 sec, x 37.5
-   f_sym:  0.000 sec, x 1.0
+<p>Let&rsquo;s run the fastest algorithms on the different values of $m$:</p>
 
-f(1000,300): 216041785281835022932717773340894622391167159765932233268357621588611118890447413630526105759449201694312865174825389570985567896663730782942657696701009691262132150170383821261834224318912512938247596625130
-    f_dp:  7.786 sec, x 71123.4
- f_binom:  0.005 sec, x 47.8
-   f_sci:  0.007 sec, x 66.5
-   f_sym:  0.000 sec, x 1.0
+<pre><code class="language-python">test(6000,  500, funcs[2:])
+test(6000, 1000, funcs[2:])
+test(6000, 1500, funcs[2:])
+test(6000, 2000, funcs[2:])
 </code></pre>
 
-<p>More refined comparizons for fast implementations:</p>
+<p>We may notice that there is no clear winner between the algorthms. It seems that <code>f_sym</code> runs slower but for $F_{n, m} the range is pretty small, probably most of the time is spent on the long arithmetic computation:</p>
 
-<pre><code class="language-python">test(1000, 100, funcs[1:], number=10**5)
-test(1000, 200, funcs[1:], number=10**5)
-test(1000, 300, funcs[1:], number=10**5)
-</code></pre>
+<pre><code>f(6000,500): 940876663
+ f_binom:   0.0038 sec, x 12.15
+   f_sci:   0.0003 sec, x 1.00
+   f_sym:   0.0046 sec, x 14.79
 
-<p>It looks like absolute winner is <code>sympy</code> library:</p>
+f(6000,1000): 491957471
+ f_binom:   0.0025 sec, x 3.70
+   f_sci:   0.0007 sec, x 1.00
+   f_sym:   0.0037 sec, x 5.48
 
-<pre><code>f(1000,100): 1055554268626824420007558704051435171794370568248714546059151891116400068098669888824348337982251284084060970452636576818160835738923780
- f_binom:  8.538 sec, x 72.9
-   f_sci:  1.867 sec, x 15.9
-   f_sym:  0.117 sec, x 1.0
+f(6000,1500): 325152517
+ f_binom:   0.0019 sec, x 1.48
+   f_sci:   0.0013 sec, x 1.00
+   f_sym:   0.0035 sec, x 2.67
 
-f(1000,200): 102959559398876709101987749103496956192748291997545179868396950180980024279315520736658787450735140705066645604315981112602395264722448393108564244943632128016608965665225093459140490108467690800
- f_binom:  7.024 sec, x 62.7
-   f_sci:  4.467 sec, x 39.9
-   f_sym:  0.112 sec, x 1.0
-
-f(1000,300): 216041785281835022932717773340894622391167159765932233268357621588611118890447413630526105759449201694312865174825389570985567896663730782942657696701009691262132150170383821261834224318912512938247596625130
- f_binom:  5.527 sec, x 48.7
-   f_sci:  7.760 sec, x 68.3
-   f_sym:  0.114 sec, x 1.0
+f(6000,2000): 192496093
+ f_binom:   0.0016 sec, x 1.00
+   f_sci:   0.0024 sec, x 1.49
+   f_sym:   0.0033 sec, x 2.06
 </code></pre>
 
     </div>
