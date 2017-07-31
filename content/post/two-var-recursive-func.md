@@ -366,7 +366,7 @@ For each run, it also prints the relative factor computed based on the fastest s
 The function's result is printed modulo $M=1000^3+7$.
 
 This is not a surprise that the first two methods (based on memoization and DP) are much slower than the other three, which are based on the binomial coefficients.
-Memoization and DP techniques have $Theta(n \cdot m) time complexity.
+Memoization and DP techniques haveTheta(n \cdot m)$ time complexity.
 The `f_binom`-method uses $factorial$ as a subroutine, which is linear in $n$ and implemented in a naive way.
 Note that we ignore here a lot of interesting details, for example, Python has built-in long arithmetics for integers, which is used here and definetely not cheap.
 Also `factorial`-function may use memoization for storing its value.
