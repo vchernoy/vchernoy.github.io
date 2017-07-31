@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="theme" content="hugo-academic">
-  <meta name="generator" content="Hugo 0.24.1" />
+  <meta name="generator" content="Hugo 0.25.1" />
   <meta name="author" content="Slava Chernoy">
   <meta name="description" content="Software Engineer">
 
@@ -141,6 +141,33 @@
     <i class="fa fa-tags"></i>
     
     <a href="/tags/math">math</a
+    >, 
+    
+    <a href="/tags/python">python</a
+    >, 
+    
+    <a href="/tags/generating-functions">generating functions</a
+    >, 
+    
+    <a href="/tags/recursion">recursion</a
+    >, 
+    
+    <a href="/tags/recursive-functions">recursive functions</a
+    >, 
+    
+    <a href="/tags/dynamic-programming">dynamic programming</a
+    >, 
+    
+    <a href="/tags/memoization">memoization</a
+    >, 
+    
+    <a href="/tags/binomial">binomial</a
+    >, 
+    
+    <a href="/tags/coding-interview">coding interview</a
+    >, 
+    
+    <a href="/tags/combinarotics">combinarotics</a
     >
     
   </span>
@@ -158,37 +185,56 @@
       
 
 <p>In this post, we consider a combinatorial problem.
-It has a nice recursive solution, which could be implemented efficiently using Dynamic Programming technique.
+It has a nice recursive solution, which could be implemented efficiently using Dynamic Programming (DP) technique.
 Then using generating function, we find the closed formula, expressed with the binomial coefficients.
-Finaly, we show that the closed formula gives us much faster way to compute the result than the the DP solution.</p>
+Finaly, we show that the closed formula gives us much faster way to compute the result than the DP solution.</p>
 
-<p>Generating functions are usually applied to the case of single variable recursive function.
-But actually, the technique may be extended to multivariate recursive functions, or even for a system of recursive functions.</p>
+<p>Generating functions are usually applied to the case of single variable recursive equations.
+But actually, the technique may be extended to multivariate recursive equations, or even to a system of recursive equations.</p>
 
 <p>Sometimes the generating functions may give a fantastic result, and here we discuss one of such cases.</p>
 
 <h2 id="the-problem">The Problem</h2>
 
-<p>We consider a problem that has a nice DP (Dynamic Programming) solution.
-Similar questions might be asked on coding interviews or may be suggested as trivial problems on coding contests.</p>
+<p>Let&rsquo;s consider the following problem.</p>
 
-<p><strong>Problem:</strong> Compute the number of ways to choose m elements from n elements in a way that resulted elements are not adjacent.</p>
+<p><strong>Problem:</strong> Compute the number of ways to choose $m$ elements from $n$ elements such that selected elements in one combination are not adjacent.</p>
 
-<p>For example, $F_{4,2}=3$ since from the 4-elements set: $\lbrace 1,2,3,4 \rbrace$,
-there are three feasible 2-elements combinations: $\lbrace 1,4 \rbrace$, $\lbrace 2,4 \rbrace$, $\lbrace 1,3 \rbrace$.
-And $F_{5,3}=1$, since there is only one feasible 3-elements combination: $\lbrace 1,3,5 \rbrace$.</p>
+<p>For example, for $m=4$ and $m=3$, the answer is 3, since from the 4-element set: $\lbrace 1,2,3,4 \rbrace$,
+there are three feasible 2-element combinations: $\lbrace 1,4 \rbrace$, $\lbrace 2,4 \rbrace$, $\lbrace 1,3 \rbrace$.</p>
 
-<p>Let&rsquo;s make recursive function for $ F_{n, m} $ by looking at $n$-th element. We can either:</p>
+<p>Another example, for $n=5$ and $m=3$, there is only one 3-element combination: $\lbrace 1,3,5 \rbrace$.</p>
+
+<p>This problem, of similar to this one, could be asked on coding interviews.
+Typically, the interviewer may expect the candidate start from suggesting a <em>Brute Force</em> solution that generates all the combination.
+Then the candidate is expected to suggest and implement a simple recursive function computing the answer.
+Then the interview is willing to hear that the recursive solution is very slow (ahs exponential time complexity) and has linear space complexity (due to stack calls)
+Finally, the candidate is expected that the run time could be improved by using either DP or Memoization technique.
+This gives much faster solution.</p>
+
+<p>Similar questions might be suggested as trivial problems on coding contests.
+In that case, extra optimizaitons might be required.
+Basically, after we discuss the typical DP and Memoization implementations, we will show that using generating function, we can build very fast and simple solution.</p>
+
+<p>Let&rsquo;s define $F_{n, m}$ is the function that gives as the answer for $n$ and $m$.
+Let&rsquo;s look at the $n, m$ case. We have two non overlapping sub cases:</p>
 
 <ul>
 <li>Skip the $n$-th element, then $ F_{n, m} = F_{n-1, m} $.</li>
 <li>Pick the $n$-th element, then $ F_{n, m} = F_{n-2, m-1} $.</li>
 </ul>
 
-<p>The following recursive function: $ F_{n, m} = F_{n - 1, m} + F_{n - 2, m - 1} $,
-with the corner cases: $F_{0, 0} = F_{1, 1} = 1$.</p>
+<p>From the above, we can define the solution in the form of simple recursion: $ F_{n, m} = F_{n - 1, m} + F_{n - 2, m - 1} $,
+let&rsquo;s not forget the corner cases: $F_{0, 0} = F_{1, 1} = 1$.</p>
 
-<p>The function $F$ has a straighforward recursive implementation in any programming language.
+<p>Basically, we can combine the general and the corner cases into one expression:</p>
+
+<p>$$ F_{n, m} = F_{n - 1, m} + F_{n - 2, m - 1} + [n=m=0] + [n=m=1] $$</p>
+
+<p>We assume that for any $n &lt; 0$ or $m &lt; 0$, $F_{n,m} = 0$.
+The indicator $[P]$ gives 1 if the predicate $P$ is true.</p>
+
+<p>The function $F_{n,m}$ has a straighforward recursive implementation in any programming language.
 But the naive recursive solution will have exponential in $n$ time complexity and will be very slow.
 Let&rsquo;s look at the following <code>Python 3</code> code snippet that uses memoization technique:</p>
 
@@ -214,12 +260,15 @@ def f_mem(n, m):
     return f_mem(n-1, m) + f_mem(n-2, m-1)
 </code></pre>
 
-<p>Nice <code>@functools.lru_cache(maxsize=None)</code> notation created a wrapper on the <code>f_mem</code> function and internally caches results of all calls.
-Such caching (or memoization) improves significantly the speed of the recursion, and basically reduces the number of calls to something like $n \cdot m$.
+<p>Nice <a href="https://docs.python.org/3/library/functools.html#functools.lru_cache" target="_blank">@functools.lru_cache</a>
+notation creates a wrapper on the <code>f_mem</code> function and internally caches the results of all calls.
+Such caching (or memoization) significantly improves the speed of the recursion,
+and basically reduces the number of calls to something like $O(n \cdot m)$.
 The recursion still may fail on the stack overflow even on relatively small values of $n$.
-That is why we increase the stack size, which is easy to do in Python by calling <code>sys.setrecursionlimit()</code>-method.</p>
+That is why we increase the stack size for the Python interpreter by calling
+<a href="https://docs.python.org/3/library/sys.html#sys.setrecursionlimit" target="_blank">sys.setrecursionlimit()-method</a>.</p>
 
-<p>The next implementation is iterative DP (Dynamic Programming).
+<p>The next iterative implementation uses DP.
 Basically, it fills out the $n \times m$ table starting from the low values of $n$ and $m$.</p>
 
 <pre><code class="language-python">def f_dp(n, m):
@@ -245,113 +294,153 @@ Basically, it fills out the $n \times m$ table starting from the low values of $
 </code></pre>
 
 <p>The time and space complexities are $O(n\cdot m) $.
-More accurate upper bound for the running time would be $O(n\cdot \min(n,m))$.
-It is not hard to notice that the space consumption could be improved to $O(m)$.</p>
+More accurately, time complexity might be bounded by $O(n\cdot \min(n,m))$.
+It is not hard to notice that the space consumption could be improved to $O(\min(n, m))$.</p>
 
-<h2 id="the-generating-function">The Generating Function</h2>
+<h2 id="the-generating-functions">The Generating Functions</h2>
 
-<p>The notion of generation function and its application for solving recursive equations are very well known.
-Let&rsquo;s consider how this works on the example of Fibonacci numbers.
-Readers who are familiar with one-variable case may jump to the next section where we discuss how to apply the generation functions on $F_{n,m}$.</p>
+<p>The notion of generation functions and its application to solving recursive equations are very well-known.
+For reader who did not have a chance to learn this,
+I recommend to take a look very good book <a href="https://en.wikipedia.org/wiki/Concrete_Mathematics" target="_blank">Concrete Mathematics: A Foundation for Computer Science</a> book.
+It has great explanation of generics functions.
+We will briefly
+For those who are not patient who will briefly introduce the generation functions and consider their application to Fibonacci numbers.
+Readers who are familiar with one-variable case,
+may jump directly to the next section where we discuss how to apply the generation functions to two variable recursions, like $F_{n,m}$.</p>
 
-<p>For the Fibonacci numbers, defined by the recursion $f_n = f_{n-1} + f_{n-2} + [n=0]$.
-We assume that for any $n &lt; 0$, $f_n = 0$. The indicator $[n=0]$ equals to 1 only if $n=1$.
-Together with the main case, starting from $n=0$, it produces the following sequence: 1, 1, 2, 3, 5, 8, 13, $\dots$.</p>
+<p>Let&rsquo;s consider how the generating fucntion application to Fibonacci numbers.
+The Fibonacci numbers could defined by the recursive expression:</p>
 
-<p>The generating function for $f_n$ is defined as an infinite sum of one variable $x$: $\Phi(x) = \sum_{n\geq 0} f_n\cdot x^n$.
-Usually, it is hard to build an intuition why it is defined that way and why it could be useful.
-So let&rsquo;s just focuse on what we can do with this and we start from substituting the defintion of Fibonacci recursion into the formular of generation function:</p>
+<p>$$f_n = f_{n-1} + f_{n-2} + [n=0]$$</p>
 
-<p>$$\Phi(x) = \sum_n f_n\cdot x^n = \sum_n (f_{n-1} + f_{n-2} + [n=0]) \cdot x^n $$</p>
+<p>We assume that for any $n &lt; 0$, $f_n = 0$.
+The indicator $[n=0]$ equals to 1 only if $n=0$.
+This definition produces the following sequence of the Fibonacci numbers: 1, 1, 2, 3, 5, 8, 13, $\dots$.
+Note that sometime, the Fibonacci sequence is defined to start from 0, but it is really not important for the perpose of our discussion.</p>
 
-<p>$$ = \sum_n f_{n-1}\cdot x^n  + \sum_n f_{n-2}\cdot x^n  + \sum_n [n=0]\cdot x^n  $$</p>
+<p>The generating function $\Phi(x)$ on a floating point variable $x$ is defined as the infinite sum:</p>
 
-<p>$$ = x \cdot \sum_n f_{n-1}\cdot x^{n-1}  + x^2\cdot \sum_n f_{n-2}\cdot x^{n-2}  + 1\cdot x^0 $$</p>
+<p>$$\Phi(x) = \sum_{n\geq 0} f_n\cdot x^n$$</p>
 
-<p>$$ = x \cdot \sum_n f_n\cdot x^n  + x^2\cdot \sum_n f_n\cdot x^n  + 1 =  x \cdot \Phi(x) + x^2\cdot \Phi(x)  + 1 $$</p>
+<p>Usually, it is hard to develop an intuition why it is defined that way and why it could be useful.
+So let&rsquo;s just focuse on what we can do with this,
+and let&rsquo;s start from substituting the defintion of Fibonacci recursion into the formular of generation function:
+$ \Phi(x) $
+$ = \sum_{n\geq 0} f_n\cdot x^n $
+$ = \sum_n f_n\cdot x^n $
+$ = \sum_n (f_{n-1} + f_{n-2} + [n=0]) \cdot x^n $
+$ = \sum_n f_{n-1}\cdot x^n + \sum_n f_{n-2}\cdot x^n + \sum_n [n=0]\cdot x^n $
+$ = x \cdot \sum_n f_{n-1}\cdot x^{n-1} + x^2\cdot \sum_n f_{n-2}\cdot x^{n-2} + 1\cdot x^0 $
+$ = x \cdot \sum_n f_n\cdot x^n + x^2\cdot \sum_n f_n\cdot x^n + 1 $
+$ = x \cdot \Phi(x) + x^2\cdot \Phi(x) + 1 $</p>
 
-<p>And we can obtain the generating function for $f_n$: $\Phi(x) = \frac{1}{1 - x - x^2}$.
-Nice, but what can we do with this &ldquo;magic&rdquo; formula?
-We can hack it in different ways, and depending on our next step, we can get different expression for $f_n$.</p>
+<p>And we can obtain the generating function for $f_n$:</p>
 
-<p>One of the standard ways is to split the fraction into two simple ones of the form: $\frac{A}{B-x}$.
-Note that the roots of the quadratic equation: $1 - x - x^2 = 0$ are $x_0=-\phi$ and $x_1=\phi^{-1}$, where $\phi$ is the <em>Goldan Ratio</em>:
+<p>$$\Phi(x) = \frac{1}{1 - x - x^2}$$</p>
+
+<p>Nice expression, but what can we do with this &ldquo;magic&rdquo; formula?
+We can hack it in different ways, and depending on our next step, we can get different closed forms for $f_n$.</p>
+
+<p>One of the standard ways is to split the fraction into two simple ones of the form: $\frac{A}{x+B}$.
+Note that the roots of the quadratic equation: $1 - x - x^2 = 0$ are $x_0=-\phi$ and $x_1=\phi^{-1}$,
+where $\phi$ is the <em>Goldan Ratio</em>:
 $\phi=\frac{1+\sqrt{5}}{2}=1.618\dots$.</p>
 
 <p>A quick test:
-$ -(x-x_0)\cdot(x-x_1) = -(x+\phi)\cdot \left(x-\phi^{-1}\right) $
-$ =-x^2 - x\cdot\left(\phi - \phi^{-1}\right) + 1 = -x^2 - x + 1 $.</p>
+$ -(x-x_0)\cdot(x-x_1) $
+$ = -(x+\phi)\cdot \left(x-\phi^{-1}\right) $
+$ =-x^2 - x\cdot\left(\phi - \phi^{-1}\right) + 1 $
+$ = -x^2 - x + 1 $.</p>
 
-<p>This results in $\Phi(x)=\frac{1}{1-x-x^2}$
+<p>This results in representing $\Phi(x)$ in the following way:
+$\Phi(x)$
+$ = \frac{1}{1-x-x^2}$
 $ = -\frac{1}{(x+\phi)\cdot\left(x-\phi^{-1}\right)}$
 $ = \frac{A}{x+\phi} - \frac{A}{x-\phi^{-1}}$
-$ = A\cdot\phi^{-1}\cdot(1+x/\phi) + A\cdot\phi\cdot(1 - x\cdot\phi)$,
+$ = A\cdot\phi^{-1}\cdot\frac{1}{1+x\cdot\phi^{-1}} + A\cdot\phi\cdot\frac{1}{1 - x\cdot\phi}$,
 where $A=\frac{1}{\phi+\phi^{-1}}$.</p>
 
-<p>We can apply the infinite series $\frac{1}{1-z} = \sum_n z^n$ for each expression and we will get:
-$\Phi(x) = A\cdot\phi^{-1}\cdot \sum_n (-x/\phi)^n + A\cdot\phi\cdot \sum_n (x\cdot\phi)^n $
+<p>The next trick is to apply the infinite series $\frac{1}{1-z} = \sum_n z^n$ for each expression and simplifying the sums.
+So we get:
+$\Phi(x) $
+$ = A\cdot\phi^{-1}\cdot \sum_n \left(-x\cdot \phi^{-1}\right)^n + A\cdot\phi\cdot \sum_n (x\cdot\phi)^n $
 $ = A\cdot\phi^{-1}\cdot \sum_n (-\phi)^{-n}\cdot x^n + A\cdot\phi\cdot \sum_n \phi^n\cdot x^n $
-$ = \sum_n \left(A\cdot\phi^{-1}\cdot(-\phi)^{-n} + A\cdot\phi\cdot \phi^n \right) \cdot x^n $
-$ = \sum_n A\cdot\left(\phi^{n+1} - (-\phi)^{-n-1}\right) \cdot x^n $.</p>
+$ = \sum_n A\cdot\left(\phi^{-1}\cdot(-\phi)^{-n} + \phi\cdot \phi^n \right) \cdot x^n $
+$ = \sum_n A\cdot\left(\phi^{n+1} - (-\phi)^{-n-1}\right) \cdot x^n $
+$ = \sum_n \frac{\phi^{n+1} - (-\phi)^{-n-1}}{\phi+\phi^{-1}} \cdot x^n $.</p>
 
-<p>The term before $x^n$ is nothing but $f_n$, which means that $f_n=\frac{\phi^{n+1} - (-\phi)^{-n-1}}{\phi+\phi^{-1}}$.</p>
+<p>The term before $x^n$ is nothing but $f_n$, which means that</p>
 
-<p>Another way to crack the generating function is to apply the infinite series $\frac{1}{1-z} = \sum_n z^n$ directly to the fraction:
-$\Phi(x) = \frac{1}{1 - x - x^2} $
+<p>$$f_n=\frac{\phi^{n+1} - (-\phi)^{-n-1}}{\phi+\phi^{-1}}$$</p>
+
+<p>Another way to crack the generating function is to apply the infinite series $\frac{1}{1-z} $ $= \sum_n z^n$ directly to the generating function:
+$ \Phi(x) $
+$ = \frac{1}{1 - x - x^2} $
 $ = \frac{1}{1 - (x+x^2)}$
 $ = \sum_n (x+x^2)^n $
 $ = \sum_n (1+x)^n\cdot x^n $
-$ = \sum_{0\leq k \leq n} {n \choose k}\cdot x^{n+k} $</p>
+$ = \sum_{0\leq k \leq n} {n \choose k}\cdot x^{n+k} $.</p>
 
 <p>Introducing the new variable $t=n+k$, we obtain
 $ = \sum_{t/2 \leq n \leq t} {n \choose t-n}\cdot x^t $
 $ = \sum_t \sum_{n=t/2}^t {n \choose t-n}\cdot x^t $</p>
 
-<p>So we receive another closed form for the fibonacci numbers: $f_t = \sum_{n=t/2}^t {n \choose t-n}$.</p>
+<p>So we receive another closed form for the Fibonacci numbers:</p>
 
-<p>Can you believe that both forms define the same well known fibonacci series?</p>
+<p>$$f_t = \sum_{n=t/2}^t {n \choose t-n}$$</p>
+
+<p>Believe you or do not, but forms define the same Fibonacci sequence.</p>
 
 <p>$$ f_n=\frac{\phi^{n+1} - (-\phi)^{-n-1}}{\phi+\phi^{-1}} $$</p>
 
 <p>$$ f_n = \sum_{i=n/2}^t {i \choose n-i} $$</p>
 
-<p>Actually, the equations have been discovered many times ago, an interested reader may find other proofs showing the truth of the relations.
-We just notice how powerful the generating functions might be and we will use them for two variable recursive functions.</p>
+<p>An interested reader can try to prove by induction that correctness of the expressions above.
+We just notice how powerful the generating functions might be and we will use them for two variable recursive expressions in the next section.</p>
 
 <h1 id="the-generating-function-for-f-n-m">The Generating Function for $F_{n,m}$</h1>
 
-<p>We continue our analysis of the two variable recursion function:  $F_{n,m} = F_{n-1,m} + F_{n-2,m-1} + [n=m=0] + [n=m=1]$.
-Let&rsquo;s introduce the generating function $\Phi(x,y)$ of two (floating point) variables $x$ and $y$: $\Phi(x,y) = \sum_{n,m} F_{n,m}\cdot x^n y^m$.
-Substituting the definition of $F_{n,m}$ and simplifying the sums, we will get:
+<p>We continue our analysis of the two variable recursion expression:</p>
+
+<p>$$F_{n,m} = F_{n-1,m} + F_{n-2,m-1} + [n=m=0] + [n=m=1]$$</p>
+
+<p>Let&rsquo;s introduce the generating function $\Phi(x,y)$ of two (floating point) variables $x$ and $y$:</p>
+
+<p>$$\Phi(x,y) = \sum_{n,m} F_{n,m}\cdot x^n y^m$$</p>
+
+<p>Substituting the definition of $F_{n,m}$ and simplifying the sums, we will get:
 $ \Phi(x,y) $
 $ = \sum_{n,m} F_{n,m}\cdot x^n y^m $
 $ = \sum_{n,m} \left(F_{n - 1, m} + F_{n - 2, m - 1} + [n=m=1] + [n=m=0] \right)\cdot x^n y^m$
-$ = \sum_{n,m} F_{n - 1, m} \cdot x^n y^m  + \sum_{n,m} F_{n - 2, m - 1} \cdot x^n y^m + x \cdot y + 1 $
+$ = \sum_{n,m} F_{n - 1, m} \cdot x^n y^m + \sum_{n,m} F_{n - 2, m - 1} \cdot x^n y^m + x \cdot y + 1 $
 $ = x\cdot\sum_{n,m} F_{n - 1, m} \cdot x^{n-1} y^m + x^2y\cdot\sum_{n,m} F_{n - 2, m - 1} \cdot x^{n-2} y^{m-1} + x \cdot y + 1 $
-$ = x\cdot \Phi(x,y)  + x^2y\cdot \Phi(x,y) + x \cdot y + 1 $</p>
+$ = x\cdot \Phi(x,y) + x^2y\cdot \Phi(x,y) + x \cdot y + 1 $</p>
 
-<p>Now we find the simple representation: $\Phi(x, y) = \frac{1 + x \cdot y}{1 - x - x^2 \cdot y}$.
-We can convert it to an infinite series, using: $ \frac{1}{1-z} = \sum_{k\geq 0} z^k $:
+<p>We have just found the simple representation for the generating function:</p>
+
+<p>$$\Phi(x, y) = \frac{1 + x \cdot y}{1 - x - x^2 \cdot y}$$</p>
+
+<p>Using the infinite series: $ \frac{1}{1-z} = \sum_{k\geq 0} z^k $, we can transform the expression as following:
 $\Phi(x, y) $
 $ = \frac{1 + x \cdot y}{1 - x - x^2 \cdot y}$
-$ = (1 + x \cdot y) \cdot \sum_{k\geq 0} (x+x^2\cdot y)^k  $
-$ = (1 + x \cdot y) \cdot \sum_{0 \leq i \leq k} {k \choose i} \cdot x^{k+i} \cdot y^i $</p>
+$ = (1 + x \cdot y) \cdot \sum_{k\geq 0} (x+x^2\cdot y)^k $
+$ = (1 + x \cdot y) \cdot \sum_{0 \leq i \leq k} {k \choose i} \cdot x^{k+i} \cdot y^i $
+$ = \sum_{0 \leq i \leq k} {k \choose i} \cdot x^{k+i} \cdot y^i + \sum_{0 \leq i \leq k} {k \choose i} \cdot x^{k+i+1} \cdot y^{i+1}$</p>
 
-<p>Introduce $n=k+i, m=i$, then
-$\Phi(x, y) $
-$ = \sum_{0 \leq i \leq k} {k \choose i} \cdot x^{k+i} \cdot y^i $
-$ = \sum_{m \geq 0, n \geq 2m} {n-m \choose m} \cdot x^{n} \cdot y^m $</p>
+<p>Introducing the new variables: $n=k+i, m=i$, we cat transform the first expression as following:
+$ \sum_{0 \leq i \leq k} {k \choose i} \cdot x^{k+i} \cdot y^i $
+$ = \sum_{m \geq 0, n \geq 2m} {n-m \choose m} \cdot x^{n} \cdot y^m $.</p>
 
-<p>Introduce $n=k+i+1, m=i+1$, then
-$\Phi(x, y) $
-$ = x\cdot y \cdot \sum_{0 \leq i \leq k} {k \choose i} \cdot x^{k+i} \cdot y^i $
-$ = \sum_{0 \leq i \leq k} {k \choose i} \cdot x^{k+i+1} \cdot y^{i+1} $
-$ = \sum_{m \geq 1, n \geq 2m-1} {n-m \choose m-1} \cdot x^n \cdot y^m $</p>
+<p>And introducing the new variables: $n=k+i+1, m=i+1$, we can transform the second expression similarly:
+$ \sum_{0 \leq i \leq k} {k \choose i} \cdot x^{k+i+1} \cdot y^{i+1} $
+$ = \sum_{m \geq 1, n \geq 2m-1} {n-m \choose m-1} \cdot x^n \cdot y^m $.</p>
 
-<p>The last two transformations give us the closed form: $F_{n, m} = {n - m \choose m} + {n - m \choose m - 1}$.
-Which actually equals to $F_{n, m} = {n - m + 1 \choose m}$.</p>
+<p>The last two transformations give us the closed form: $F_{n, m} $ $= {n - m \choose m} + {n - m \choose m - 1}$.
+Which actually equals to</p>
 
-<p>Now we can reflect this idea very trivial Python code:</p>
+<p>$$F_{n, m} = {n - m + 1 \choose m}$$</p>
+
+<p>Now we can reflect this idea in very trivial Python code:</p>
 
 <pre><code class="language-Python">import math
 
@@ -372,7 +461,8 @@ Actually, the actual implementation is much more advance, it is written in C and
 
 <h2 id="faster-implementations-using-scipy-and-sympy">Faster Implementations Using <code>scipy</code> and <code>sympy</code></h2>
 
-<p>More promissing implementation for computing binomial coeffitients could be found the 3rd party libraries, let&rsquo;s take a look at <code>scipy.special.comb()</code> and <code>sympy.binomial()</code>:</p>
+<p>More promissing implementations for computing binomial coeffitients could be found the 3rd party libraries,
+let&rsquo;s take a look at <code>scipy.special.comb()</code> and <code>sympy.binomial()</code>:</p>
 
 <pre><code class="language-Python">import scipy.special
 
@@ -394,7 +484,7 @@ def f_sym(n, m):
 <pre><code class="language-bash">pip install scipy sympy
 </code></pre>
 
-<p>In order to measure the time and check the correctness, let&rsquo;s use the following helper function:</p>
+<p>In order to measure the time and to check the correctness, let&rsquo;s write the following helper function:</p>
 
 <pre><code class="language-python">import timeit
 
@@ -441,16 +531,16 @@ test(6000, 2000, funcs)
 <p>The function <code>test()</code> computes $F_{6000, 2000}$ using five different ways.
 It validates that all the solutions are consistent and produce the same result.
 It also measures the time it takes to execute each method.
-For each run, it also prints the relative factor computed based on the fastest case.
-The function&rsquo;s result is printed modulo $M$.</p>
+For each run, it also prints the relative factor computed based on the fastest solution.
+The function&rsquo;s result is printed modulo $M=1000^3+7$.</p>
 
-<p>This is not a surprise that the first two methods (memoization and DP) are much slower than the other three, which are based on the binomial coefficients.
-Memoization and DP techniques have $Theta(n \cdot m) time complexity.
-The <code>f_binom</code>-method uses $factorial$ as a subroutine, which is linear in $n$ implemented in a naive way.
-Note that we ignore here a lot of interesting details, for example, Python has builtin integer long arithmetics, which is used here and definetely not cheap.
+<p>This is not a surprise that the first two methods (based on memoization and DP) are much slower than the other three, which are based on the binomial coefficients.
+Memoization and DP techniques have $Theta(n \cdot m)$ time complexity.
+The <code>f_binom</code>-method uses $factorial$ as a subroutine, which is linear in $n$ and implemented in a naive way.
+Note that we ignore here a lot of interesting details, for example, Python has built-in long arithmetics for integers, which is used here and definetely not cheap.
 Also <code>factorial</code>-function may use memoization for storing its value.
 Other methods based on <code>sympy</code> and <code>scipy.special</code>, may (and actually do) use memoization as well.
-The impact of C-impementation is also out of scope of the current discassion as well as some other hard-core optimizations that one can apply.</p>
+The impact of C-impementation is also out of the scope of the current discassion, as well as some other &ldquo;hard-core&rdquo; optimizations that one can apply.</p>
 
 <p>Testing the implementations on different parameters, we may notice that there is no clear winner between the algorthms.
 Probably, the most of the time is spent on the long arithmetic computation.</p>
@@ -459,7 +549,7 @@ Probably, the most of the time is spent on the long arithmetic computation.</p>
 
 <p>In questions where it is required to count some objects, not rearly the answer might be very big even on very small input.
 In such case, typically it is asked to print the answer modulo some big prime integer, let&rsquo;s say, $M=1000^3+7$.
-Since Python has built-in long arithmetics, we can apply modulo on the final result, but computing entire agorithm with long arithmetics while knowing that only small part of it is really important is very costly, but of course, not that efficient.</p>
+Since Python has built-in long arithmetics, we can apply modulo on the final result, but executing the entire agorithm with long arithmetics while knowing that only small part of it is really important is very costly, and of course, not that efficient.</p>
 
 <p>Let&rsquo;s look, briefly, at very simple change we can do for <code>f_binom</code> function that will speed up the computation significantly:</p>
 
@@ -496,7 +586,7 @@ test(10000, 2000, funcs)
 test(10000, 3000, funcs)
 </code></pre>
 
-<p>It is not a surprise that taking the benefits of modular computations result is huge speedup of running-time:</p>
+<p>It is not a surprise that taking the benefits of modular computations results in the huge speedup in running-time:</p>
 
 <pre><code>f(10000,1000): 450169549
   f_binom_mod:   0.0000 sec, x 1.00
