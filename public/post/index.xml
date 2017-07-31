@@ -258,7 +258,7 @@ def f_sym(n, m):
 
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;import timeit
 
-M=1000000007
+M = 1000**3 + 7
 
 def test(n, m, funcs, number=1, module=__name__, M=M):
     f_mem.cache_clear()
@@ -279,7 +279,7 @@ def test(n, m, funcs, number=1, module=__name__, M=M):
     best_time = min(func_times)
     for i, func in enumerate(funcs):
         func_time = func_times[i]
-        print(&#39;{:&amp;gt;8}: {:8.4f} sec, x {:.2f}&#39;.format(func.__name__, func_time, func_time/best_time))
+        print(&#39;{:&amp;gt;13}: {:8.4f} sec, x {:.2f}&#39;.format(func.__name__, func_time, func_time/best_time))
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;We can run it as following:&lt;/p&gt;
@@ -312,35 +312,69 @@ Also &lt;code&gt;factorial&lt;/code&gt;-function may use memoization for storing
 Other methods based on &lt;code&gt;sympy&lt;/code&gt; and &lt;code&gt;scipy.special&lt;/code&gt;, may (and actually do) use memoization as well.
 The impact of C-impementation is also out of scope of the current discassion as well as some other hard-core optimizations that one can apply.&lt;/p&gt;
 
-&lt;p&gt;Let&amp;rsquo;s run the fastest algorithms on the different values of $m$:&lt;/p&gt;
+&lt;p&gt;Testing the implementations on different parameters, we may notice that there is no clear winner between the algorthms.
+Probably, the most of the time is spent on the long arithmetic computation.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;test(6000,  500, funcs[2:])
-test(6000, 1000, funcs[2:])
-test(6000, 1500, funcs[2:])
-test(6000, 2000, funcs[2:])
+&lt;h2 id=&#34;modular-arithmetics&#34;&gt;Modular Arithmetics&lt;/h2&gt;
+
+&lt;p&gt;In questions where it is required to count some objects, not rearly the answer might be very big even on very small input.
+In such case, typically it is asked to print the answer modulo some big prime integer, let&amp;rsquo;s say, $M=1000^3+7$.
+Since Python has built-in long arithmetics, we can apply modulo on the final result, but computing entire agorithm with long arithmetics while knowing that only small part of it is really important is very costly, but of course, not that efficient.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s look, briefly, at very simple change we can do for &lt;code&gt;f_binom&lt;/code&gt; function that will speed up the computation significantly:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;def binom_mod(n, m):
+    assert 0 &amp;lt;= m &amp;lt;= n
+
+    return ((fact_mod(n) * inversion_mod(fact_mod(m))) % M * inversion_mod(fact_mod(n-m))) % M
+
+@functools.lru_cache(maxsize=None)
+def fact_mod(m):
+    if m &amp;lt;= 1:
+        return 1
+
+    return (m * fact_mod(m-1)) % M
+
+def inversion_mod(x):
+    return pow(x, M-2, M)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;We may notice that there is no clear winner between the algorthms. It seems that &lt;code&gt;f_sym&lt;/code&gt; runs slower but for $F_{n, m} the range is pretty small, probably most of the time is spent on the long arithmetic computation:&lt;/p&gt;
+&lt;p&gt;As we can see, all the operations are computed modulo $M$.
+The function &lt;code&gt;fact_mod&lt;/code&gt; is recursive but uses Memoization.
+The most tricky part is how to implemenent modular-division.
+From &lt;a href=&#34;https://en.wikipedia.org/wiki/Fermat%27s_little_theorem&#34; target=&#34;_blank&#34;&gt;Fermat&amp;rsquo;s little theorem&lt;/a&gt;,
+we know that if $M$ is prime and $0 &amp;lt; x &amp;lt; M$, then $x^{-1} \equiv x^{M-2} \pmod M$.
+This allows to compute the multiplicative inverse of $x$ using the Python&amp;rsquo;s built-in function &lt;a href=&#34;https://docs.python.org/3/library/functions.html#pow&#34; target=&#34;_blank&#34;&gt;pow&lt;/a&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;f(6000,500): 940876663
- f_binom:   0.0038 sec, x 12.15
-   f_sci:   0.0003 sec, x 1.00
-   f_sym:   0.0046 sec, x 14.79
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;
+fact_mod(10000) # for caching factorials
 
-f(6000,1000): 491957471
- f_binom:   0.0025 sec, x 3.70
-   f_sci:   0.0007 sec, x 1.00
-   f_sym:   0.0037 sec, x 5.48
+funcs = [f_binom_mod, f_binom, f_sci, f_sym]
 
-f(6000,1500): 325152517
- f_binom:   0.0019 sec, x 1.48
-   f_sci:   0.0013 sec, x 1.00
-   f_sym:   0.0035 sec, x 2.67
+test(10000, 1000, funcs)
+test(10000, 2000, funcs)
+test(10000, 3000, funcs)
+&lt;/code&gt;&lt;/pre&gt;
 
-f(6000,2000): 192496093
- f_binom:   0.0016 sec, x 1.00
-   f_sci:   0.0024 sec, x 1.49
-   f_sym:   0.0033 sec, x 2.06
+&lt;p&gt;It is not a surprise that taking the benefits of modular computations result is huge speedup of running-time:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;f(10000,1000): 450169549
+  f_binom_mod:   0.0000 sec, x 1.00
+      f_binom:   0.0073 sec, x 337.60
+        f_sci:   0.0011 sec, x 49.33
+        f_sym:   0.0076 sec, x 353.22
+
+f(10000,2000): 75198348
+  f_binom_mod:   0.0000 sec, x 1.00
+      f_binom:   0.0063 sec, x 368.94
+        f_sci:   0.0026 sec, x 153.33
+        f_sym:   0.0053 sec, x 308.93
+
+f(10000,3000): 679286557
+  f_binom_mod:   0.0000 sec, x 1.00
+      f_binom:   0.0060 sec, x 361.12
+        f_sci:   0.0056 sec, x 338.13
+        f_sym:   0.0053 sec, x 319.02
 &lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
