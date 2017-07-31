@@ -42,7 +42,7 @@ This gives much faster solution.
 
 Similar questions might be suggested as trivial problems on coding contests.
 In that case, extra optimizaitons might be required.
-Basically, after we discuss the typical DP and Memoization implementations, we will show that using generating function, we can build very fast and simple solution. 
+Basically, after we discuss the typical DP and Memoization implementations, we will show that using generating function, we can build very fast and simple solution.
 
 Let's define $F\_{n, m}$ is the function that gives as the answer for $n$ and $m$.
 Let's look at the $n, m$ case. We have two non overlapping sub cases:
@@ -89,10 +89,10 @@ def f_mem(n, m):
 
 Nice [@functools.lru_cache](https://docs.python.org/3/library/functools.html#functools.lru_cache)
 notation creates a wrapper on the `f_mem` function and internally caches the results of all calls.
-Such caching (or memoization) significantly improves the speed of the recursion, 
+Such caching (or memoization) significantly improves the speed of the recursion,
 and basically reduces the number of calls to something like $O(n \cdot m)$.
 The recursion still may fail on the stack overflow even on relatively small values of $n$.
-That is why we increase the stack size for the Python interpreter by calling 
+That is why we increase the stack size for the Python interpreter by calling
 [sys.setrecursionlimit()-method](https://docs.python.org/3/library/sys.html#sys.setrecursionlimit).
 
 The next iterative implementation uses DP.
@@ -147,19 +147,19 @@ The generating function $\Phi(x)$ on a floating point variable $x$ is defined as
 
 $$\Phi(x) = \sum\_{n\geq 0} f\_n\cdot x^n$$
 
-Usually, it is hard to develop  an intuition why it is defined that way and why it could be useful.
+Usually, it is hard to develop an intuition why it is defined that way and why it could be useful.
 So let's just focuse on what we can do with this,
 and let's start from substituting the defintion of Fibonacci recursion into the formular of generation function:
-$ \Phi(x) $ 
-$ =  \sum\_{n\geq 0} f\_n\cdot x^n $ 
+$ \Phi(x) $
+$ = \sum\_{n\geq 0} f\_n\cdot x^n $
 $ = \sum\_n f\_n\cdot x^n $
 $ = \sum\_n (f\_{n-1} + f\_{n-2} + [n=0]) \cdot x^n $
-$ = \sum\_n f\_{n-1}\cdot x^n  + \sum\_n f\_{n-2}\cdot x^n  + \sum\_n [n=0]\cdot x^n  $
-$ = x \cdot \sum\_n f\_{n-1}\cdot x^{n-1}  + x^2\cdot \sum\_n f\_{n-2}\cdot x^{n-2}  + 1\cdot x^0 $
-$ = x \cdot \sum\_n f\_n\cdot x^n  + x^2\cdot \sum\_n f\_n\cdot x^n  + 1 $
-$ = x \cdot \Phi(x) + x^2\cdot \Phi(x)  + 1 $
+$ = \sum\_n f\_{n-1}\cdot x^n + \sum\_n f\_{n-2}\cdot x^n + \sum\_n [n=0]\cdot x^n $
+$ = x \cdot \sum\_n f\_{n-1}\cdot x^{n-1} + x^2\cdot \sum\_n f\_{n-2}\cdot x^{n-2} + 1\cdot x^0 $
+$ = x \cdot \sum\_n f\_n\cdot x^n + x^2\cdot \sum\_n f\_n\cdot x^n + 1 $
+$ = x \cdot \Phi(x) + x^2\cdot \Phi(x) + 1 $
 
-And we can obtain the generating function for $f\_n$: 
+And we can obtain the generating function for $f\_n$:
 
 $$\Phi(x) = \frac{1}{1 - x - x^2}$$
 
@@ -194,7 +194,7 @@ $ = \sum\_n A\cdot\left(\phi^{-1}\cdot(-\phi)^{-n} + \phi\cdot \phi^n \right) \c
 $ = \sum\_n A\cdot\left(\phi^{n+1} - (-\phi)^{-n-1}\right) \cdot x^n $
 $ = \sum\_n \frac{\phi^{n+1} - (-\phi)^{-n-1}}{\phi+\phi^{-1}} \cdot x^n $.
 
-The term before $x^n$ is nothing but $f\_n$, which means that 
+The term before $x^n$ is nothing but $f\_n$, which means that
 
 $$f\_n=\frac{\phi^{n+1} - (-\phi)^{-n-1}}{\phi+\phi^{-1}}$$
 
@@ -229,7 +229,7 @@ We continue our analysis of the two variable recursion expression:
 
 $$F\_{n,m} = F\_{n-1,m} + F\_{n-2,m-1} + [n=m=0] + [n=m=1]$$.
 
-Let's introduce the generating function $\Phi(x,y)$ of two (floating point) variables $x$ and $y$: 
+Let's introduce the generating function $\Phi(x,y)$ of two (floating point) variables $x$ and $y$:
 
 $$\Phi(x,y) = \sum\_{n,m} F\_{n,m}\cdot x^n y^m$$
 
@@ -237,9 +237,9 @@ Substituting the definition of $F\_{n,m}$ and simplifying the sums, we will get:
 $ \Phi(x,y) $
 $ = \sum\_{n,m} F\_{n,m}\cdot x^n y^m $
 $ = \sum\_{n,m} \left(F\_{n - 1, m} + F\_{n - 2, m - 1} + [n=m=1] + [n=m=0] \right)\cdot x^n y^m$
-$ = \sum\_{n,m} F\_{n - 1, m} \cdot x^n y^m  + \sum\_{n,m} F\_{n - 2, m - 1} \cdot x^n y^m + x \cdot y + 1 $
+$ = \sum\_{n,m} F\_{n - 1, m} \cdot x^n y^m + \sum\_{n,m} F\_{n - 2, m - 1} \cdot x^n y^m + x \cdot y + 1 $
 $ = x\cdot\sum\_{n,m} F\_{n - 1, m} \cdot x^{n-1} y^m + x^2y\cdot\sum\_{n,m} F\_{n - 2, m - 1} \cdot x^{n-2} y^{m-1} + x \cdot y + 1 $
-$ = x\cdot \Phi(x,y)  + x^2y\cdot \Phi(x,y) + x \cdot y + 1 $
+$ = x\cdot \Phi(x,y) + x^2y\cdot \Phi(x,y) + x \cdot y + 1 $
 
 We have just found the simple representation for the generating function:
 
@@ -248,7 +248,7 @@ $$\Phi(x, y) = \frac{1 + x \cdot y}{1 - x - x^2 \cdot y}$$
 Using the infinite series: $ \frac{1}{1-z} = \sum\_{k\geq 0} z^k $, we can transform the expression as following:
 $\Phi(x, y) $
 $ = \frac{1 + x \cdot y}{1 - x - x^2 \cdot y}$
-$ = (1 + x \cdot y) \cdot \sum\_{k\geq 0} (x+x^2\cdot y)^k  $
+$ = (1 + x \cdot y) \cdot \sum\_{k\geq 0} (x+x^2\cdot y)^k $
 $ = (1 + x \cdot y) \cdot \sum\_{0 \leq i \leq k} {k \choose i} \cdot x^{k+i} \cdot y^i $
 $ = \sum\_{0 \leq i \leq k} {k \choose i} \cdot x^{k+i} \cdot y^i + \sum\_{0 \leq i \leq k} {k \choose i} \cdot x^{k+i+1} \cdot y^{i+1}$
 
@@ -261,7 +261,7 @@ $ \sum\_{0 \leq i \leq k} {k \choose i} \cdot x^{k+i+1} \cdot y^{i+1} $
 $ = \sum\_{m \geq 1, n \geq 2m-1} {n-m \choose m-1} \cdot x^n \cdot y^m $.
 
 The last two transformations give us the closed form: $F\_{n, m} $ $= {n - m \choose m} + {n - m \choose m - 1}$.
-Which actually equals to 
+Which actually equals to
 
 $$F\_{n, m} = {n - m + 1 \choose m}$$.
 
@@ -440,5 +440,4 @@ f(10000,3000): 679286557
         f_sci:   0.0056 sec, x 338.13
         f_sym:   0.0053 sec, x 319.02
 ```
-
 
