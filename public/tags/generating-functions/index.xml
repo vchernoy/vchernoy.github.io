@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Generating Functions on </title>
+    <link>https://vchernoy.xyz/tags/generating-functions/</link>
+    <description>Recent content in Generating Functions on </description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 04 Jul 2017 07:29:43 +0000</lastBuildDate>
+    
+	<atom:link href="https://vchernoy.xyz/tags/generating-functions/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Cracking Multivariate Recursive Equations Using Generating Functions</title>
+      <link>https://vchernoy.xyz/post/two-var-recursive-func/</link>
+      <pubDate>Tue, 04 Jul 2017 07:29:43 +0000</pubDate>
+      
+      <guid>https://vchernoy.xyz/post/two-var-recursive-func/</guid>
+      <description>In this post, we consider a combinatorial problem. It has a nice recursive solution, which could be implemented efficiently using Dynamic Programming (DP) technique. Then using generating function, we find the closed formula, expressed with the binomial coefficients. Finaly, we show that the closed formula gives us much faster way to compute the result than the DP solution.
+Generating functions are usually applied to the case of single variable recursive equations.</description>
+    </item>
+    
+  </channel>
+</rss>
