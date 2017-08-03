@@ -3,6 +3,7 @@ date = "2017-08-02T07:29:43Z"
 math = true
 highlight = true
 tags = ["multiplicative hashing", "hash functions", "prime", "goldan ratio", "gcd", "coprimes", "prime"]
+title = "Multiplicative Hashing Functions -- Notes on Primes, Golden Ratio, and Evil"
 draft = true
 
 # Optional featured image (relative to `static/img/` folder).

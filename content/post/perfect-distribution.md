@@ -3,7 +3,7 @@ date = "2017-08-01T07:29:43Z"
 math = true
 highlight = true
 tags = ["math","python", "recursion", "recursive functions", "gcd", "uniform distribution"]
-title = "Perfect Distribution Based On GCD"
+title = "Perfect Distribution Based on GCD"
 draft = true
 
 # Optional featured image (relative to `static/img/` folder).
