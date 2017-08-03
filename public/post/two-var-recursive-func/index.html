@@ -320,19 +320,19 @@ Note that sometime, the Fibonacci sequence is defined to start from 0, but it is
 
 <p>The generating function $\Phi(x)$ on a floating point variable $x$ is defined as the infinite sum:</p>
 
-<p>$$\Phi(x) = \sum_{n\geq 0} f_n\cdot x^n$$</p>
+<p>$$\Phi(x) = \sum_{n\geq 0} f_n x^n$$</p>
 
 <p>Usually, it is hard to develop an intuition why it is defined that way and why it could be useful.
 So let&rsquo;s just focuse on what we can do with this,
 and let&rsquo;s start from substituting the defintion of Fibonacci recursion into the formular of generation function:
 $ \Phi(x) $
-$ = \sum_{n\geq 0} f_n\cdot x^n $
-$ = \sum_n f_n\cdot x^n $
-$ = \sum_n (f_{n-1} + f_{n-2} + [n=0]) \cdot x^n $
-$ = \sum_n f_{n-1}\cdot x^n + \sum_n f_{n-2}\cdot x^n + \sum_n [n=0]\cdot x^n $
-$ = x \cdot \sum_n f_{n-1}\cdot x^{n-1} + x^2\cdot \sum_n f_{n-2}\cdot x^{n-2} + 1\cdot x^0 $
-$ = x \cdot \sum_n f_n\cdot x^n + x^2\cdot \sum_n f_n\cdot x^n + 1 $
-$ = x \cdot \Phi(x) + x^2\cdot \Phi(x) + 1 $</p>
+$ = \sum_{n\geq 0} f_n x^n $
+$ = \sum_n f_n x^n $
+$ = \sum_n (f_{n-1} + f_{n-2} + [n=0]) x^n $
+$ = \sum_n f_{n-1} x^n + \sum_n f_{n-2} x^n + \sum_n [n=0] x^n $
+$ = x \sum_n f_{n-1} x^{n-1} + x^2 \sum_n f_{n-2} x^{n-2} + 1 x^0 $
+$ = x \sum_n f_n x^n + x^2 \sum_n f_n x^n + 1 $
+$ = x \Phi(x) + x^2 \Phi(x) + 1 $</p>
 
 <p>And we can obtain the generating function for $f_n$:</p>
 
@@ -347,27 +347,27 @@ where $\phi$ is the <em>Goldan Ratio</em>:
 $\phi=\frac{1+\sqrt{5}}{2}=1.618\dots$.</p>
 
 <p>A quick test:
-$ -(x-x_0)\cdot(x-x_1) $
-$ = -(x+\phi)\cdot \left(x-\phi^{-1}\right) $
+$ -(x-x_0) (x-x_1) $
+$ = -(x+\phi) \left(x-\phi^{-1}\right) $
 $ =-x^2 - x\cdot\left(\phi - \phi^{-1}\right) + 1 $
 $ = -x^2 - x + 1 $.</p>
 
 <p>This results in representing $\Phi(x)$ in the following way:
 $\Phi(x)$
 $ = \frac{1}{1-x-x^2}$
-$ = -\frac{1}{(x+\phi)\cdot\left(x-\phi^{-1}\right)}$
+$ = -\frac{1}{(x+\phi) \left(x-\phi^{-1}\right)}$
 $ = \frac{A}{x+\phi} - \frac{A}{x-\phi^{-1}}$
-$ = A\cdot\phi^{-1}\cdot\frac{1}{1+x\cdot\phi^{-1}} + A\cdot\phi\cdot\frac{1}{1 - x\cdot\phi}$,
+$ = A\cdot\phi^{-1} \frac{1}{1+x\cdot\phi^{-1}} + A\cdot\phi \frac{1}{1 - x\cdot\phi}$,
 where $A=\frac{1}{\phi+\phi^{-1}}$.</p>
 
 <p>The next trick is to apply the infinite series $\frac{1}{1-z} = \sum_n z^n$ for each expression and simplifying the sums.
 So we get:
 $\Phi(x) $
-$ = A\cdot\phi^{-1}\cdot \sum_n \left(-x\cdot \phi^{-1}\right)^n + A\cdot\phi\cdot \sum_n (x\cdot\phi)^n $
-$ = A\cdot\phi^{-1}\cdot \sum_n (-\phi)^{-n}\cdot x^n + A\cdot\phi\cdot \sum_n \phi^n\cdot x^n $
-$ = \sum_n A\cdot\left(\phi^{-1}\cdot(-\phi)^{-n} + \phi\cdot \phi^n \right) \cdot x^n $
-$ = \sum_n A\cdot\left(\phi^{n+1} - (-\phi)^{-n-1}\right) \cdot x^n $
-$ = \sum_n \frac{\phi^{n+1} - (-\phi)^{-n-1}}{\phi+\phi^{-1}} \cdot x^n $.</p>
+$ = A\cdot\phi^{-1} \sum_n \left(-x\cdot \phi^{-1}\right)^n + A\cdot\phi \sum_n (x\cdot\phi)^n $
+$ = A\cdot\phi^{-1} \sum_n (-\phi)^{-n} x^n + A\cdot\phi \sum_n \phi^n x^n $
+$ = \sum_n A\cdot\left(\phi^{-1} (-\phi)^{-n} + \phi\cdot \phi^n \right)  x^n $
+$ = \sum_n A\cdot\left(\phi^{n+1} - (-\phi)^{-n-1}\right) x^n $
+$ = \sum_n \frac{\phi^{n+1} - (-\phi)^{-n-1}}{\phi+\phi^{-1}} x^n $.</p>
 
 <p>The term before $x^n$ is nothing but $f_n$, which means that</p>
 
@@ -378,12 +378,12 @@ $ \Phi(x) $
 $ = \frac{1}{1 - x - x^2} $
 $ = \frac{1}{1 - (x+x^2)}$
 $ = \sum_n (x+x^2)^n $
-$ = \sum_n (1+x)^n\cdot x^n $
-$ = \sum_{0\leq k \leq n} {n \choose k}\cdot x^{n+k} $.</p>
+$ = \sum_n (1+x)^n x^n $
+$ = \sum_{0\leq k \leq n} {n \choose k} x^{n+k} $.</p>
 
 <p>Introducing the new variable $t=n+k$, we obtain
-$ = \sum_{t/2 \leq n \leq t} {n \choose t-n}\cdot x^t $
-$ = \sum_t \sum_{n=t/2}^t {n \choose t-n}\cdot x^t $</p>
+$ = \sum_{t/2 \leq n \leq t} {n \choose t-n} x^t $
+$ = \sum_t \sum_{n=t/2}^t {n \choose t-n} x^t $</p>
 
 <p>So we receive another closed form for the Fibonacci numbers:</p>
 
@@ -406,34 +406,34 @@ We just notice how powerful the generating functions might be and we will use th
 
 <p>Let&rsquo;s introduce the generating function $\Phi(x,y)$ of two (floating point) variables $x$ and $y$:</p>
 
-<p>$$\Phi(x,y) = \sum_{n,m} F_{n,m}\cdot x^n y^m$$</p>
+<p>$$\Phi(x,y) = \sum_{n,m} F_{n,m} x^n y^m$$</p>
 
 <p>Substituting the definition of $F_{n,m}$ and simplifying the sums, we will get:
 $ \Phi(x,y) $
-$ = \sum_{n,m} F_{n,m}\cdot x^n y^m $
-$ = \sum_{n,m} \left(F_{n - 1, m} + F_{n - 2, m - 1} + [n=m=1] + [n=m=0] \right)\cdot x^n y^m$
-$ = \sum_{n,m} F_{n - 1, m} \cdot x^n y^m + \sum_{n,m} F_{n - 2, m - 1} \cdot x^n y^m + x \cdot y + 1 $
-$ = x\cdot\sum_{n,m} F_{n - 1, m} \cdot x^{n-1} y^m + x^2y\cdot\sum_{n,m} F_{n - 2, m - 1} \cdot x^{n-2} y^{m-1} + x \cdot y + 1 $
-$ = x\cdot \Phi(x,y) + x^2y\cdot \Phi(x,y) + x \cdot y + 1 $</p>
+$ = \sum_{n,m} F_{n,m} x^n y^m $
+$ = \sum_{n,m} \left(F_{n - 1, m} + F_{n - 2, m - 1} + [n=m=1] + [n=m=0] \right) x^n y^m$
+$ = \sum_{n,m} F_{n - 1, m} x^n y^m + \sum_{n,m} F_{n - 2, m - 1} x^n y^m + x \cdot y + 1 $
+$ = x \sum_{n,m} F_{n - 1, m} x^{n-1} y^m + x^2 y \sum_{n,m} F_{n - 2, m - 1} x^{n-2} y^{m-1} + x \cdot y + 1 $
+$ = x \Phi(x,y) + x^2 y \Phi(x,y) + x \cdot y + 1 $</p>
 
 <p>We have just found the simple representation for the generating function:</p>
 
-<p>$$\Phi(x, y) = \frac{1 + x \cdot y}{1 - x - x^2 \cdot y}$$</p>
+<p>$$\Phi(x, y) = \frac{1 + x \cdot y}{1 - x - x^2 y}$$</p>
 
 <p>Using the infinite series: $ \frac{1}{1-z} = \sum_{k\geq 0} z^k $, we can transform the expression as following:
 $\Phi(x, y) $
-$ = \frac{1 + x \cdot y}{1 - x - x^2 \cdot y}$
-$ = (1 + x \cdot y) \cdot \sum_{k\geq 0} (x+x^2\cdot y)^k $
-$ = (1 + x \cdot y) \cdot \sum_{0 \leq i \leq k} {k \choose i} \cdot x^{k+i} \cdot y^i $
-$ = \sum_{0 \leq i \leq k} {k \choose i} \cdot x^{k+i} \cdot y^i + \sum_{0 \leq i \leq k} {k \choose i} \cdot x^{k+i+1} \cdot y^{i+1}$</p>
+$ = \frac{1 + x \cdot y}{1 - x - x^2 y}$
+$ = (1 + x \cdot y) \sum_{k\geq 0} (x + x^2 y)^k $
+$ = (1 + x \cdot y) \sum_{0 \leq i \leq k} {k \choose i} x^{k+i} y^i $
+$ = \sum_{0 \leq i \leq k} {k \choose i} x^{k+i} y^i + \sum_{0 \leq i \leq k} {k \choose i} x^{k+i+1} y^{i+1}$</p>
 
 <p>Introducing the new variables: $n=k+i, m=i$, we cat transform the first expression as following:
-$ \sum_{0 \leq i \leq k} {k \choose i} \cdot x^{k+i} \cdot y^i $
-$ = \sum_{m \geq 0, n \geq 2m} {n-m \choose m} \cdot x^{n} \cdot y^m $.</p>
+$ \sum_{0 \leq i \leq k} {k \choose i} x^{k+i} y^i $
+$ = \sum_{m \geq 0, n \geq 2m} {n-m \choose m} x^{n} y^m $.</p>
 
 <p>And introducing the new variables: $n=k+i+1, m=i+1$, we can transform the second expression similarly:
-$ \sum_{0 \leq i \leq k} {k \choose i} \cdot x^{k+i+1} \cdot y^{i+1} $
-$ = \sum_{m \geq 1, n \geq 2m-1} {n-m \choose m-1} \cdot x^n \cdot y^m $.</p>
+$ \sum_{0 \leq i \leq k} {k \choose i} x^{k+i+1} y^{i+1} $
+$ = \sum_{m \geq 1, n \geq 2m-1} {n-m \choose m-1} x^n y^m $.</p>
 
 <p>The last two transformations give us the closed form: $F_{n, m} $ $= {n - m \choose m} + {n - m \choose m - 1}$.
 Which actually equals to</p>
