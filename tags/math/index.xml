@@ -33,21 +33,23 @@ But actually, the technique may be extended to multivariate recursive equations,
 
 &lt;p&gt;&lt;strong&gt;Problem:&lt;/strong&gt; Compute the number of ways to choose $m$ elements from $n$ elements such that selected elements in one combination are not adjacent.&lt;/p&gt;
 
-&lt;p&gt;For example, for $m=4$ and $m=3$, the answer is 3, since from the 4-element set: $\lbrace 1,2,3,4 \rbrace$,
-there are three feasible 2-element combinations: $\lbrace 1,4 \rbrace$, $\lbrace 2,4 \rbrace$, $\lbrace 1,3 \rbrace$.&lt;/p&gt;
+&lt;p&gt;For example, for $m=4$ and $m=3$, the answer is $3$, since from the $4$-element set: $\lbrace 1,2,3,4 \rbrace$,
+there are three feasible $2$-element combinations: $\lbrace 1,4 \rbrace$, $\lbrace 2,4 \rbrace$, $\lbrace 1,3 \rbrace$.&lt;/p&gt;
 
-&lt;p&gt;Another example, for $n=5$ and $m=3$, there is only one 3-element combination: $\lbrace 1,3,5 \rbrace$.&lt;/p&gt;
+&lt;p&gt;Another example, for $n=5$ and $m=3$, there is only one $3$-element combination: $\lbrace 1,3,5 \rbrace$.&lt;/p&gt;
 
 &lt;p&gt;This problem, of similar to this one, could be asked on coding interviews.
 Typically, the interviewer may expect the candidate start from suggesting a &lt;em&gt;Brute Force&lt;/em&gt; solution that generates all the combination.
 Then the candidate is expected to suggest and implement a simple recursive function computing the answer.
-Then the interview is willing to hear that the recursive solution is very slow (ahs exponential time complexity) and has linear space complexity (due to stack calls)
-Finally, the candidate is expected that the run time could be improved by using either DP or Memoization technique.
+Then the interviewer is willing to hear that the recursive solution is very slow (has exponential time complexity) and
+has linear space complexity (due to stack calls).
+Finally, the candidate is expected to tell that the running time could be improved by using either DP or Memoization techniques.
 This gives much faster solution.&lt;/p&gt;
 
 &lt;p&gt;Similar questions might be suggested as trivial problems on coding contests.
 In that case, extra optimizaitons might be required.
-Basically, after we discuss the typical DP and Memoization implementations, we will show that using generating function, we can build very fast and simple solution.&lt;/p&gt;
+Basically, after we discuss the typical DP and Memoization implementations, we will show that using generating function,
+we can build very fast and simple solution.&lt;/p&gt;
 
 &lt;p&gt;Let&amp;rsquo;s define $F_{n, m}$ is the function that gives as the answer for $n$ and $m$.
 Let&amp;rsquo;s look at the $n, m$ case. We have two non overlapping sub cases:&lt;/p&gt;
@@ -57,15 +59,17 @@ Let&amp;rsquo;s look at the $n, m$ case. We have two non overlapping sub cases:&
 &lt;li&gt;Pick the $n$-th element, then $ F_{n, m} = F_{n-2, m-1} $.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;From the above, we can define the solution in the form of simple recursion: $ F_{n, m} = F_{n - 1, m} + F_{n - 2, m - 1} $,
-let&amp;rsquo;s not forget the corner cases: $F_{0, 0} = F_{1, 1} = 1$.&lt;/p&gt;
+&lt;p&gt;From the above, we can define the solution in the form of simple recursion:
+$ F_{n, m} = F_{n - 1, m} + F_{n - 2, m - 1} $,
+let&amp;rsquo;s not forget the corner cases:
+$F_{0, 0} = F_{1, 1} = 1$.&lt;/p&gt;
 
 &lt;p&gt;Basically, we can combine the general and the corner cases into one expression:&lt;/p&gt;
 
 &lt;p&gt;$$ F_{n, m} = F_{n - 1, m} + F_{n - 2, m - 1} + [n=m=0] + [n=m=1] $$&lt;/p&gt;
 
 &lt;p&gt;We assume that for any $n &amp;lt; 0$ or $m &amp;lt; 0$, $F_{n,m} = 0$.
-The indicator $[P]$ gives 1 if the predicate $P$ is true.&lt;/p&gt;
+The indicator $[P]$ gives $1$ if the predicate $P$ is true.&lt;/p&gt;
 
 &lt;p&gt;The function $F_{n,m}$ has a straighforward recursive implementation in any programming language.
 But the naive recursive solution will have exponential in $n$ time complexity and will be very slow.
@@ -81,7 +85,7 @@ def f_mem(n, m):
     if n &amp;lt; 0 or m &amp;lt; 0:
         return 0
 
-    if n + 1 &amp;lt; 2 * m:
+    if n + 1 &amp;lt; 2*m:
         return 0
 
     if n == m == 0:
@@ -90,7 +94,7 @@ def f_mem(n, m):
     if n == m == 1:
         return 1
 
-    return f_mem(n-1, m) + f_mem(n-2, m-1)
+    return f_mem(n - 1, m) + f_mem(n - 2, m - 1)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Nice &lt;a href=&#34;https://docs.python.org/3/library/functools.html#functools.lru_cache&#34; target=&#34;_blank&#34;&gt;@functools.lru_cache&lt;/a&gt;
@@ -107,10 +111,10 @@ Basically, it fills out the $n \times m$ table starting from the low values of $
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;def f_dp(n, m):
     assert n &amp;gt;= 0 and m &amp;gt;= 0
 
-    if n+1 &amp;lt; 2*m:
+    if n + 1 &amp;lt; 2*m:
         return 0
 
-    table = [[0] * (m+1) for _ in range(n+1)]
+    table = [[0] * (m + 1) for _ in range(n + 1)]
 
     table[0][0] = 1
     if n &amp;gt;= 1:
@@ -127,28 +131,28 @@ Basically, it fills out the $n \times m$ table starting from the low values of $
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;The time and space complexities are $O(n\cdot m) $.
-More accurately, time complexity might be bounded by $O(n\cdot \min(n,m))$.
-It is not hard to notice that the space consumption could be improved to $O(\min(n, m))$.&lt;/p&gt;
+More accurately, time complexity might be bounded by $\Theta(n\cdot \min(n,m))$.
+It is not hard to notice that the space consumption could be reduced to $O(\min(n, m))$.&lt;/p&gt;
 
 &lt;h2 id=&#34;the-generating-functions&#34;&gt;The Generating Functions&lt;/h2&gt;
 
-&lt;p&gt;The notion of generation functions and its application to solving recursive equations are very well-known.
+&lt;p&gt;The notion of generating functions and its application to solving recursive equations are very well-known.
 For reader who did not have a chance to learn this,
-I recommend to take a look very good book &lt;a href=&#34;https://en.wikipedia.org/wiki/Concrete_Mathematics&#34; target=&#34;_blank&#34;&gt;Concrete Mathematics: A Foundation for Computer Science&lt;/a&gt; book.
-It has great explanation of generics functions.
-We will briefly
-For those who are not patient who will briefly introduce the generation functions and consider their application to Fibonacci numbers.
-Readers who are familiar with one-variable case,
-may jump directly to the next section where we discuss how to apply the generation functions to two variable recursions, like $F_{n,m}$.&lt;/p&gt;
+I recommend to take a look at very good book &lt;a href=&#34;https://en.wikipedia.org/wiki/Concrete_Mathematics&#34; target=&#34;_blank&#34;&gt;Concrete Mathematics: A Foundation for Computer Science&lt;/a&gt;.
+It has great explanation of generics functions.&lt;/p&gt;
 
-&lt;p&gt;Let&amp;rsquo;s consider how the generating fucntion application to Fibonacci numbers.
+&lt;p&gt;For those who are not patient who will briefly introduce the generating functions and consider their application to Fibonacci numbers.
+Readers who are familiar with one-variable case,
+may jump directly to the next section where we discuss how to apply the generating functions to two variable recursions, like $F_{n,m}$.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s consider the generating function&amp;rsquo;s application to Fibonacci numbers.
 The Fibonacci numbers could defined by the recursive expression:&lt;/p&gt;
 
 &lt;p&gt;$$f_n = f_{n-1} + f_{n-2} + [n=0]$$&lt;/p&gt;
 
 &lt;p&gt;We assume that for any $n &amp;lt; 0$, $f_n = 0$.
-The indicator $[n=0]$ equals to 1 only if $n=0$.
-This definition produces the following sequence of the Fibonacci numbers: 1, 1, 2, 3, 5, 8, 13, $\dots$.
+The indicator $[n=0]$ equals to $1$ only if $n=0$.
+This definition produces the following sequence of the Fibonacci numbers: $1$, $1$, $2$, $3$, $5$, $8$, $13$, $\dots$.
 Note that sometime, the Fibonacci sequence is defined to start from 0, but it is really not important for the perpose of our discussion.&lt;/p&gt;
 
 &lt;p&gt;The generating function $\Phi(x)$ on a floating point variable $x$ is defined as the infinite sum:&lt;/p&gt;
@@ -157,7 +161,7 @@ Note that sometime, the Fibonacci sequence is defined to start from 0, but it is
 
 &lt;p&gt;Usually, it is hard to develop an intuition why it is defined that way and why it could be useful.
 So let&amp;rsquo;s just focuse on what we can do with this,
-and let&amp;rsquo;s start from substituting the defintion of Fibonacci recursion into the formular of generation function:
+and let&amp;rsquo;s start from substituting the defintion of Fibonacci recursion into the formular of generating function:
 $ \Phi(x) $
 $ = \sum_{n\geq 0} f_n x^n $
 $ = \sum_n f_n x^n $
@@ -177,7 +181,7 @@ We can hack it in different ways, and depending on our next step, we can get dif
 &lt;p&gt;One of the standard ways is to split the fraction into two simple ones of the form: $\frac{A}{x+B}$.
 Note that the roots of the quadratic equation: $1 - x - x^2 = 0$ are $x_0=-\phi$ and $x_1=\phi^{-1}$,
 where $\phi$ is the &lt;em&gt;Goldan Ratio&lt;/em&gt;:
-$\phi=\frac{1+\sqrt{5}}{2}=1.618\dots$.&lt;/p&gt;
+$ \phi = \frac{1 + \sqrt{5}}{2} = 1.618\dots $.&lt;/p&gt;
 
 &lt;p&gt;A quick test:
 $ -(x-x_0) (x-x_1) $
@@ -193,8 +197,7 @@ $ = \frac{A}{x+\phi} - \frac{A}{x-\phi^{-1}}$
 $ = A\cdot\phi^{-1} \frac{1}{1+x\cdot\phi^{-1}} + A\cdot\phi \frac{1}{1 - x\cdot\phi}$,
 where $A=\frac{1}{\phi+\phi^{-1}}$.&lt;/p&gt;
 
-&lt;p&gt;The next trick is to apply the infinite series $\frac{1}{1-z} = \sum_n z^n$ for each expression and simplifying the sums.
-So we get:
+&lt;p&gt;The next trick is to apply the infinite series $\frac{1}{1-z} = \sum_n z^n$ to each expression and to simplify the sums:
 $\Phi(x) $
 $ = A\cdot\phi^{-1} \sum_n \left(-x\cdot \phi^{-1}\right)^n + A\cdot\phi \sum_n (x\cdot\phi)^n $
 $ = A\cdot\phi^{-1} \sum_n (-\phi)^{-n} x^n + A\cdot\phi \sum_n \phi^n x^n $
@@ -222,7 +225,7 @@ $ = \sum_t \sum_{n=t/2}^t {n \choose t-n} x^t $&lt;/p&gt;
 
 &lt;p&gt;$$f_t = \sum_{n=t/2}^t {n \choose t-n}$$&lt;/p&gt;
 
-&lt;p&gt;Believe you or do not, but forms define the same Fibonacci sequence.&lt;/p&gt;
+&lt;p&gt;Believe or not, but the forms define the same Fibonacci sequence.&lt;/p&gt;
 
 &lt;p&gt;$$ f_n=\frac{\phi^{n+1} - (-\phi)^{-n-1}}{\phi+\phi^{-1}} $$&lt;/p&gt;
 
@@ -268,10 +271,11 @@ $ = \sum_{m \geq 0, n \geq 2m} {n-m \choose m} x^{n} y^m $.&lt;/p&gt;
 $ \sum_{0 \leq i \leq k} {k \choose i} x^{k+i+1} y^{i+1} $
 $ = \sum_{m \geq 1, n \geq 2m-1} {n-m \choose m-1} x^n y^m $.&lt;/p&gt;
 
-&lt;p&gt;The last two transformations give us the closed form: $F_{n, m} $ $= {n - m \choose m} + {n - m \choose m - 1}$.
+&lt;p&gt;The last two transformations give us the closed form: $F_{n, m} $
+$ = {n - m \choose m} + {n - m \choose m - 1}$.
 Which actually equals to&lt;/p&gt;
 
-&lt;p&gt;$$F_{n, m} = {n - m + 1 \choose m}$$&lt;/p&gt;
+&lt;p&gt;$$ F_{n, m} = {n - m + 1 \choose m} $$&lt;/p&gt;
 
 &lt;p&gt;Now we can reflect this idea in very trivial Python code:&lt;/p&gt;
 
@@ -280,12 +284,15 @@ Which actually equals to&lt;/p&gt;
 def f_binom(n, m):
     assert n &amp;gt;= 0 and m &amp;gt;= 0
 
-    return binom(n-m+1, m) if n+1 &amp;gt;= 2*m else 0
+    if n + 1 &amp;lt; 2*m:
+        return 0
+
+    return binom(n - m + 1, m)
 
 def binom(n, m):
     assert 0 &amp;lt;= m &amp;lt;= n
 
-    return math.factorial(n) // math.factorial(m) // math.factorial(n-m)
+    return math.factorial(n) // math.factorial(m) // math.factorial(n - m)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;This implementation overperforms significantly the initial DP and memoization solutions.
@@ -294,27 +301,32 @@ Actually, the actual implementation is much more advance, it is written in C and
 
 &lt;h2 id=&#34;faster-implementations-using-scipy-and-sympy&#34;&gt;Faster Implementations Using &lt;code&gt;scipy&lt;/code&gt; and &lt;code&gt;sympy&lt;/code&gt;&lt;/h2&gt;
 
-&lt;p&gt;More promissing implementations for computing binomial coeffitients could be found the 3rd party libraries,
-let&amp;rsquo;s take a look at &lt;code&gt;scipy.special.comb()&lt;/code&gt; and &lt;code&gt;sympy.binomial()&lt;/code&gt;:&lt;/p&gt;
+&lt;p&gt;More promissing ways for computing binomial coeffitients could be found in the third party libraries: &lt;code&gt;scipy&lt;/code&gt; and &lt;code&gt;sympy&lt;/code&gt;:
+We can easily install both ones using &lt;code&gt;pip&lt;/code&gt;-package manager:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;pip install scipy sympy
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Let&amp;rsquo;s take a look at &lt;code&gt;scipy.special.comb()&lt;/code&gt; and &lt;code&gt;sympy.binomial()&lt;/code&gt; functions:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-Python&#34;&gt;import scipy.special
+import sympy
 
 def f_sci(n, m):
     assert n &amp;gt;= 0 and m &amp;gt;= 0
 
-    return scipy.special.comb(n-m+1, m, exact=True) if n+1 &amp;gt;= 2*m else 0
+    if n + 1 &amp;lt; 2*m:
+        return 0
 
-import sympy
+    return scipy.special.comb(n - m + 1, m, exact=True)
 
 def f_sym(n, m):
     assert n &amp;gt;= 0 and m &amp;gt;= 0
 
-    return sympy.binomial(n-m+1, m) if n+1 &amp;gt;= 2*m else 0
-&lt;/code&gt;&lt;/pre&gt;
+    if n + 1 &amp;lt; 2*m:
+        return 0
 
-&lt;p&gt;You can easily install both by running:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;pip install scipy sympy
+    return sympy.binomial(n - m + 1, m)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;In order to measure the time and to check the correctness, let&amp;rsquo;s write the following helper function:&lt;/p&gt;
@@ -323,7 +335,7 @@ def f_sym(n, m):
 
 M = 1000**3 + 7
 
-def test(n, m, funcs, number=1, module=__name__, M=M):
+def test(n, m, funcs, number=1, module=__name__):
     f_mem.cache_clear()
     results = []
     func_times = []
@@ -354,11 +366,11 @@ test(6000, 2000, funcs)
 &lt;p&gt;Which prints the following output:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;f(6000,2000): 192496093
-   f_mem:   6.7195 sec, x 4195.10
-    f_dp:   5.3249 sec, x 3324.43
- f_binom:   0.0016 sec, x 1.00
-   f_sci:   0.0021 sec, x 1.32
-   f_sym:   0.0043 sec, x 2.69
+       f_mem:   6.7195 sec, x 4195.10
+        f_dp:   5.3249 sec, x 3324.43
+     f_binom:   0.0016 sec, x 1.00
+       f_sci:   0.0021 sec, x 1.32
+       f_sym:   0.0043 sec, x 2.69
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;The function &lt;code&gt;test()&lt;/code&gt; computes $F_{6000, 2000}$ using five different ways.
@@ -368,7 +380,7 @@ For each run, it also prints the relative factor computed based on the fastest s
 The function&amp;rsquo;s result is printed modulo $M=1000^3+7$.&lt;/p&gt;
 
 &lt;p&gt;This is not a surprise that the first two methods (based on memoization and DP) are much slower than the other three, which are based on the binomial coefficients.
-Memoization and DP techniques have $Theta(n \cdot m)$ time complexity.
+Memoization and DP techniques have $\Theta(n \cdot m)$ time complexity.
 The &lt;code&gt;f_binom&lt;/code&gt;-method uses $factorial$ as a subroutine, which is linear in $n$ and implemented in a naive way.
 Note that we ignore here a lot of interesting details, for example, Python has built-in long arithmetics for integers, which is used here and definetely not cheap.
 Also &lt;code&gt;factorial&lt;/code&gt;-function may use memoization for storing its value.
@@ -386,20 +398,28 @@ Since Python has built-in long arithmetics, we can apply modulo on the final res
 
 &lt;p&gt;Let&amp;rsquo;s look, briefly, at very simple change we can do for &lt;code&gt;f_binom&lt;/code&gt; function that will speed up the computation significantly:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;def binom_mod(n, m):
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;def f_binom_mod(n, m):
+    assert n &amp;gt;= 0 and m &amp;gt;= 0
+
+    if n + 1 &amp;lt; 2*m:
+        return 0
+
+    return binom_mod(n - m + 1, m)
+
+def binom_mod(n, m):
     assert 0 &amp;lt;= m &amp;lt;= n
 
-    return ((fact_mod(n) * inversion_mod(fact_mod(m))) % M * inversion_mod(fact_mod(n-m))) % M
+    return ((fact_mod(n) * inv_mod(fact_mod(m))) % M * inv_mod(fact_mod(n - m))) % M
 
 @functools.lru_cache(maxsize=None)
 def fact_mod(m):
     if m &amp;lt;= 1:
         return 1
 
-    return (m * fact_mod(m-1)) % M
+    return (m * fact_mod(m - 1)) % M
 
-def inversion_mod(x):
-    return pow(x, M-2, M)
+def inv_mod(x):
+    return pow(x, M - 2, M)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;As we can see, all the operations are computed modulo $M$.
@@ -407,7 +427,9 @@ The function &lt;code&gt;fact_mod&lt;/code&gt; is recursive but uses Memoization
 The most tricky part is how to implemenent modular-division.
 From &lt;a href=&#34;https://en.wikipedia.org/wiki/Fermat%27s_little_theorem&#34; target=&#34;_blank&#34;&gt;Fermat&amp;rsquo;s little theorem&lt;/a&gt;,
 we know that if $M$ is prime and $0 &amp;lt; x &amp;lt; M$, then $x^{-1} \equiv x^{M-2} \pmod M$.
-This allows to compute the multiplicative inverse of $x$ using the Python&amp;rsquo;s built-in function &lt;a href=&#34;https://docs.python.org/3/library/functions.html#pow&#34; target=&#34;_blank&#34;&gt;pow&lt;/a&gt;&lt;/p&gt;
+This allows to compute the multiplicative inverse of $x$ using the Python&amp;rsquo;s built-in function &lt;a href=&#34;https://docs.python.org/3/library/functions.html#pow&#34; target=&#34;_blank&#34;&gt;pow&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s test the new approach against other implementations:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;
 fact_mod(10000) # for caching factorials
