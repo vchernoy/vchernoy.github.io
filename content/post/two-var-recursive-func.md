@@ -409,7 +409,9 @@ The function `fact_mod` is recursive but uses Memoization.
 The most tricky part is how to implemenent modular-division.
 From [Fermat's little theorem](https://en.wikipedia.org/wiki/Fermat%27s_little_theorem),
 we know that if $M$ is prime and $0 < x < M$, then $x^{-1} \equiv x^{M-2} \pmod M$.
-This allows to compute the multiplicative inverse of $x$ using the Python's built-in function [pow](https://docs.python.org/3/library/functions.html#pow)
+This allows to compute the multiplicative inverse of $x$ using the Python's built-in function [pow](https://docs.python.org/3/library/functions.html#pow).
+
+Let's test the new approach against other implementations:
 
 ```python
 
