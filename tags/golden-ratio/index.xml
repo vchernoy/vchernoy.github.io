@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Golden Ratio on </title>
+    <link>https://vchernoy.xyz/tags/golden-ratio/</link>
+    <description>Recent content in Golden Ratio on </description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 05 Jul 2017 07:29:43 +0000</lastBuildDate>
+    <atom:link href="/tags/golden-ratio/" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>The Art of Generating Functions</title>
+      <link>https://vchernoy.xyz/post/gen-func-art/</link>
+      <pubDate>Wed, 05 Jul 2017 07:29:43 +0000</pubDate>
+      
+      <guid>https://vchernoy.xyz/post/gen-func-art/</guid>
+      <description>
+
+&lt;p&gt;Generating functions are usually applied to the case of single variable recursive equations.
+But actually, the technique may be extended to multivariate recursive equations, or even to a system of recursive equations.&lt;/p&gt;
+
+&lt;p&gt;Sometimes the generating functions may give a fantastic result, and here we discuss one of such cases.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-generating-function-for-fibonacci-sequence&#34;&gt;The Generating Function for Fibonacci Sequence&lt;/h2&gt;
+
+&lt;p&gt;The notion of generating functions and its application to solving recursive equations are very well-known.
+For reader who did not have a chance to learn this,
+I recommend to take a look at very good book &lt;a href=&#34;https://en.wikipedia.org/wiki/Concrete_Mathematics&#34; target=&#34;_blank&#34;&gt;Concrete Mathematics: A Foundation for Computer Science&lt;/a&gt;.
+It has great explanation of generics functions.&lt;/p&gt;
+
+&lt;p&gt;For those who are not patient we will briefly introduce the generating functions and consider their application to Fibonacci numbers.
+Readers who are familiar with one-variable case,
+may jump directly to the next blog where we &lt;a href=&#34;https://vchernoy.xyz/post/two-var-recursive-func/&#34;&gt;Cracking Multivariate Recursive Equations Using Generating Functions&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s consider the generating function&amp;rsquo;s application to Fibonacci numbers.
+The Fibonacci numbers could defined by the recursive expression:&lt;/p&gt;
+
+&lt;p&gt;$$f_n = f_{n-1} + f_{n-2} + [n=0]$$&lt;/p&gt;
+
+&lt;p&gt;We assume that for any $n &amp;lt; 0$, $f_n = 0$.
+The indicator $[n=0]$ equals to $1$ only if $n=0$.
+This definition produces the following sequence of the Fibonacci numbers: $1$, $1$, $2$, $3$, $5$, $8$, $13$, $\dots$.
+Note that sometime, the Fibonacci sequence is defined to start from 0, but it is really not important for the perpose of our discussion.&lt;/p&gt;
+
+&lt;p&gt;The generating function $\Phi(x)$ on a floating point variable $x$ is defined as the infinite sum:&lt;/p&gt;
+
+&lt;p&gt;$$\Phi(x) = \sum_{n\geq 0} f_n x^n$$&lt;/p&gt;
+
+&lt;p&gt;Usually, it is hard to develop an intuition why it is defined that way and why it could be useful.
+So let&amp;rsquo;s just focuse on what we can do with this,
+and let&amp;rsquo;s start from substituting the defintion of Fibonacci recursion into the formular of generating function:
+$ \Phi(x) $
+$ = \sum_{n\geq 0} f_n x^n $
+$ = \sum_n f_n x^n $
+$ = \sum_n (f_{n-1} + f_{n-2} + [n=0]) x^n $
+$ = \sum_n f_{n-1} x^n + \sum_n f_{n-2} x^n + \sum_n [n=0] x^n $
+$ = x \sum_n f_{n-1} x^{n-1} + x^2 \sum_n f_{n-2} x^{n-2} + 1 x^0 $
+$ = x \sum_n f_n x^n + x^2 \sum_n f_n x^n + 1 $
+$ = x \Phi(x) + x^2 \Phi(x) + 1 $&lt;/p&gt;
+
+&lt;p&gt;And we can obtain the generating function for $f_n$:&lt;/p&gt;
+
+&lt;p&gt;$$\Phi(x) = \frac{1}{1 - x - x^2}$$&lt;/p&gt;
+
+&lt;h2 id=&#34;two-closed-forms-for-fibonacci-relation&#34;&gt;Two Closed Forms for Fibonacci Relation&lt;/h2&gt;
+
+&lt;p&gt;Nice expression, but what can we do with this &amp;ldquo;magic&amp;rdquo; formula?
+We can hack it in different ways, and depending on our next step, we can get different closed forms for $f_n$.&lt;/p&gt;
+
+&lt;p&gt;One of the standard ways is to split the fraction into two simple ones of the form: $\frac{A}{x+B}$.
+Note that the roots of the quadratic equation: $1 - x - x^2 = 0$ are $x_0=-\phi$ and $x_1=\phi^{-1}$,
+where $\phi$ is the &lt;em&gt;Goldan Ratio&lt;/em&gt;:
+$ \phi = \frac{1 + \sqrt{5}}{2} = 1.618\dots $.&lt;/p&gt;
+
+&lt;p&gt;A quick test:
+$ -(x-x_0) (x-x_1) $
+$ = -(x+\phi) \left(x-\phi^{-1}\right) $
+$ =-x^2 - x\cdot\left(\phi - \phi^{-1}\right) + 1 $
+$ = -x^2 - x + 1 $.&lt;/p&gt;
+
+&lt;p&gt;This results in representing $\Phi(x)$ in the following way:
+$\Phi(x)$
+$ = \frac{1}{1-x-x^2}$
+$ = -\frac{1}{(x+\phi) \left(x-\phi^{-1}\right)}$
+$ = \frac{A}{x+\phi} - \frac{A}{x-\phi^{-1}}$
+$ = A\cdot\phi^{-1} \frac{1}{1+x\cdot\phi^{-1}} + A\cdot\phi \frac{1}{1 - x\cdot\phi}$,
+where $A=\frac{1}{\phi+\phi^{-1}}$.&lt;/p&gt;
+
+&lt;p&gt;The next trick is to apply the infinite series $\frac{1}{1-z} = \sum_n z^n$ to each expression and to simplify the sums:
+$\Phi(x) $
+$ = A\cdot\phi^{-1} \sum_n \left(-x\cdot \phi^{-1}\right)^n + A\cdot\phi \sum_n (x\cdot\phi)^n $
+$ = A\cdot\phi^{-1} \sum_n (-\phi)^{-n} x^n + A\cdot\phi \sum_n \phi^n x^n $
+$ = \sum_n A\cdot\left(\phi^{-1} (-\phi)^{-n} + \phi\cdot \phi^n \right)  x^n $
+$ = \sum_n A\cdot\left(\phi^{n+1} - (-\phi)^{-n-1}\right) x^n $
+$ = \sum_n \frac{\phi^{n+1} - (-\phi)^{-n-1}}{\phi+\phi^{-1}} x^n $.&lt;/p&gt;
+
+&lt;p&gt;The term before $x^n$ is nothing but $f_n$, which means that&lt;/p&gt;
+
+&lt;p&gt;$$f_n=\frac{\phi^{n+1} - (-\phi)^{-n-1}}{\phi+\phi^{-1}}$$&lt;/p&gt;
+
+&lt;p&gt;Another way to crack the generating function is to apply the infinite series $\frac{1}{1-z} $ $= \sum_n z^n$ directly to the generating function:
+$ \Phi(x) $
+$ = \frac{1}{1 - x - x^2} $
+$ = \frac{1}{1 - (x+x^2)}$
+$ = \sum_n (x+x^2)^n $
+$ = \sum_n (1+x)^n x^n $
+$ = \sum_{0\leq k \leq n} {n \choose k} x^{n+k} $.&lt;/p&gt;
+
+&lt;p&gt;Introducing the new variable $t=n+k$, we obtain
+$ = \sum_{t/2 \leq n \leq t} {n \choose t-n} x^t $
+$ = \sum_t \sum_{n=t/2}^t {n \choose t-n} x^t $&lt;/p&gt;
+
+&lt;p&gt;So we receive another closed form for the Fibonacci numbers:&lt;/p&gt;
+
+&lt;p&gt;$$f_t = \sum_{n=t/2}^t {n \choose t-n}$$&lt;/p&gt;
+
+&lt;p&gt;Believe or not, but the two forms define the same Fibonacci sequence.&lt;/p&gt;
+
+&lt;p&gt;$$ f_n=\frac{\phi^{n+1} - (-\phi)^{-n-1}}{\phi+\phi^{-1}} $$&lt;/p&gt;
+
+&lt;p&gt;$$ f_n = \sum_{i=n/2}^t {i \choose n-i} $$&lt;/p&gt;
+
+&lt;p&gt;Just notice how powerful the generating functions are!
+An interested reader can try to prove by induction the correctness of the relations above.
+If you liked the topic, you are wellcome to take a look at the next post where we extend the tools to mutivariate recursions.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

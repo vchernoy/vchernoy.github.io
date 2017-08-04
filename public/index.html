@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="theme" content="hugo-academic">
-  <meta name="generator" content="Hugo 0.24" />
+  <meta name="generator" content="Hugo 0.25.1" />
   <meta name="author" content="Slava Chernoy">
   <meta name="description" content="Software Engineer">
 
@@ -276,8 +276,8 @@
 <div class="article-metadata">
 
   <span class="article-date">
-    <time datetime="2017-07-04 07:29:43 &#43;0000 UTC" itemprop="datePublished">
-      Tue, Jul 4, 2017
+    <time datetime="2017-07-06 07:29:43 &#43;0000 UTC" itemprop="datePublished">
+      Thu, Jul 6, 2017
     </time>
   </span>
 
@@ -329,12 +329,175 @@
 
   <div class="article-style" itemprop="articleBody">
     
-    In this post, we consider a combinatorial problem. It has a nice recursive solution, which could be implemented efficiently using Dynamic Programming (DP) technique. Then using generating function, we find the closed formula, expressed with the binomial coefficients. Finaly, we show that the closed formula gives us much faster way to compute the result than the DP solution.
-Generating functions are usually applied to the case of single variable recursive equations.
+    In this post, we return back to the combinatorial problem discussed in Introduction to Dynamic Programming and Memoization post. We will show that generating functions may work great not only for single variable case (see The Art of Generating Functions), but else can be very useful for hacking two-variable relations (and of course, in general for multivariate case too).
+The Problem For making the post self-contained, we repeat the problem definition here.
     
   </div>
   <p class="read-more">
     <a href="https://vchernoy.xyz/post/two-var-recursive-func/" class="btn btn-primary btn-outline">
+      CONTINUE READING
+    </a>
+  </p>
+</div>
+
+      
+        
+        
+
+
+<div class="article-list-item" itemscope itemprop="blogPost">
+  
+  
+  <h3 class="article-title" itemprop="name">
+    <a href="https://vchernoy.xyz/post/gen-func-art/" itemprop="url">The Art of Generating Functions</a>
+  </h3>
+  
+
+<div class="article-metadata">
+
+  <span class="article-date">
+    <time datetime="2017-07-05 07:29:43 &#43;0000 UTC" itemprop="datePublished">
+      Wed, Jul 5, 2017
+    </time>
+  </span>
+
+  
+
+  
+  
+  
+  <span class="article-tags">
+    <i class="fa fa-tags"></i>
+    
+    <a href="/tags/math">math</a
+    >, 
+    
+    <a href="/tags/python">python</a
+    >, 
+    
+    <a href="/tags/generating-functions">generating functions</a
+    >, 
+    
+    <a href="/tags/recursion">recursion</a
+    >, 
+    
+    <a href="/tags/recursive-functions">recursive functions</a
+    >, 
+    
+    <a href="/tags/dynamic-programming">dynamic programming</a
+    >, 
+    
+    <a href="/tags/memoization">memoization</a
+    >, 
+    
+    <a href="/tags/binomial">binomial</a
+    >, 
+    
+    <a href="/tags/combinarotics">combinarotics</a
+    >, 
+    
+    <a href="/tags/golden-ratio">golden ratio</a
+    >, 
+    
+    <a href="/tags/fibonacci-numbers">fibonacci numbers</a
+    >
+    
+  </span>
+  
+  
+
+  
+
+</div>
+
+  <div class="article-style" itemprop="articleBody">
+    
+    Generating functions are usually applied to the case of single variable recursive equations. But actually, the technique may be extended to multivariate recursive equations, or even to a system of recursive equations.
+Sometimes the generating functions may give a fantastic result, and here we discuss one of such cases.
+The Generating Function for Fibonacci Sequence The notion of generating functions and its application to solving recursive equations are very well-known.
+    
+  </div>
+  <p class="read-more">
+    <a href="https://vchernoy.xyz/post/gen-func-art/" class="btn btn-primary btn-outline">
+      CONTINUE READING
+    </a>
+  </p>
+</div>
+
+      
+        
+        
+
+
+<div class="article-list-item" itemscope itemprop="blogPost">
+  
+  
+  <h3 class="article-title" itemprop="name">
+    <a href="https://vchernoy.xyz/post/inro-to-dp/" itemprop="url">Introduction to Dynamic Programming and Memoization</a>
+  </h3>
+  
+
+<div class="article-metadata">
+
+  <span class="article-date">
+    <time datetime="2017-07-04 07:29:43 &#43;0000 UTC" itemprop="datePublished">
+      Tue, Jul 4, 2017
+    </time>
+  </span>
+
+  
+
+  
+  
+  
+  <span class="article-tags">
+    <i class="fa fa-tags"></i>
+    
+    <a href="/tags/math">math</a
+    >, 
+    
+    <a href="/tags/python">python</a
+    >, 
+    
+    <a href="/tags/recursion">recursion</a
+    >, 
+    
+    <a href="/tags/recursive-functions">recursive functions</a
+    >, 
+    
+    <a href="/tags/dynamic-programming">dynamic programming</a
+    >, 
+    
+    <a href="/tags/memoization">memoization</a
+    >, 
+    
+    <a href="/tags/binomial">binomial</a
+    >, 
+    
+    <a href="/tags/coding-interview">coding interview</a
+    >, 
+    
+    <a href="/tags/coding">coding</a
+    >, 
+    
+    <a href="/tags/combinarotics">combinarotics</a
+    >
+    
+  </span>
+  
+  
+
+  
+
+</div>
+
+  <div class="article-style" itemprop="articleBody">
+    
+    The purpose of this post is to discuss the basics of Recursion, Dynamic Programming (DP), and Memoization. We will take very simple coding problem that might be asked on a coding interviews and will show how to solve it and optimize the solution. The post is an introduction to more advanced topics that we will cover in the further articles. If you are good in recursion and DP, feel free to jump to a really cool stuff hardcore: The Art of Generating Functions and Cracking Multivariate Recursive Equations Using Generating Functions.
+    
+  </div>
+  <p class="read-more">
+    <a href="https://vchernoy.xyz/post/inro-to-dp/" class="btn btn-primary btn-outline">
       CONTINUE READING
     </a>
   </p>

@@ -6,22 +6,31 @@
     <description>Recent content in Tags on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 04 Jul 2017 07:29:43 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 06 Jul 2017 07:29:43 +0000</lastBuildDate>
     <atom:link href="/tags/" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Binomial</title>
       <link>https://vchernoy.xyz/tags/binomial/</link>
-      <pubDate>Tue, 04 Jul 2017 07:29:43 +0000</pubDate>
+      <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>
       
       <guid>https://vchernoy.xyz/tags/binomial/</guid>
       <description></description>
     </item>
     
     <item>
+      <title>Coding</title>
+      <link>https://vchernoy.xyz/tags/coding/</link>
+      <pubDate>Tue, 04 Jul 2017 07:29:43 +0000</pubDate>
+      
+      <guid>https://vchernoy.xyz/tags/coding/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Coding Interview</title>
       <link>https://vchernoy.xyz/tags/coding-interview/</link>
-      <pubDate>Tue, 04 Jul 2017 07:29:43 +0000</pubDate>
+      <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>
       
       <guid>https://vchernoy.xyz/tags/coding-interview/</guid>
       <description></description>
@@ -30,7 +39,7 @@
     <item>
       <title>Combinarotics</title>
       <link>https://vchernoy.xyz/tags/combinarotics/</link>
-      <pubDate>Tue, 04 Jul 2017 07:29:43 +0000</pubDate>
+      <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>
       
       <guid>https://vchernoy.xyz/tags/combinarotics/</guid>
       <description></description>
@@ -39,25 +48,43 @@
     <item>
       <title>Dynamic Programming</title>
       <link>https://vchernoy.xyz/tags/dynamic-programming/</link>
-      <pubDate>Tue, 04 Jul 2017 07:29:43 +0000</pubDate>
+      <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>
       
       <guid>https://vchernoy.xyz/tags/dynamic-programming/</guid>
       <description></description>
     </item>
     
     <item>
+      <title>Fibonacci Numbers</title>
+      <link>https://vchernoy.xyz/tags/fibonacci-numbers/</link>
+      <pubDate>Wed, 05 Jul 2017 07:29:43 +0000</pubDate>
+      
+      <guid>https://vchernoy.xyz/tags/fibonacci-numbers/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Generating Functions</title>
       <link>https://vchernoy.xyz/tags/generating-functions/</link>
-      <pubDate>Tue, 04 Jul 2017 07:29:43 +0000</pubDate>
+      <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>
       
       <guid>https://vchernoy.xyz/tags/generating-functions/</guid>
       <description></description>
     </item>
     
     <item>
+      <title>Golden Ratio</title>
+      <link>https://vchernoy.xyz/tags/golden-ratio/</link>
+      <pubDate>Wed, 05 Jul 2017 07:29:43 +0000</pubDate>
+      
+      <guid>https://vchernoy.xyz/tags/golden-ratio/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Math</title>
       <link>https://vchernoy.xyz/tags/math/</link>
-      <pubDate>Tue, 04 Jul 2017 07:29:43 +0000</pubDate>
+      <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>
       
       <guid>https://vchernoy.xyz/tags/math/</guid>
       <description></description>
@@ -66,7 +93,7 @@
     <item>
       <title>Memoization</title>
       <link>https://vchernoy.xyz/tags/memoization/</link>
-      <pubDate>Tue, 04 Jul 2017 07:29:43 +0000</pubDate>
+      <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>
       
       <guid>https://vchernoy.xyz/tags/memoization/</guid>
       <description></description>
@@ -75,7 +102,7 @@
     <item>
       <title>Python</title>
       <link>https://vchernoy.xyz/tags/python/</link>
-      <pubDate>Tue, 04 Jul 2017 07:29:43 +0000</pubDate>
+      <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>
       
       <guid>https://vchernoy.xyz/tags/python/</guid>
       <description></description>
@@ -84,7 +111,7 @@
     <item>
       <title>Recursion</title>
       <link>https://vchernoy.xyz/tags/recursion/</link>
-      <pubDate>Tue, 04 Jul 2017 07:29:43 +0000</pubDate>
+      <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>
       
       <guid>https://vchernoy.xyz/tags/recursion/</guid>
       <description></description>
@@ -93,7 +120,7 @@
     <item>
       <title>Recursive Functions</title>
       <link>https://vchernoy.xyz/tags/recursive-functions/</link>
-      <pubDate>Tue, 04 Jul 2017 07:29:43 +0000</pubDate>
+      <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>
       
       <guid>https://vchernoy.xyz/tags/recursive-functions/</guid>
       <description></description>

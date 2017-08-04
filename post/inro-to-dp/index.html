@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="theme" content="hugo-academic">
+  <meta name="generator" content="Hugo 0.25.1" />
+  <meta name="author" content="Slava Chernoy">
+  <meta name="description" content="Software Engineer">
+
+  
+  
+  
+    
+  
+  
+    
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/idea.min.css">
+    
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha512-6MXa8B6uaO18Hid6blRMetEIoPqHf7Ux1tnyIQdpt9qI5OACx7C+O3IVTr98vwGnlcg0LOLa02i9Y1HpVhlfiw==" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.0/css/academicons.min.css" integrity="sha512-GGGNUPDhnG8LEAEDsjqYIQns+Gu8RBs4j5XGlxl7UfRaZBhCCm5jenJkeJL8uPuOXGqgl8/H1gjlWQDRjd3cUQ==" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather%7CRoboto+Mono">
+  <link rel="stylesheet" href="/css/hugo-academic.css">
+  
+
+  
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'UA-102853829-1', 'auto');
+      ga('require', 'eventTracker');
+      ga('require', 'outboundLinkTracker');
+      ga('require', 'urlChangeTracker');
+      ga('send', 'pageview');
+    </script>
+    <script async src="//www.google-analytics.com/analytics.js"></script>
+    
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/autotrack/2.4.1/autotrack.js" integrity="sha512-HUmooslVKj4m6OBu0OgzjXXr+QuFYy/k7eLI5jdeEy/F4RSgMn6XRWRGkFi5IFaFgy7uFTkegp3Z0XnJf3Jq+g==" crossorigin="anonymous"></script>
+    
+  
+
+  <link rel="alternate" href="https://vchernoy.xyz/index.xml" type="application/rss+xml" title="">
+  <link rel="feed" href="https://vchernoy.xyz/index.xml" type="application/rss+xml" title="">
+
+  <link rel="icon" type="image/png" href="/img/icon.png">
+  <link rel="apple-touch-icon" type="image/png" href="/img/apple-touch-icon.png">
+
+  <link rel="canonical" href="https://vchernoy.xyz/post/inro-to-dp/">
+
+  
+
+  <title>Introduction to Dynamic Programming and Memoization | </title>
+
+</head>
+<body id="top" data-spy="scroll" data-target="#navbar-main" data-offset="71">
+
+<nav class="navbar navbar-default navbar-fixed-top" id="navbar-main">
+  <div class="container">
+
+    
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+              data-target=".navbar-collapse" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/"></a>
+    </div>
+
+    
+    <div class="collapse navbar-collapse">
+
+      
+      <ul class="nav navbar-nav navbar-right">
+        
+
+        
+
+        <li class="nav-item">
+          <a href="/#about">
+            
+            <span>Home</span>
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        <li class="nav-item">
+          <a href="/#posts">
+            
+            <span>Posts</span>
+          </a>
+        </li>
+
+        
+        
+
+        
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+<article class="article" itemscope itemtype="http://schema.org/Article">
+
+  
+
+
+  <div class="article-container">
+    <h1 itemprop="name">Introduction to Dynamic Programming and Memoization</h1>
+    
+
+<div class="article-metadata">
+
+  <span class="article-date">
+    <time datetime="2017-07-04 07:29:43 &#43;0000 UTC" itemprop="datePublished">
+      Tue, Jul 4, 2017
+    </time>
+  </span>
+
+  
+
+  
+  
+  
+  <span class="article-tags">
+    <i class="fa fa-tags"></i>
+    
+    <a href="/tags/math">math</a
+    >, 
+    
+    <a href="/tags/python">python</a
+    >, 
+    
+    <a href="/tags/recursion">recursion</a
+    >, 
+    
+    <a href="/tags/recursive-functions">recursive functions</a
+    >, 
+    
+    <a href="/tags/dynamic-programming">dynamic programming</a
+    >, 
+    
+    <a href="/tags/memoization">memoization</a
+    >, 
+    
+    <a href="/tags/binomial">binomial</a
+    >, 
+    
+    <a href="/tags/coding-interview">coding interview</a
+    >, 
+    
+    <a href="/tags/coding">coding</a
+    >, 
+    
+    <a href="/tags/combinarotics">combinarotics</a
+    >
+    
+  </span>
+  
+  
+
+  
+  
+
+  
+
+</div>
+
+    <div class="article-style" itemprop="articleBody">
+      
+
+<p>The purpose of this post is to discuss the basics of <em>Recursion</em>, <em>Dynamic Programming</em> (DP), and <em>Memoization</em>.
+We will take very simple coding problem that might be asked on a coding interviews and will show how to solve it and optimize the solution.
+The post is an introduction to more advanced topics that we will cover in the further articles.
+If you are good in recursion and DP, feel free to jump to a really cool stuff hardcore: <a href="/post/gen-func-art/">The Art of Generating Functions</a> and <a href="/post/two-var-recursive-func/">Cracking Multivariate Recursive Equations Using Generating Functions</a>.</p>
+
+<h2 id="the-problem">The Problem</h2>
+
+<p>Let&rsquo;s consider the following problem.</p>
+
+<p><strong>Problem:</strong> Compute the number of ways to choose $m$ elements from $n$ elements such that selected elements in one combination are not adjacent.</p>
+
+<p>For example, for $m=4$ and $m=3$, the answer is $3$, since from the $4$-element set: $\lbrace 1,2,3,4 \rbrace$,
+there are three feasible $2$-element combinations: $\lbrace 1,4 \rbrace$, $\lbrace 2,4 \rbrace$, $\lbrace 1,3 \rbrace$.</p>
+
+<p>Another example: for $n=5$ and $m=3$, there is only one $3$-element combination: $\lbrace 1,3,5 \rbrace$.</p>
+
+<p>This simple combinatorial problem, or similar to this one, could be asked on coding interviews.
+Typically, the interviewer may expect the candidate start from suggesting a <em>Brute Force</em> solution that generates all the combination.
+Then the candidate is expected to suggest and implement a simple recursive function computing the answer.
+Then the interviewer is willing to hear that the recursive solution is very slow (has exponential time complexity) and
+has linear space complexity (due to stack calls).
+Finally, the candidate is expected to tell that the running time could be improved by using either DP or Memoization techniques.
+This gives much faster solution.</p>
+
+<p>Similar questions might be suggested as trivial problems on coding contests.
+In that case, extra optimizaitons might be required.
+Basically, after we discuss the typical DP and Memoization implementations, we will show that using generating function,
+we can build very fast and simple solution.</p>
+
+<p>Let&rsquo;s define $F_{n, m}$ is the function that gives as the answer for $n$ and $m$.
+Let&rsquo;s look at the $n, m$ case. We have two non overlapping sub cases:</p>
+
+<ul>
+<li>Skip the $n$-th element, then $ F_{n, m} = F_{n-1, m} $.</li>
+<li>Pick the $n$-th element, then $ F_{n, m} = F_{n-2, m-1} $.</li>
+</ul>
+
+<p>From the above, we can define the solution in the form of simple recursion:
+$ F_{n, m} = F_{n - 1, m} + F_{n - 2, m - 1} $,
+let&rsquo;s not forget the corner cases:
+$F_{0, 0} = F_{1, 1} = 1$.</p>
+
+<p>Basically, we can combine the general and the corner cases into one expression:</p>
+
+<p>$$ F_{n, m} = F_{n - 1, m} + F_{n - 2, m - 1} + [n=m=0] + [n=m=1] $$</p>
+
+<p>We assume that for any $n &lt; 0$ or $m &lt; 0$, $F_{n,m} = 0$.
+The indicator $[P]$ gives $1$ if the predicate $P$ is true.</p>
+
+<p>The function $F_{n,m}$ has a straighforward recursive implementation in any programming language.
+But the naive recursive solution will have exponential in $n$ time complexity and will be very slow.
+Let&rsquo;s look at the following <code>Python 3</code> code snippet that uses memoization technique:</p>
+
+<pre><code class="language-python">import functools
+import sys
+
+sys.setrecursionlimit(100000)
+
+@functools.lru_cache(maxsize=None)
+def f_mem(n, m):
+    if n &lt; 0 or m &lt; 0:
+        return 0
+
+    if n + 1 &lt; 2*m:
+        return 0
+
+    if n == m == 0:
+        return 1
+
+    if n == m == 1:
+        return 1
+
+    return f_mem(n - 1, m) + f_mem(n - 2, m - 1)
+</code></pre>
+
+<p>Nice <a href="https://docs.python.org/3/library/functools.html#functools.lru_cache" target="_blank">@functools.lru_cache</a>
+notation creates a wrapper on the <code>f_mem</code> function and internally caches the results of all calls.
+Such caching (or memoization) significantly improves the speed of the recursion,
+and basically reduces the number of calls to something like $O(n \cdot m)$.
+The recursion still may fail on the stack overflow even on relatively small values of $n$.
+That is why we increase the stack size for the Python interpreter by calling
+<a href="https://docs.python.org/3/library/sys.html#sys.setrecursionlimit" target="_blank">sys.setrecursionlimit()-method</a>.</p>
+
+<p>The next iterative implementation uses DP.
+Basically, it fills out the $n \times m$ table starting from the low values of $n$ and $m$.</p>
+
+<pre><code class="language-python">def f_dp(n, m):
+    assert n &gt;= 0 and m &gt;= 0
+
+    if n + 1 &lt; 2*m:
+        return 0
+
+    table = [[0] * (m + 1) for _ in range(n + 1)]
+
+    table[0][0] = 1
+    if n &gt;= 1:
+        table[1][0] = 1
+        if m &gt;= 1:
+            table[1][1] = 1
+
+    for i in range(2, n+1):
+        table[i][0] = 1
+        for j in range(1, min(m, (i + 1) // 2) + 1):
+            table[i][j] = table[i-1][j] + table[i-2][j-1]
+
+    return table[n][m]
+</code></pre>
+
+<p>The time and space complexities are $O(n\cdot m) $.
+More accurately, time complexity might be bounded by $\Theta(n\cdot \min(n,m))$.
+It is not hard to notice that the space consumption could be reduced to $O(\min(n, m))$.</p>
+
+<h2 id="testing">Testing</h2>
+
+<p>In order to measure the time and to check the correctness, let&rsquo;s write the following helper function:</p>
+
+<pre><code class="language-python">import timeit
+
+M = 1000**3 + 7
+
+def test(n, m, funcs, number=1, module=__name__):
+    f_mem.cache_clear()
+    results = []
+    func_times = []
+    for func in funcs:
+        stmt='{}({},{})'.format(func.__name__, n, m)
+        setup='from {} import {}'.format(module, func.__name__)
+        t = timeit.timeit(stmt=stmt, setup=setup, number=number)
+        func_times.append(t)
+        results.append(func(n, m) % M)
+
+    assert len(set(results)) &lt;= 1
+
+    if results:
+        print('f({},{}): {}'.format(n, m, results[0]))
+
+    best_time = min(func_times)
+    for i, func in enumerate(funcs):
+        func_time = func_times[i]
+        print('{:&gt;13}: {:8.4f} sec, x {:.2f}'.format(func.__name__, func_time, func_time/best_time))
+</code></pre>
+
+<p>We can run it as following:</p>
+
+<pre><code class="language-python">funcs = [f_mem, f_dp]
+test(6000, 2000, funcs)
+</code></pre>
+
+<p>Which prints the following output:</p>
+
+<pre><code>f(6000,2000): 192496093
+       f_mem:   6.7195 sec, x 4195.10
+        f_dp:   5.3249 sec, x 3324.43
+</code></pre>
+
+<p>The function <code>test()</code> computes $F_{6000, 2000}$ using two different ways.
+It validates that all the solutions are consistent and produce the same result.
+It also measures the time it takes to execute each method.
+For each run, it also prints the relative factor computed based on the fastest solution.
+The function&rsquo;s result is printed modulo $M=1000^3+7$.</p>
+
+<p>Memoization and DP techniques have $\Theta(n \cdot m)$ time complexity.
+Note that we ignore here a lot of interesting details, for example,
+Python has built-in long arithmetics for integers, which is used here and definetely not cheap.</p>
+
+<p>Testing the implementations on different parameters, we may notice that there is no clear winner between the algorthms.
+Probably, the most of the time is spent on the long arithmetic computation.</p>
+
+    </div>
+  </div>
+
+</article>
+
+<div class="container">
+  <nav>
+  <ul class="pager">
+    
+
+    
+    <li class="next"><a href="https://vchernoy.xyz/post/gen-func-art/">The Art of Generating Functions <span
+      aria-hidden="true">&rarr;</span></a></li>
+    
+  </ul>
+</nav>
+
+</div>
+
+<div class="article-container">
+  
+
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <p class="powered-by">
+
+      
+
+      Powered by the <a href="https://github.com/gcushen/hugo-academic" target="_blank">Academic
+      theme</a> for <a href="http://gohugo.io" target="_blank">Hugo</a>.
+
+      <span class="pull-right" aria-hidden="true">
+        <a href="#" id="back_to_top">
+          <span class="button_icon">
+            <i class="fa fa-chevron-up fa-2x"></i>
+          </span>
+        </a>
+      </span>
+
+    </p>
+  </div>
+</footer>
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js" integrity="sha512-jGsMH83oKe9asCpkOVkBnUrDDTp8wl+adkB2D+//JtlxO4SrLoJdhbOysIFQJloQFD+C4Fl1rMsQZF76JjV0eQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.2/imagesloaded.pkgd.min.js" integrity="sha512-iHzEu7GbSc705hE2skyH6/AlTpOfBmkx7nUqTLGzPYR+C1tRaItbRlJ7hT/D3YQ9SV0fqLKzp4XY9wKulTBGTw==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/TweenMax.min.js" integrity="sha512-Z5heTz36xTemt1TbtbfXtTq5lMfYnOkXM2/eWcTTiLU01+Sw4ku1i7vScDc8fWhrP2abz9GQzgKH5NGBLoYlAw==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/plugins/ScrollToPlugin.min.js" integrity="sha512-CDeU7pRtkPX6XJtF/gcFWlEwyaX7mcAp5sO3VIu/ylsdR74wEw4wmBpD5yYTrmMAiAboi9thyBUr1vXRPA7t0Q==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha512-iztkobsvnjKfAtTNdHkGVjAYTrrtlC7mGp/54c40wowO7LhURYl3gVzzcEqGl/qKXQltJ2HwMrdLcNUdo+N/RQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.4/isotope.pkgd.min.js" integrity="sha512-VDBOIlDbuC4VWxGJNmuFRQ0Li0SKkDpmGyuhAG5LTDLd/dJ/S0WMVxriR2Y+CyPL5gzjpN4f/6iqWVBJlht0tQ==" crossorigin="anonymous"></script>
+    
+    <script src="/js/hugo-academic.js"></script>
+    
+
+    
+    
+      
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+      
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+      
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/python.min.js"></script>
+      
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/rust.min.js"></script>
+      
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/scala.min.js"></script>
+      
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/bash.min.js"></script>
+      
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/cpp.min.js"></script>
+      
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/java.min.js"></script>
+      
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+      
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/ebnf.min.js"></script>
+      
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/protobuf.min.js"></script>
+      
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/sql.min.js"></script>
+      
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/thrift.min.js"></script>
+      
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+      
+
+      
+
+      <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+    </script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML" integrity="sha512-tOav5w1OjvsSJzePRtt2uQPFwBoHt1VZcUq8l8nm5284LEKE9FSJBQryzMBzHxY5P0zRdNqEcpLIRVYFNgu1jw==" crossorigin="anonymous"></script>
+    
+    
+
+  </body>
+</html>
+
