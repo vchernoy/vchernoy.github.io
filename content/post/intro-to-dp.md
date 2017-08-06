@@ -11,34 +11,36 @@ title = "Introduction to Dynamic Programming and Memoization"
 
 +++
 
-The purpose of this post is to discuss the basics of _Recursion_, _Dynamic Programming_ (DP), and _Memoization_.
-We will take very simple coding problem that might be asked on a coding interviews and will show how to solve it and optimize the solution.
-The post is an introduction to more advanced topics that we will cover in the further articles.
-If you are good in recursion and DP, feel free to jump to a really cool stuff hardcore: [The Art of Generating Functions](/post/gen-func-art/) and [Cracking Multivariate Recursive Equations Using Generating Functions](/post/two-var-recursive-func/).
+In the post, we will discuss the basics of _Recursion_, _Dynamic Programming_ (DP), and _Memoization_.
+As an example, we will take a simple combinatorial problem, which has a nice recursive solution.
+In the next posts,
+we will look at more advacned topics, like 
+[The Art of Generating Functions][gen-func-art] and
+[Cracking Multivariate Recursive Equations Using Generating Functions][two-var-recursive-func].
+
+Such topics, like recursion and DP, are most popular in coding interviews.
+Hopefully, this article to get you more ready for those types of questions.
 
 ## The Problem
 
-Let's consider the following problem.
-
-**Problem:** Compute the number of ways to choose $m$ elements from $n$ elements such that selected elements in one combination are not adjacent.
+> Compute the number of ways to choose $m$ elements from $n$ elements such that selected elements in one combination are not adjacent.
 
 For example, for $m=4$ and $m=3$, the answer is $3$, since from the $4$-element set: $\lbrace 1,2,3,4 \rbrace$,
 there are three feasible $2$-element combinations: $\lbrace 1,4 \rbrace$, $\lbrace 2,4 \rbrace$, $\lbrace 1,3 \rbrace$.
 
 Another example: for $n=5$ and $m=3$, there is only one $3$-element combination: $\lbrace 1,3,5 \rbrace$.
 
-This simple combinatorial problem, or similar to this one, could be asked on coding interviews.
-Typically, the interviewer may expect the candidate start from suggesting a _Brute Force_ solution that generates all the combination.
-Then the candidate is expected to suggest and implement a simple recursive function computing the answer.
-Then the interviewer is willing to hear that the recursive solution is very slow (has exponential time complexity) and
-has linear space complexity (due to stack calls).
-Finally, the candidate is expected to tell that the running time could be improved by using either DP or Memoization techniques.
-This gives much faster solution.
+Typically, on coding interviews, a candidate should mention a _Brute Force_ approach (for generates and counting all the combinations).
+Then the candidate is expected to find a simple recursion functions (which counts all the combinations without generating them).
+Then the candidate should suggest improvements based on DP and memoization, and explain the time and space complexities.
 
 Similar questions might be suggested as trivial problems on coding contests.
 In that case, extra optimizaitons might be required.
-Basically, after we discuss the typical DP and Memoization implementations, we will show that using generating function,
+Basically, after we discuss the typical DP and Memoization implementations, we will show that using
+[The Art of Generating Functions][gen-func-art],
 we can build very fast and simple solution.
+
+## Recursive Relation
 
 Let's define $F\_{n, m}$ is the function that gives as the answer for $n$ and $m$.
 Let's look at the $n, m$ case. We have two non overlapping sub cases:
@@ -57,6 +59,8 @@ $$ F\_{n, m} = F\_{n - 1, m} + F\_{n - 2, m - 1} + [n=m=0] + [n=m=1] $$
 
 We assume that for any $n < 0$ or $m < 0$, $F\_{n,m} = 0$.
 The indicator $[P]$ gives $1$ if the predicate $P$ is true.
+
+## DP and Memoization
 
 The function $F\_{n,m}$ has a straighforward recursive implementation in any programming language.
 But the naive recursive solution will have exponential in $n$ time complexity and will be very slow.
@@ -181,4 +185,9 @@ Python has built-in long arithmetics for integers, which is used here and define
 
 Testing the implementations on different parameters, we may notice that there is no clear winner between the algorthms.
 Probably, the most of the time is spent on the long arithmetic computation.
+
+
+[gen-func-art]: /post/gen-func-art/
+[two-var-recursive-func]: /post/two-var-recursive-func/
+
 

@@ -21,12 +21,12 @@ Sometimes the generating functions may give a fantastic result, and here we disc
 
 The notion of generating functions and its application to solving recursive equations are very well-known.
 For reader who did not have a chance to learn this,
-I recommend to take a look at very good book [Concrete Mathematics: A Foundation for Computer Science](https://en.wikipedia.org/wiki/Concrete_Mathematics).
+I recommend to take a look at very good book [Concrete Mathematics: A Foundation for Computer Science][wiki-concrete-math].
 It has great explanation of generics functions.
 
 For those who are not patient we will briefly introduce the generating functions and consider their application to Fibonacci numbers.
 Readers who are familiar with one-variable case,
-may jump directly to the next blog where we [Cracking Multivariate Recursive Equations Using Generating Functions](/post/two-var-recursive-func/).
+may jump directly to the next blog where we [Cracking Multivariate Recursive Equations Using Generating Functions][two-var-recursive-func].
 
 Let's consider the generating function's application to Fibonacci numbers.
 The Fibonacci numbers could defined by the recursive expression:
@@ -121,3 +121,6 @@ An interested reader can try to prove by induction the correctness of the relati
 If you liked the topic, you are wellcome to take a look at the next post where we extend the tools to mutivariate recursions.
 
 
+
+[two-var-recursive-func]: /post/two-var-recursive-func/
+[wiki-concrete-math]: https://en.wikipedia.org/wiki/Concrete_Mathematics

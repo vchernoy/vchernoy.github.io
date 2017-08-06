@@ -12,8 +12,8 @@ title = "Cracking Multivariate Recursive Equations Using Generating Functions"
 +++
 
 
-In this post, we return back to the combinatorial problem discussed in [Introduction to Dynamic Programming and Memoization](/post/intro-to-dp/) post.
-We will show that generating functions may work great not only for single variable case (see [The Art of Generating Functions](/post/gen-func-art/)),
+In this post, we return back to the combinatorial problem discussed in [Introduction to Dynamic Programming and Memoization][intro-to-dp] post.
+We will show that generating functions may work great not only for single variable case (see [The Art of Generating Functions][gen-func-art]),
 but else can be very useful for hacking two-variable relations (and of course, in general for multivariate case too).
 
 ## The Problem
@@ -132,7 +132,7 @@ def f_sym(n, m):
     return sympy.binomial(n - m + 1, m)
 ```
 
-We can use the same `test()` helper function that we defined in [Introduction to Dynamic Programming and Memoization](/post/intro-to-dp/).
+We can use the same `test()` helper function that we defined in [Introduction to Dynamic Programming and Memoization][intro-to-dp].
 Let's run it on all the 5 implementatnions:
 
 ```python
@@ -242,4 +242,7 @@ f(10000,3000): 679286557
         f_sci:   0.0056 sec, x 338.13
         f_sym:   0.0053 sec, x 319.02
 ```
+
+[intro-to-dp]: /post/intro-to-dp/
+[gen-func-art]: /post/gen-func-art/
 
