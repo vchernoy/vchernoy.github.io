@@ -11,10 +11,10 @@
     
     <item>
       <title>Introduction to Dynamic Programming and Memoization</title>
-      <link>https://vchernoy.xyz/post/inro-to-dp/</link>
+      <link>https://vchernoy.xyz/post/intro-to-dp/</link>
       <pubDate>Tue, 04 Jul 2017 07:29:43 +0000</pubDate>
       
-      <guid>https://vchernoy.xyz/post/inro-to-dp/</guid>
+      <guid>https://vchernoy.xyz/post/intro-to-dp/</guid>
       <description>
 
 &lt;p&gt;The purpose of this post is to discuss the basics of &lt;em&gt;Recursion&lt;/em&gt;, &lt;em&gt;Dynamic Programming&lt;/em&gt; (DP), and &lt;em&gt;Memoization&lt;/em&gt;.

@@ -17,7 +17,7 @@
       <guid>https://vchernoy.xyz/post/two-var-recursive-func/</guid>
       <description>
 
-&lt;p&gt;In this post, we return back to the combinatorial problem discussed in &lt;a href=&#34;https://vchernoy.xyz/post/inro-to-dp/&#34;&gt;Introduction to Dynamic Programming and Memoization&lt;/a&gt; post.
+&lt;p&gt;In this post, we return back to the combinatorial problem discussed in &lt;a href=&#34;https://vchernoy.xyz/post/intro-to-dp/&#34;&gt;Introduction to Dynamic Programming and Memoization&lt;/a&gt; post.
 We will show that generating functions may work great not only for single variable case (see &lt;a href=&#34;https://vchernoy.xyz/post/gen-func-art/&#34;&gt;The Art of Generating Functions&lt;/a&gt;),
 but else can be very useful for hacking two-variable relations (and of course, in general for multivariate case too).&lt;/p&gt;
 
@@ -134,7 +134,7 @@ def f_sym(n, m):
     return sympy.binomial(n - m + 1, m)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;We can use the same &lt;code&gt;test()&lt;/code&gt; helper function that we defined in &lt;a href=&#34;https://vchernoy.xyz/post/inro-to-dp/&#34;&gt;Introduction to Dynamic Programming and Memoization&lt;/a&gt;.
+&lt;p&gt;We can use the same &lt;code&gt;test()&lt;/code&gt; helper function that we defined in &lt;a href=&#34;https://vchernoy.xyz/post/intro-to-dp/&#34;&gt;Introduction to Dynamic Programming and Memoization&lt;/a&gt;.
 Let&amp;rsquo;s run it on all the 5 implementatnions:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;funcs = [f_mem, f_dp, f_binom, f_sci, f_sym]
@@ -244,10 +244,10 @@ f(10000,3000): 679286557
     
     <item>
       <title>Introduction to Dynamic Programming and Memoization</title>
-      <link>https://vchernoy.xyz/post/inro-to-dp/</link>
+      <link>https://vchernoy.xyz/post/intro-to-dp/</link>
       <pubDate>Tue, 04 Jul 2017 07:29:43 +0000</pubDate>
       
-      <guid>https://vchernoy.xyz/post/inro-to-dp/</guid>
+      <guid>https://vchernoy.xyz/post/intro-to-dp/</guid>
       <description>
 
 &lt;p&gt;The purpose of this post is to discuss the basics of &lt;em&gt;Recursion&lt;/em&gt;, &lt;em&gt;Dynamic Programming&lt;/em&gt; (DP), and &lt;em&gt;Memoization&lt;/em&gt;.

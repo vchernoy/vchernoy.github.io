@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="theme" content="hugo-academic">
-  <meta name="generator" content="Hugo 0.25.1" />
+  <meta name="generator" content="Hugo 0.24" />
   <meta name="author" content="Slava Chernoy">
   <meta name="description" content="Software Engineer">
 
@@ -184,7 +184,7 @@
     <div class="article-style" itemprop="articleBody">
       
 
-<p>In this post, we return back to the combinatorial problem discussed in <a href="/post/inro-to-dp/">Introduction to Dynamic Programming and Memoization</a> post.
+<p>In this post, we return back to the combinatorial problem discussed in <a href="/post/intro-to-dp/">Introduction to Dynamic Programming and Memoization</a> post.
 We will show that generating functions may work great not only for single variable case (see <a href="/post/gen-func-art/">The Art of Generating Functions</a>),
 but else can be very useful for hacking two-variable relations (and of course, in general for multivariate case too).</p>
 
@@ -301,7 +301,7 @@ def f_sym(n, m):
     return sympy.binomial(n - m + 1, m)
 </code></pre>
 
-<p>We can use the same <code>test()</code> helper function that we defined in <a href="/post/inro-to-dp/">Introduction to Dynamic Programming and Memoization</a>.
+<p>We can use the same <code>test()</code> helper function that we defined in <a href="/post/intro-to-dp/">Introduction to Dynamic Programming and Memoization</a>.
 Let&rsquo;s run it on all the 5 implementatnions:</p>
 
 <pre><code class="language-python">funcs = [f_mem, f_dp, f_binom, f_sci, f_sym]
@@ -428,6 +428,22 @@ f(10000,3000): 679286557
 
 <div class="article-container">
   
+<section id="comments">
+  <div id="graphcomment"></div>
+<script type="text/javascript">
+ 
+window.graphcomment_id = 'B8a3Q3Al1kTk';
+ 
+(function() {
+    var gc = document.createElement('script'); gc.type = 'text/javascript'; gc.async = true;
+    gc.src = 'https://graphcomment.com/js/integration.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(gc);
+})();
+</script>
+
+
+</section>
+
 
 </div>
 
