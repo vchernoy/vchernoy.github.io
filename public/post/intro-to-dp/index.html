@@ -184,34 +184,38 @@
     <div class="article-style" itemprop="articleBody">
       
 
-<p>The purpose of this post is to discuss the basics of <em>Recursion</em>, <em>Dynamic Programming</em> (DP), and <em>Memoization</em>.
-We will take very simple coding problem that might be asked on a coding interviews and will show how to solve it and optimize the solution.
-The post is an introduction to more advanced topics that we will cover in the further articles.
-If you are good in recursion and DP, feel free to jump to a really cool stuff hardcore: <a href="/post/gen-func-art/">The Art of Generating Functions</a> and <a href="/post/two-var-recursive-func/">Cracking Multivariate Recursive Equations Using Generating Functions</a>.</p>
+<p>In the post, we will discuss the basics of <em>Recursion</em>, <em>Dynamic Programming</em> (DP), and <em>Memoization</em>.
+As an example, we will take a simple combinatorial problem, which has a nice recursive solution.
+In the next posts,
+we will look at more advacned topics, like
+<a href="/post/gen-func-art/">The Art of Generating Functions</a> and
+<a href="/post/two-var-recursive-func/">Cracking Multivariate Recursive Equations Using Generating Functions</a>.</p>
+
+<p>Such topics, like recursion and DP, are most popular in coding interviews.
+Hopefully, this article to get you more ready for those types of questions.</p>
 
 <h2 id="the-problem">The Problem</h2>
 
-<p>Let&rsquo;s consider the following problem.</p>
-
-<p><strong>Problem:</strong> Compute the number of ways to choose $m$ elements from $n$ elements such that selected elements in one combination are not adjacent.</p>
+<blockquote>
+<p>Compute the number of ways to choose $m$ elements from $n$ elements such that selected elements in one combination are not adjacent.</p>
+</blockquote>
 
 <p>For example, for $m=4$ and $m=3$, the answer is $3$, since from the $4$-element set: $\lbrace 1,2,3,4 \rbrace$,
 there are three feasible $2$-element combinations: $\lbrace 1,4 \rbrace$, $\lbrace 2,4 \rbrace$, $\lbrace 1,3 \rbrace$.</p>
 
 <p>Another example: for $n=5$ and $m=3$, there is only one $3$-element combination: $\lbrace 1,3,5 \rbrace$.</p>
 
-<p>This simple combinatorial problem, or similar to this one, could be asked on coding interviews.
-Typically, the interviewer may expect the candidate start from suggesting a <em>Brute Force</em> solution that generates all the combination.
-Then the candidate is expected to suggest and implement a simple recursive function computing the answer.
-Then the interviewer is willing to hear that the recursive solution is very slow (has exponential time complexity) and
-has linear space complexity (due to stack calls).
-Finally, the candidate is expected to tell that the running time could be improved by using either DP or Memoization techniques.
-This gives much faster solution.</p>
+<p>Typically, on coding interviews, a candidate should mention a <em>Brute Force</em> approach (for generates and counting all the combinations).
+Then the candidate is expected to find a simple recursion functions (which counts all the combinations without generating them).
+Then the candidate should suggest improvements based on DP and memoization, and explain the time and space complexities.</p>
 
 <p>Similar questions might be suggested as trivial problems on coding contests.
 In that case, extra optimizaitons might be required.
-Basically, after we discuss the typical DP and Memoization implementations, we will show that using generating function,
+Basically, after we discuss the typical DP and Memoization implementations, we will show that using
+<a href="/post/gen-func-art/">The Art of Generating Functions</a>,
 we can build very fast and simple solution.</p>
+
+<h2 id="recursive-relation">Recursive Relation</h2>
 
 <p>Let&rsquo;s define $F_{n, m}$ is the function that gives as the answer for $n$ and $m$.
 Let&rsquo;s look at the $n, m$ case. We have two non overlapping sub cases:</p>
@@ -232,6 +236,8 @@ $F_{0, 0} = F_{1, 1} = 1$.</p>
 
 <p>We assume that for any $n &lt; 0$ or $m &lt; 0$, $F_{n,m} = 0$.
 The indicator $[P]$ gives $1$ if the predicate $P$ is true.</p>
+
+<h2 id="dp-and-memoization">DP and Memoization</h2>
 
 <p>The function $F_{n,m}$ has a straighforward recursive implementation in any programming language.
 But the naive recursive solution will have exponential in $n$ time complexity and will be very slow.
