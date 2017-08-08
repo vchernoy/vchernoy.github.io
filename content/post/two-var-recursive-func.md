@@ -2,7 +2,7 @@
 date = "2017-07-06T07:29:43Z"
 highlight = true
 math = true
-tags = ["math","python", "generating functions", "recursion", "recursive functions", "dynamic programming", "memoization", "binomial", "coding interview", "combinarotics"]
+tags = ["math", "python", "generating function", "recursion", "dynamic programming", "memoization", "binomial", "multivariate function", "programming", "combinarotics"]
 title = "Cracking Multivariate Recursive Equations Using Generating Functions"
 
 [header]
@@ -14,18 +14,18 @@ title = "Cracking Multivariate Recursive Equations Using Generating Functions"
 
 In this post, we return back to the combinatorial problem discussed in [Introduction to Dynamic Programming and Memoization][intro-to-dp] post.
 We will show that generating functions may work great not only for single variable case (see [The Art of Generating Functions][gen-func-art]),
-but else can be very useful for hacking two-variable relations (and of course, in general for multivariate case too).
-
-## The Problem
+but also could be very useful for hacking two-variable relations (and of course, in general for multivariate case too).
 
 For making the post self-contained, we repeat the problem definition here.
 
-**Problem:** Compute the number of ways to choose $m$ elements from $n$ elements such that selected elements in one combination are not adjacent.
+## The Problem
 
-For example, for $m=4$ and $m=3$, the answer is $3$, since from the $4$-element set: $\lbrace 1,2,3,4 \rbrace$,
+> Compute the number of ways to choose $m$ elements from $n$ elements such that selected elements in one combination are not adjacent.
+
+For example, for $n=4$ and $m=2$, the answer is $3$, since from the $4$-element set: $\lbrace 1,2,3,4 \rbrace$,
 there are three feasible $2$-element combinations: $\lbrace 1,4 \rbrace$, $\lbrace 2,4 \rbrace$, $\lbrace 1,3 \rbrace$.
 
-Another example, for $n=5$ and $m=3$, there is only one $3$-element combination: $\lbrace 1,3,5 \rbrace$.
+Another example: for $n=5$ and $m=3$, there is only one $3$-element combination: $\lbrace 1,3,5 \rbrace$.
 
 As we discussed in the first post, there is a nice recursive relation for this problem:
 
@@ -36,15 +36,12 @@ The indicator $[P]$ gives $1$ if the predicate $P$ is true.
 
 # The Generating Function for $F\_{n,m}$
 
-We continue our analysis of the two variable recursion expression:
-
-$$F\_{n,m} = F\_{n-1,m} + F\_{n-2,m-1} + [n=m=0] + [n=m=1]$$
-
 Let's introduce the generating function $\Phi(x,y)$ of two (floating point) variables $x$ and $y$:
 
 $$\Phi(x,y) = \sum\_{n,m} F\_{n,m} x^n y^m$$
 
 Substituting the definition of $F\_{n,m}$ and simplifying the sums, we will get:
+
 $ \Phi(x,y) $
 $ = \sum\_{n,m} F\_{n,m} x^n y^m $
 $ = \sum\_{n,m} \left(F\_{n - 1, m} + F\_{n - 2, m - 1} + [n=m=1] + [n=m=0] \right) x^n y^m$
@@ -56,26 +53,37 @@ We have just found the simple representation for the generating function:
 
 $$\Phi(x, y) = \frac{1 + x \cdot y}{1 - x - x^2 y}$$
 
-Using the infinite series: $ \frac{1}{1-z} = \sum\_{k\geq 0} z^k $, we can transform the expression as following:
+## The Closed Form for $F\_{n,m}$
+
+Using the infinite series: $ \frac{1}{1-z} = \sum\_{k\geq 0} z^k $,
+we can make the following transforms:
+
 $\Phi(x, y) $
 $ = \frac{1 + x \cdot y}{1 - x - x^2 y}$
 $ = (1 + x \cdot y) \sum\_{k\geq 0} (x + x^2 y)^k $
 $ = (1 + x \cdot y) \sum\_{0 \leq i \leq k} {k \choose i} x^{k+i} y^i $
 $ = \sum\_{0 \leq i \leq k} {k \choose i} x^{k+i} y^i + \sum\_{0 \leq i \leq k} {k \choose i} x^{k+i+1} y^{i+1}$
 
-Introducing the new variables: $n=k+i, m=i$, we cat transform the first expression as following:
+Introducing the new variables: $n=k+i, m=i$, we cat transform the first expression as follows:
+
 $ \sum\_{0 \leq i \leq k} {k \choose i} x^{k+i} y^i $
 $ = \sum\_{m \geq 0, n \geq 2m} {n-m \choose m} x^{n} y^m $.
 
 And introducing the new variables: $n=k+i+1, m=i+1$, we can transform the second expression similarly:
+
 $ \sum\_{0 \leq i \leq k} {k \choose i} x^{k+i+1} y^{i+1} $
 $ = \sum\_{m \geq 1, n \geq 2m-1} {n-m \choose m-1} x^n y^m $.
 
-The last two transformations give us the closed form: $F\_{n, m} $
+The last two transformations give us the closed form:
+
+$F\_{n, m} $
 $ = {n - m \choose m} + {n - m \choose m - 1}$.
+
 Which actually equals to
 
 $$ F\_{n, m} = {n - m + 1 \choose m} $$
+
+## Fast Solutions Based on Binomials
 
 Now we can reflect this idea in very trivial Python code:
 
@@ -103,7 +111,7 @@ Actually, the actual implementation is much more advance, it is written in C and
 ## Faster Implementations Using `scipy` and `sympy`
 
 More promissing ways for computing binomial coeffitients could be found in the third party libraries: `scipy` and `sympy`:
-We can easily install both ones using `pip`-package manager:
+We can easily install both of them using `pip`-package manager:
 
 ```bash
 pip install scipy sympy
@@ -140,7 +148,7 @@ funcs = [f_mem, f_dp, f_binom, f_sci, f_sym]
 test(6000, 2000, funcs)
 ```
 
-Which prints the following output:
+It prints the following output:
 
 ```
 f(6000,2000): 192496093

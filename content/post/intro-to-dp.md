@@ -2,7 +2,7 @@
 date = "2017-07-04T07:29:43Z"
 highlight = true
 math = true
-tags = ["math","python", "recursion", "recursive functions", "dynamic programming", "memoization", "binomial", "coding interview", "coding", "combinarotics"]
+tags = ["math", "python", "recursion", "dynamic programming", "memoization", "binomial", "coding interview", "programming", "combinatorics"]
 title = "Introduction to Dynamic Programming and Memoization"
 
 [header]
@@ -11,56 +11,64 @@ title = "Introduction to Dynamic Programming and Memoization"
 
 +++
 
-In the post, we will discuss the basics of _Recursion_, _Dynamic Programming_ (DP), and _Memoization_.
-As an example, we will take a simple combinatorial problem, which has a nice recursive solution.
+In the post, we discuss the basics of _Recursion_, _Dynamic Programming_ (DP), and _Memoization_.
+As an example, we take a combinatorial problem, which has very short and clear description.
+This allows us to focus on DP and memoization.
+Note that the topics are very popular in coding interviews.
+Hopefully, this article will help to somebody to prepare for such types of questions.
+
 In the next posts,
-we will look at more advacned topics, like 
+we consider more advanced topics, like
 [The Art of Generating Functions][gen-func-art] and
 [Cracking Multivariate Recursive Equations Using Generating Functions][two-var-recursive-func].
-
-Such topics, like recursion and DP, are most popular in coding interviews.
-Hopefully, this article to get you more ready for those types of questions.
+The methods can be applied to the same combinatorial question.
+Let's start from presenting the problem.
 
 ## The Problem
 
 > Compute the number of ways to choose $m$ elements from $n$ elements such that selected elements in one combination are not adjacent.
 
-For example, for $m=4$ and $m=3$, the answer is $3$, since from the $4$-element set: $\lbrace 1,2,3,4 \rbrace$,
+For example, for $n=4$ and $m=2$, the answer is $3$, since from the $4$-element set: $\lbrace 1,2,3,4 \rbrace$,
 there are three feasible $2$-element combinations: $\lbrace 1,4 \rbrace$, $\lbrace 2,4 \rbrace$, $\lbrace 1,3 \rbrace$.
 
 Another example: for $n=5$ and $m=3$, there is only one $3$-element combination: $\lbrace 1,3,5 \rbrace$.
 
-Typically, on coding interviews, a candidate should mention a _Brute Force_ approach (for generates and counting all the combinations).
-Then the candidate is expected to find a simple recursion functions (which counts all the combinations without generating them).
-Then the candidate should suggest improvements based on DP and memoization, and explain the time and space complexities.
+If you are asked such question during coding interview, interviewer is, probably, expecting to cover with you the following topics:
 
-Similar questions might be suggested as trivial problems on coding contests.
-In that case, extra optimizaitons might be required.
-Basically, after we discuss the typical DP and Memoization implementations, we will show that using
-[The Art of Generating Functions][gen-func-art],
-we can build very fast and simple solution.
+1. _Brute Force_ approach that generates and counts all the feasible combinations. It will work slow even for small input.
+2. Recursive solution which counts the combination without generating them. It will work faster but still has exponential time ecomplexity.
+3. Use DP or memoization techniques. In both cases, the time complexity becomes linear in $n$ and $m$.
+4. Corner cases, recursion termination, call stack, testing.
+
+Let's talk about most important topics: building a recursive solution and optimize it using DP or memoization.
 
 ## Recursive Relation
 
-Let's define $F\_{n, m}$ is the function that gives as the answer for $n$ and $m$.
-Let's look at the $n, m$ case. We have two non overlapping sub cases:
+Let's define $F\_{n, m}$ to be the function that computes the answer for given $n$ and $m$.
+Let's look at the $n, m$-task. We have two non-overlapping sub-tasks (or cases):
 
 * Skip the $n$-th element, then $ F\_{n, m} = F\_{n-1, m} $.
 * Pick the $n$-th element, then $ F\_{n, m} = F\_{n-2, m-1} $.
 
-From the above, we can define the solution in the form of simple recursion:
-$ F\_{n, m} = F\_{n - 1, m} + F\_{n - 2, m - 1} $,
-let's not forget the corner cases:
-$F\_{0, 0} = F\_{1, 1} = 1$.
+From the above, we can define the solution in the recursive form:
+$ F\_{n, m} $ $ = F\_{n - 1, m} + F\_{n - 2, m - 1} $,
+let's not forget to write down the corner cases:
+$F\_{0, 0}$ $= F\_{1, 1}$ $= 1$.
 
 Basically, we can combine the general and the corner cases into one expression:
 
 $$ F\_{n, m} = F\_{n - 1, m} + F\_{n - 2, m - 1} + [n=m=0] + [n=m=1] $$
 
-We assume that for any $n < 0$ or $m < 0$, $F\_{n,m} = 0$.
+It is very common to define $F\_{n,m} = 0$ for any negative $n$ or $m$.
 The indicator $[P]$ gives $1$ if the predicate $P$ is true.
+But what about special cases, like $n=1$ and $m=0$?
+Actually, the relation covers this:
 
-## DP and Memoization
+$F\_{1,0}$ $= F\_{0,0} + F\_{-1,-1} + [1=0=1] + [1=m=1]$ $=F\_{0,0} + 0 + 0 + 0$ $=[0=0=0]$ $=1$.
+
+It is non-intuitive, but there is no need to add extra corner cases!
+
+## Memoization
 
 The function $F\_{n,m}$ has a straighforward recursive implementation in any programming language.
 But the naive recursive solution will have exponential in $n$ time complexity and will be very slow.
@@ -96,6 +104,8 @@ and basically reduces the number of calls to something like $O(n \cdot m)$.
 The recursion still may fail on the stack overflow even on relatively small values of $n$.
 That is why we increase the stack size for the Python interpreter by calling
 [sys.setrecursionlimit()-method](https://docs.python.org/3/library/sys.html#sys.setrecursionlimit).
+
+## Dynamic Programming (DP)
 
 The next iterative implementation uses DP.
 Basically, it fills out the $n \times m$ table starting from the low values of $n$ and $m$.
@@ -161,17 +171,17 @@ def test(n, m, funcs, number=1, module=__name__):
 We can run it as following:
 
 ```python
-funcs = [f_mem, f_dp]
-test(6000, 2000, funcs)
+test(n=6000, m=2000, funcs=[f_mem, f_dp])
 ```
 
-Which prints the following output:
+Which prints output similar to this one:
 
 ```
 f(6000,2000): 192496093
-       f_mem:   6.7195 sec, x 4195.10
-        f_dp:   5.3249 sec, x 3324.43
+        f_mem:   6.5852 sec, x 1.28
+         f_dp:   5.1507 sec, x 1.00
 ```
+
 
 The function `test()` computes $F\_{6000, 2000}$ using two different ways.
 It validates that all the solutions are consistent and produce the same result.
@@ -183,9 +193,20 @@ Memoization and DP techniques have $\Theta(n \cdot m)$ time complexity.
 Note that we ignore here a lot of interesting details, for example,
 Python has built-in long arithmetics for integers, which is used here and definetely not cheap.
 
-Testing the implementations on different parameters, we may notice that there is no clear winner between the algorthms.
-Probably, the most of the time is spent on the long arithmetic computation.
+Testing the implementations on different parameters,
+we may notice that there is no clear winner between the two algorithms.
+Probably, most of the time is spent on the long arithmetic computation.
 
+
+Can we do even better?
+Definitely, we can!
+The table (or cache) could be preprocessed.
+Then computing the function $F\_{n,m}$ will require just one query from the table (or from the cache, for memoization solution).
+As we mentioned before, such approach requires $\Theta(n\cdot m)$ space, which could be huge for $n=10000$.
+Actually, there is a way, how we can remain in very low memory consuption and still get very fast solution.
+We will discuss this in the next two posts.
+
+ 
 
 [gen-func-art]: /post/gen-func-art/
 [two-var-recursive-func]: /post/two-var-recursive-func/
