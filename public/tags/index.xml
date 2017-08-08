@@ -19,18 +19,9 @@
     </item>
     
     <item>
-      <title>Coding</title>
-      <link>https://vchernoy.xyz/tags/coding/</link>
-      <pubDate>Tue, 04 Jul 2017 07:29:43 +0000</pubDate>
-      
-      <guid>https://vchernoy.xyz/tags/coding/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Coding Interview</title>
       <link>https://vchernoy.xyz/tags/coding-interview/</link>
-      <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>
+      <pubDate>Tue, 04 Jul 2017 07:29:43 +0000</pubDate>
       
       <guid>https://vchernoy.xyz/tags/coding-interview/</guid>
       <description></description>
@@ -42,6 +33,15 @@
       <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>
       
       <guid>https://vchernoy.xyz/tags/combinarotics/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Combinatorics</title>
+      <link>https://vchernoy.xyz/tags/combinatorics/</link>
+      <pubDate>Wed, 05 Jul 2017 07:29:43 +0000</pubDate>
+      
+      <guid>https://vchernoy.xyz/tags/combinatorics/</guid>
       <description></description>
     </item>
     
@@ -64,11 +64,11 @@
     </item>
     
     <item>
-      <title>Generating Functions</title>
-      <link>https://vchernoy.xyz/tags/generating-functions/</link>
+      <title>Generating Function</title>
+      <link>https://vchernoy.xyz/tags/generating-function/</link>
       <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>
       
-      <guid>https://vchernoy.xyz/tags/generating-functions/</guid>
+      <guid>https://vchernoy.xyz/tags/generating-function/</guid>
       <description></description>
     </item>
     
@@ -100,6 +100,24 @@
     </item>
     
     <item>
+      <title>Multivariate Function</title>
+      <link>https://vchernoy.xyz/tags/multivariate-function/</link>
+      <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>
+      
+      <guid>https://vchernoy.xyz/tags/multivariate-function/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Programming</title>
+      <link>https://vchernoy.xyz/tags/programming/</link>
+      <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>
+      
+      <guid>https://vchernoy.xyz/tags/programming/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Python</title>
       <link>https://vchernoy.xyz/tags/python/</link>
       <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>
@@ -114,15 +132,6 @@
       <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>
       
       <guid>https://vchernoy.xyz/tags/recursion/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Recursive Functions</title>
-      <link>https://vchernoy.xyz/tags/recursive-functions/</link>
-      <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>
-      
-      <guid>https://vchernoy.xyz/tags/recursive-functions/</guid>
       <description></description>
     </item>
     

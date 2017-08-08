@@ -149,9 +149,6 @@
     <a href="/tags/recursion">recursion</a
     >, 
     
-    <a href="/tags/recursive-functions">recursive functions</a
-    >, 
-    
     <a href="/tags/dynamic-programming">dynamic programming</a
     >, 
     
@@ -164,10 +161,10 @@
     <a href="/tags/coding-interview">coding interview</a
     >, 
     
-    <a href="/tags/coding">coding</a
+    <a href="/tags/programming">programming</a
     >, 
     
-    <a href="/tags/combinarotics">combinarotics</a
+    <a href="/tags/combinatorics">combinatorics</a
     >
     
   </span>
@@ -184,15 +181,18 @@
     <div class="article-style" itemprop="articleBody">
       
 
-<p>In the post, we will discuss the basics of <em>Recursion</em>, <em>Dynamic Programming</em> (DP), and <em>Memoization</em>.
-As an example, we will take a simple combinatorial problem, which has a nice recursive solution.
-In the next posts,
-we will look at more advacned topics, like
-<a href="/post/gen-func-art/">The Art of Generating Functions</a> and
-<a href="/post/two-var-recursive-func/">Cracking Multivariate Recursive Equations Using Generating Functions</a>.</p>
+<p>In the post, we discuss the basics of <em>Recursion</em>, <em>Dynamic Programming</em> (DP), and <em>Memoization</em>.
+As an example, we take a combinatorial problem, which has very short and clear description.
+This allows us to focus on DP and memoization.
+Note that the topics are very popular in coding interviews.
+Hopefully, this article will help to somebody to prepare for such types of questions.</p>
 
-<p>Such topics, like recursion and DP, are most popular in coding interviews.
-Hopefully, this article to get you more ready for those types of questions.</p>
+<p>In the next posts,
+we consider more advanced topics, like
+<a href="/post/gen-func-art/">The Art of Generating Functions</a> and
+<a href="/post/two-var-recursive-func/">Cracking Multivariate Recursive Equations Using Generating Functions</a>.
+The methods can be applied to the same combinatorial question.
+Let&rsquo;s start from presenting the problem.</p>
 
 <h2 id="the-problem">The Problem</h2>
 
@@ -200,44 +200,51 @@ Hopefully, this article to get you more ready for those types of questions.</p>
 <p>Compute the number of ways to choose $m$ elements from $n$ elements such that selected elements in one combination are not adjacent.</p>
 </blockquote>
 
-<p>For example, for $m=4$ and $m=3$, the answer is $3$, since from the $4$-element set: $\lbrace 1,2,3,4 \rbrace$,
+<p>For example, for $n=4$ and $m=2$, the answer is $3$, since from the $4$-element set: $\lbrace 1,2,3,4 \rbrace$,
 there are three feasible $2$-element combinations: $\lbrace 1,4 \rbrace$, $\lbrace 2,4 \rbrace$, $\lbrace 1,3 \rbrace$.</p>
 
 <p>Another example: for $n=5$ and $m=3$, there is only one $3$-element combination: $\lbrace 1,3,5 \rbrace$.</p>
 
-<p>Typically, on coding interviews, a candidate should mention a <em>Brute Force</em> approach (for generates and counting all the combinations).
-Then the candidate is expected to find a simple recursion functions (which counts all the combinations without generating them).
-Then the candidate should suggest improvements based on DP and memoization, and explain the time and space complexities.</p>
+<p>If you are asked such question during coding interview, interviewer is, probably, expecting to cover with you the following topics:</p>
 
-<p>Similar questions might be suggested as trivial problems on coding contests.
-In that case, extra optimizaitons might be required.
-Basically, after we discuss the typical DP and Memoization implementations, we will show that using
-<a href="/post/gen-func-art/">The Art of Generating Functions</a>,
-we can build very fast and simple solution.</p>
+<ol>
+<li><em>Brute Force</em> approach that generates and counts all the feasible combinations. It will work slow even for small input.</li>
+<li>Recursive solution which counts the combination without generating them. It will work faster but still has exponential time ecomplexity.</li>
+<li>Use DP or memoization techniques. In both cases, the time complexity becomes linear in $n$ and $m$.</li>
+<li>Corner cases, recursion termination, call stack, testing.</li>
+</ol>
+
+<p>Let&rsquo;s talk about most important topics: building a recursive solution and optimize it using DP or memoization.</p>
 
 <h2 id="recursive-relation">Recursive Relation</h2>
 
-<p>Let&rsquo;s define $F_{n, m}$ is the function that gives as the answer for $n$ and $m$.
-Let&rsquo;s look at the $n, m$ case. We have two non overlapping sub cases:</p>
+<p>Let&rsquo;s define $F_{n, m}$ to be the function that computes the answer for given $n$ and $m$.
+Let&rsquo;s look at the $n, m$-task. We have two non-overlapping sub-tasks (or cases):</p>
 
 <ul>
 <li>Skip the $n$-th element, then $ F_{n, m} = F_{n-1, m} $.</li>
 <li>Pick the $n$-th element, then $ F_{n, m} = F_{n-2, m-1} $.</li>
 </ul>
 
-<p>From the above, we can define the solution in the form of simple recursion:
-$ F_{n, m} = F_{n - 1, m} + F_{n - 2, m - 1} $,
-let&rsquo;s not forget the corner cases:
-$F_{0, 0} = F_{1, 1} = 1$.</p>
+<p>From the above, we can define the solution in the recursive form:
+$ F_{n, m} $ $ = F_{n - 1, m} + F_{n - 2, m - 1} $,
+let&rsquo;s not forget to write down the corner cases:
+$F_{0, 0}$ $= F_{1, 1}$ $= 1$.</p>
 
 <p>Basically, we can combine the general and the corner cases into one expression:</p>
 
 <p>$$ F_{n, m} = F_{n - 1, m} + F_{n - 2, m - 1} + [n=m=0] + [n=m=1] $$</p>
 
-<p>We assume that for any $n &lt; 0$ or $m &lt; 0$, $F_{n,m} = 0$.
-The indicator $[P]$ gives $1$ if the predicate $P$ is true.</p>
+<p>It is very common to define $F_{n,m} = 0$ for any negative $n$ or $m$.
+The indicator $[P]$ gives $1$ if the predicate $P$ is true.
+But what about special cases, like $n=1$ and $m=0$?
+Actually, the relation covers this:</p>
 
-<h2 id="dp-and-memoization">DP and Memoization</h2>
+<p>$F_{1,0}$ $= F_{0,0} + F_{-1,-1} + [1=0=1] + [1=m=1]$ $=F_{0,0} + 0 + 0 + 0$ $=[0=0=0]$ $=1$.</p>
+
+<p>It is non-intuitive, but there is no need to add extra corner cases!</p>
+
+<h2 id="memoization">Memoization</h2>
 
 <p>The function $F_{n,m}$ has a straighforward recursive implementation in any programming language.
 But the naive recursive solution will have exponential in $n$ time complexity and will be very slow.
@@ -272,6 +279,8 @@ and basically reduces the number of calls to something like $O(n \cdot m)$.
 The recursion still may fail on the stack overflow even on relatively small values of $n$.
 That is why we increase the stack size for the Python interpreter by calling
 <a href="https://docs.python.org/3/library/sys.html#sys.setrecursionlimit" target="_blank">sys.setrecursionlimit()-method</a>.</p>
+
+<h2 id="dynamic-programming-dp">Dynamic Programming (DP)</h2>
 
 <p>The next iterative implementation uses DP.
 Basically, it fills out the $n \times m$ table starting from the low values of $n$ and $m$.</p>
@@ -334,15 +343,14 @@ def test(n, m, funcs, number=1, module=__name__):
 
 <p>We can run it as following:</p>
 
-<pre><code class="language-python">funcs = [f_mem, f_dp]
-test(6000, 2000, funcs)
+<pre><code class="language-python">test(n=6000, m=2000, funcs=[f_mem, f_dp])
 </code></pre>
 
-<p>Which prints the following output:</p>
+<p>Which prints output similar to this one:</p>
 
 <pre><code>f(6000,2000): 192496093
-       f_mem:   6.7195 sec, x 4195.10
-        f_dp:   5.3249 sec, x 3324.43
+        f_mem:   6.5852 sec, x 1.28
+         f_dp:   5.1507 sec, x 1.00
 </code></pre>
 
 <p>The function <code>test()</code> computes $F_{6000, 2000}$ using two different ways.
@@ -355,8 +363,17 @@ The function&rsquo;s result is printed modulo $M=1000^3+7$.</p>
 Note that we ignore here a lot of interesting details, for example,
 Python has built-in long arithmetics for integers, which is used here and definetely not cheap.</p>
 
-<p>Testing the implementations on different parameters, we may notice that there is no clear winner between the algorthms.
-Probably, the most of the time is spent on the long arithmetic computation.</p>
+<p>Testing the implementations on different parameters,
+we may notice that there is no clear winner between the two algorithms.
+Probably, most of the time is spent on the long arithmetic computation.</p>
+
+<p>Can we do even better?
+Definitely, we can!
+The table (or cache) could be preprocessed.
+Then computing the function $F_{n,m}$ will require just one query from the table (or from the cache, for memoization solution).
+As we mentioned before, such approach requires $\Theta(n\cdot m)$ space, which could be huge for $n=10000$.
+Actually, there is a way, how we can remain in very low memory consuption and still get very fast solution.
+We will discuss this in the next two posts.</p>
 
     </div>
   </div>
