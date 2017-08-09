@@ -59,6 +59,8 @@ $$\Phi(x) = \frac{1}{1 - x - x^2}$$
 Nice expression, but what can we do with this "magic" formula?
 We can hack it in two different ways, and depending on our next step, we can get different closed forms for $f\_n$.
 
+### The 1st closed form
+
 One of the standard ways is to split the fraction into two simple ones of the form: $\frac{A}{x+B}$.
 Note that the roots of the quadratic equation: $1 - x - x^2 = 0$ are $x\_0=-\phi$ and $x\_1=\phi^{-1}$,
 where $\phi$ is the _Golden Ratio_:
@@ -95,6 +97,8 @@ The term before $x^n$ is nothing but $f\_n$, which gives the first closed form f
 
 $$f\_n=\frac{\phi^{n+1} - (-\phi)^{-n-1}}{\phi+\phi^{-1}}$$
 
+### The 2nd closed form
+
 Another way to crack the generating function is to apply the infinite series $\frac{1}{1-z} $ $= \sum\_n z^n$ directly to the generating function:
 
 $ \Phi(x) $
@@ -116,11 +120,13 @@ Which gives us another closed form for the Fibonacci numbers:
 
 $$f\_t = \sum\_{n=t/2}^t {n \choose t-n}$$
 
+## Conclusion
+
 Believe it or not, but the two forms define the same Fibonacci sequence.
 
-$$ f\_n=\frac{\phi^{n+1} - (-\phi)^{-n-1}}{\phi+\phi^{-1}} $$
+$$ f\_n = \frac{\phi^{n+1} - (-\phi)^{-n-1}}{\phi+\phi^{-1}} $$
 
-$$ f\_n = \sum\_{i=n/2}^t {i \choose n-i} $$
+$$ f\_n = \sum\_{i=n/2}^n {i \choose n-i} $$
 
 Just notice how powerful the generating functions are!
 An interested reader can try to prove by induction the correctness of the relations above.
