@@ -51,8 +51,11 @@ Let's look at the $n, m$-task. We have two non-overlapping sub-tasks (or cases):
 * Pick the $n$-th element, then $ F\_{n, m} = F\_{n-2, m-1} $.
 
 From the above, we can define the solution in the recursive form:
+
 $ F\_{n, m} $ $ = F\_{n - 1, m} + F\_{n - 2, m - 1} $,
+
 let's not forget to write down the corner cases:
+
 $F\_{0, 0}$ $= F\_{1, 1}$ $= 1$.
 
 Basically, we can combine the general and the corner cases into one expression:
