@@ -226,6 +226,8 @@ $ = x \Phi(x) + x^2 \Phi(x) + 1 $</p>
 <p>Nice expression, but what can we do with this &ldquo;magic&rdquo; formula?
 We can hack it in two different ways, and depending on our next step, we can get different closed forms for $f_n$.</p>
 
+<h3 id="the-1st-closed-form">The 1st closed form</h3>
+
 <p>One of the standard ways is to split the fraction into two simple ones of the form: $\frac{A}{x+B}$.
 Note that the roots of the quadratic equation: $1 - x - x^2 = 0$ are $x_0=-\phi$ and $x_1=\phi^{-1}$,
 where $\phi$ is the <em>Golden Ratio</em>:</p>
@@ -262,6 +264,8 @@ $ = \sum_n \frac{\phi^{n+1} - (-\phi)^{-n-1}}{\phi+\phi^{-1}} x^n $.</p>
 
 <p>$$f_n=\frac{\phi^{n+1} - (-\phi)^{-n-1}}{\phi+\phi^{-1}}$$</p>
 
+<h3 id="the-2nd-closed-form">The 2nd closed form</h3>
+
 <p>Another way to crack the generating function is to apply the infinite series $\frac{1}{1-z} $ $= \sum_n z^n$ directly to the generating function:</p>
 
 <p>$ \Phi(x) $
@@ -283,11 +287,13 @@ $ = \sum_t \sum_{n=t/2}^t {n \choose t-n} x^t $</p>
 
 <p>$$f_t = \sum_{n=t/2}^t {n \choose t-n}$$</p>
 
+<h2 id="conclusion">Conclusion</h2>
+
 <p>Believe it or not, but the two forms define the same Fibonacci sequence.</p>
 
-<p>$$ f_n=\frac{\phi^{n+1} - (-\phi)^{-n-1}}{\phi+\phi^{-1}} $$</p>
+<p>$$ f_n = \frac{\phi^{n+1} - (-\phi)^{-n-1}}{\phi+\phi^{-1}} $$</p>
 
-<p>$$ f_n = \sum_{i=n/2}^t {i \choose n-i} $$</p>
+<p>$$ f_n = \sum_{i=n/2}^n {i \choose n-i} $$</p>
 
 <p>Just notice how powerful the generating functions are!
 An interested reader can try to prove by induction the correctness of the relations above.

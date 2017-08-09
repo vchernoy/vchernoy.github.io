@@ -238,15 +238,15 @@ $ = (1 + x \cdot y) \sum_{k\geq 0} (x + x^2 y)^k $
 $ = (1 + x \cdot y) \sum_{0 \leq i \leq k} {k \choose i} x^{k+i} y^i $
 $ = \sum_{0 \leq i \leq k} {k \choose i} x^{k+i} y^i + \sum_{0 \leq i \leq k} {k \choose i} x^{k+i+1} y^{i+1}$</p>
 
-<p>Introducing the new variables: $n=k+i, m=i$, we cat transform the first expression as follows:</p>
+<ol>
+<li><p>Introducing the new variables: $n=k+i, m=i$, we cat transform the first expression as follows:
+$ \sum_{0 \leq i \leq k} {k \choose i} x^{k+i} y^i $
+$ = \sum_{m \geq 0, n \geq 2m} {n-m \choose m} x^{n} y^m $.</p></li>
 
-<p>$ \sum_{0 \leq i \leq k} {k \choose i} x^{k+i} y^i $
-$ = \sum_{m \geq 0, n \geq 2m} {n-m \choose m} x^{n} y^m $.</p>
-
-<p>And introducing the new variables: $n=k+i+1, m=i+1$, we can transform the second expression similarly:</p>
-
-<p>$ \sum_{0 \leq i \leq k} {k \choose i} x^{k+i+1} y^{i+1} $
-$ = \sum_{m \geq 1, n \geq 2m-1} {n-m \choose m-1} x^n y^m $.</p>
+<li><p>And introducing the new variables: $n=k+i+1, m=i+1$, we can transform the second expression similarly:
+$ \sum_{0 \leq i \leq k} {k \choose i} x^{k+i+1} y^{i+1} $
+$ = \sum_{m \geq 1, n \geq 2m-1} {n-m \choose m-1} x^n y^m $.</p></li>
+</ol>
 
 <p>The last two transformations give us the closed form:</p>
 
@@ -278,22 +278,26 @@ def binom(n, m):
 </code></pre>
 
 <p>This implementation overperforms significantly the initial DP and memoization solutions.
-A naive implementation of <code>math.factorial()</code> could be linear in $n$, which still might be faster than DP approach.
-Actually, the actual implementation is much more advance, it is written in C and caches values for a small range of the argument.</p>
+A naive implementation of <code>math.factorial()</code> might make $n$ multiplications.
+This could still be faster than doing $\Theta(n)$ additions in DP approach.</p>
+
+<p>The actual implementation of <code>math.factorial()</code> is written in C
+and probably has precomputed results for some range of $n$
+and might even cache the results for bigger $n$.</p>
 
 <h2 id="implementations-based-on-scipy-and-sympy-libraries">Implementations Based on <code>scipy</code> and <code>sympy</code> Libraries</h2>
 
 <p>Several third party libraries provide a functionality to compute binomial coefficients.
-Let&rsquo;s take a look at <code>scipy</code> and <code>sympy</code>:
-We can easily install both of them using <code>pip</code>-package manager:</p>
+Let&rsquo;s take a look at <code>scipy</code> and <code>sympy</code>.</p>
+
+<p>We can install both of them using <code>pip</code>-package manager:</p>
 
 <pre><code class="language-bash">pip install scipy sympy
 </code></pre>
 
-<p>Let&rsquo;s take a look at <code>scipy.special.comb()</code> and <code>sympy.binomial()</code> functions:</p>
+<p>We can easily write two implementations of  $F_{n,m}$ which will call <code>scipy.special.comb()</code> or <code>sympy.binomial()</code> functions:</p>
 
 <pre><code class="language-Python">import scipy.special
-import sympy
 
 def f_sci(n, m):
     assert n &gt;= 0 and m &gt;= 0
@@ -302,6 +306,11 @@ def f_sci(n, m):
         return 0
 
     return scipy.special.comb(n - m + 1, m, exact=True)
+</code></pre>
+
+<p>The second one is very similar to the first one:</p>
+
+<pre><code class="language-Python">import sympy
 
 def f_sym(n, m):
     assert n &gt;= 0 and m &gt;= 0
@@ -319,7 +328,7 @@ Let&rsquo;s run it on all the 5 implementatnions:</p>
 test(6000, 2000, funcs)
 </code></pre>
 
-<p>It prints the following output:</p>
+<p>It will print something similar to following output:</p>
 
 <pre><code>f(6000,2000): 192496093
        f_mem:   6.7195 sec, x 4195.10
@@ -329,19 +338,42 @@ test(6000, 2000, funcs)
        f_sym:   0.0043 sec, x 2.69
 </code></pre>
 
-<p>This is not a surprise that the first two methods (memoization and DP) are much slower than the other three,
-which are based on the binomial coefficients.
-Memoization and DP techniques have $\Theta(n \cdot m)$ time complexity.
-The <code>f_binom()</code>-method uses <code>math.factorial()</code> as a subroutine,
-which is linear in $n$ and implemented in a naive way.
-Note that we ignore here a lot of interesting details, for example,
-Python has built-in long arithmetics for integers, which is used here and definetely not cheap.
-Also <code>factorial</code>-function may use memoization for storing its value.
-Other methods based on <code>sympy</code> and <code>scipy.special</code>, may (and actually do) use memoization as well.
-The impact of C-impementation is also out of the scope of the current discassion,
-as well as some other &ldquo;hard-core&rdquo; optimizations that one can apply.</p>
+<p>The first two methods, which are based on memoization and DP, are much slower than the last three,
+which are based on the binomial coefficients.</p>
 
-<p>Testing the implementations on different parameters, we may notice that there is no clear winner between the algorthms.
+<h2 id="the-intuition-for-the-time-complexity-analysis">The Intuition for the Time Complexity Analysis</h2>
+
+<p>DP and memoization makes $O(n^2)$ of &ldquo;addition&rdquo; operations over long integers.
+The long integers are bounded by $F_{n,m}$ value, which could be bounded by $2^n$.
+One &ldquo;addition&rdquo; operation takes $O(N)$ time for $N$-digit integer input.
+For our case $N$ could be bounded by $ O(\log 2^n)$ $ = O(n)$.
+So the total time complexity is bounded by
+$ O(n^2 \cdot N) $
+$ = O(n^2 \cdot \log 2^n) $
+$ = O(n^2 \cdot n) $
+$ = O(n^3)$.</p>
+
+<p>The binomial based solutions make $O(n)$ &ldquo;multiplication&rdquo; opearations over long integers
+The long integers could be bounded by $O(n!)$ $ = O(n^n)$.
+The &ldquo;multiplication&rdquo; opertion could be implemented in a naive way which runs $O(N^2)$ in time and is used for a small input.
+But it also has a more advanced implementation, which takes $O(N^{\log_2 3})$ $ = O(N^{1.59})$ and is used on big integers.
+Note that here $N$ denotes the number of digits in the input long integers for multiplication.
+In this case, $N$ is bounded by
+$ O(\log n!) $
+$ = O(\log (n^n)) $
+$ = O(n \log n) $.
+The total time complexity of the binomial based implementations is bounded by
+$ O\left(n \cdot N^{\log_2 3}\right) $
+$ = O\left(n \cdot (\log n!)^{\log_2 3}\right)$
+$ = O\left(n \cdot (n \log n)^{1.59}\right)$
+$ = O\left(n^{2.59} \cdot (\log n)^{1.59}\right)$.</p>
+
+<p>This is not really a formal proof, but it gives some intuition why the last approach overperforms the former one.
+In practice, the results of factorial computation are cached,
+therefor we observe even bigger gap in performance (yeahh again not formal claim, just an intuition).</p>
+
+<p>You can play with running tests on different $n$ and $m$.
+What I saw that actually there is no clear winner between the last 3 implementations.
 Probably, the most of the time is spent on the long arithmetic computation.</p>
 
 <h2 id="modular-arithmetics">Modular Arithmetics</h2>
@@ -388,8 +420,7 @@ This allows to compute the multiplicative inverse of $x$ using the Python&rsquo;
 
 <p>Let&rsquo;s test the new approach against other implementations:</p>
 
-<pre><code class="language-python">
-fact_mod(10000) # for caching factorials
+<pre><code class="language-python">fact_mod(10000) # for caching factorials
 
 funcs = [f_binom_mod, f_binom, f_sci, f_sym]
 

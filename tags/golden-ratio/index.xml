@@ -65,6 +65,8 @@ $ = x \Phi(x) + x^2 \Phi(x) + 1 $&lt;/p&gt;
 &lt;p&gt;Nice expression, but what can we do with this &amp;ldquo;magic&amp;rdquo; formula?
 We can hack it in two different ways, and depending on our next step, we can get different closed forms for $f_n$.&lt;/p&gt;
 
+&lt;h3 id=&#34;the-1st-closed-form&#34;&gt;The 1st closed form&lt;/h3&gt;
+
 &lt;p&gt;One of the standard ways is to split the fraction into two simple ones of the form: $\frac{A}{x+B}$.
 Note that the roots of the quadratic equation: $1 - x - x^2 = 0$ are $x_0=-\phi$ and $x_1=\phi^{-1}$,
 where $\phi$ is the &lt;em&gt;Golden Ratio&lt;/em&gt;:&lt;/p&gt;
@@ -101,6 +103,8 @@ $ = \sum_n \frac{\phi^{n+1} - (-\phi)^{-n-1}}{\phi+\phi^{-1}} x^n $.&lt;/p&gt;
 
 &lt;p&gt;$$f_n=\frac{\phi^{n+1} - (-\phi)^{-n-1}}{\phi+\phi^{-1}}$$&lt;/p&gt;
 
+&lt;h3 id=&#34;the-2nd-closed-form&#34;&gt;The 2nd closed form&lt;/h3&gt;
+
 &lt;p&gt;Another way to crack the generating function is to apply the infinite series $\frac{1}{1-z} $ $= \sum_n z^n$ directly to the generating function:&lt;/p&gt;
 
 &lt;p&gt;$ \Phi(x) $
@@ -122,11 +126,13 @@ $ = \sum_t \sum_{n=t/2}^t {n \choose t-n} x^t $&lt;/p&gt;
 
 &lt;p&gt;$$f_t = \sum_{n=t/2}^t {n \choose t-n}$$&lt;/p&gt;
 
+&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
+
 &lt;p&gt;Believe it or not, but the two forms define the same Fibonacci sequence.&lt;/p&gt;
 
-&lt;p&gt;$$ f_n=\frac{\phi^{n+1} - (-\phi)^{-n-1}}{\phi+\phi^{-1}} $$&lt;/p&gt;
+&lt;p&gt;$$ f_n = \frac{\phi^{n+1} - (-\phi)^{-n-1}}{\phi+\phi^{-1}} $$&lt;/p&gt;
 
-&lt;p&gt;$$ f_n = \sum_{i=n/2}^t {i \choose n-i} $$&lt;/p&gt;
+&lt;p&gt;$$ f_n = \sum_{i=n/2}^n {i \choose n-i} $$&lt;/p&gt;
 
 &lt;p&gt;Just notice how powerful the generating functions are!
 An interested reader can try to prove by induction the correctness of the relations above.
