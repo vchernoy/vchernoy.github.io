@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="theme" content="hugo-academic">
-  <meta name="generator" content="Hugo 0.24" />
+  <meta name="generator" content="Hugo 0.25.1" />
   <meta name="author" content="Slava Chernoy">
   <meta name="description" content="Software Engineer">
 
@@ -226,10 +226,13 @@ Let&rsquo;s look at the $n, m$-task. We have two non-overlapping sub-tasks (or c
 <li>Pick the $n$-th element, then $ F_{n, m} = F_{n-2, m-1} $.</li>
 </ul>
 
-<p>From the above, we can define the solution in the recursive form:
-$ F_{n, m} $ $ = F_{n - 1, m} + F_{n - 2, m - 1} $,
-let&rsquo;s not forget to write down the corner cases:
-$F_{0, 0}$ $= F_{1, 1}$ $= 1$.</p>
+<p>From the above, we can define the solution in the recursive form:</p>
+
+<p>$ F_{n, m} $ $ = F_{n - 1, m} + F_{n - 2, m - 1} $,</p>
+
+<p>let&rsquo;s not forget to write down the corner cases:</p>
+
+<p>$F_{0, 0}$ $= F_{1, 1}$ $= 1$.</p>
 
 <p>Basically, we can combine the general and the corner cases into one expression:</p>
 

@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="theme" content="hugo-academic">
-  <meta name="generator" content="Hugo 0.24" />
+  <meta name="generator" content="Hugo 0.25.1" />
   <meta name="author" content="Slava Chernoy">
   <meta name="description" content="Software Engineer">
 
@@ -208,7 +208,7 @@ there are three feasible $2$-element combinations: $\lbrace 1,4 \rbrace$, $\lbra
 <p>We assume that for any $n &lt; 0$ or $m &lt; 0$, $F_{n,m} = 0$.
 The indicator $[P]$ gives $1$ if the predicate $P$ is true.</p>
 
-<h1 id="the-generating-function-for-f-n-m">The Generating Function for $F_{n,m}$</h1>
+<h2 id="the-generating-function-for-f-n-m">The Generating Function for $F_{n,m}$</h2>
 
 <p>Let&rsquo;s introduce the generating function $\Phi(x,y)$ of two (floating point) variables $x$ and $y$:</p>
 
@@ -281,9 +281,10 @@ def binom(n, m):
 A naive implementation of <code>math.factorial()</code> could be linear in $n$, which still might be faster than DP approach.
 Actually, the actual implementation is much more advance, it is written in C and caches values for a small range of the argument.</p>
 
-<h2 id="faster-implementations-using-scipy-and-sympy">Faster Implementations Using <code>scipy</code> and <code>sympy</code></h2>
+<h2 id="implementations-based-on-scipy-and-sympy-libraries">Implementations Based on <code>scipy</code> and <code>sympy</code> Libraries</h2>
 
-<p>More promissing ways for computing binomial coeffitients could be found in the third party libraries: <code>scipy</code> and <code>sympy</code>:
+<p>Several third party libraries provide a functionality to compute binomial coefficients.
+Let&rsquo;s take a look at <code>scipy</code> and <code>sympy</code>:
 We can easily install both of them using <code>pip</code>-package manager:</p>
 
 <pre><code class="language-bash">pip install scipy sympy
@@ -382,7 +383,8 @@ The function <code>fact_mod</code> is recursive but uses Memoization.
 The most tricky part is how to implemenent modular-division.
 From <a href="https://en.wikipedia.org/wiki/Fermat%27s_little_theorem" target="_blank">Fermat&rsquo;s little theorem</a>,
 we know that if $M$ is prime and $0 &lt; x &lt; M$, then $x^{-1} \equiv x^{M-2} \pmod M$.
-This allows to compute the multiplicative inverse of $x$ using the Python&rsquo;s built-in function <a href="https://docs.python.org/3/library/functions.html#pow" target="_blank">pow</a>.</p>
+This allows to compute the multiplicative inverse of $x$ using the Python&rsquo;s built-in function
+<a href="https://docs.python.org/3/library/functions.html#pow" target="_blank">pow</a>.</p>
 
 <p>Let&rsquo;s test the new approach against other implementations:</p>
 

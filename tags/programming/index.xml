@@ -41,7 +41,7 @@ there are three feasible $2$-element combinations: $\lbrace 1,4 \rbrace$, $\lbra
 &lt;p&gt;We assume that for any $n &amp;lt; 0$ or $m &amp;lt; 0$, $F_{n,m} = 0$.
 The indicator $[P]$ gives $1$ if the predicate $P$ is true.&lt;/p&gt;
 
-&lt;h1 id=&#34;the-generating-function-for-f-n-m&#34;&gt;The Generating Function for $F_{n,m}$&lt;/h1&gt;
+&lt;h2 id=&#34;the-generating-function-for-f-n-m&#34;&gt;The Generating Function for $F_{n,m}$&lt;/h2&gt;
 
 &lt;p&gt;Let&amp;rsquo;s introduce the generating function $\Phi(x,y)$ of two (floating point) variables $x$ and $y$:&lt;/p&gt;
 
@@ -114,9 +114,10 @@ def binom(n, m):
 A naive implementation of &lt;code&gt;math.factorial()&lt;/code&gt; could be linear in $n$, which still might be faster than DP approach.
 Actually, the actual implementation is much more advance, it is written in C and caches values for a small range of the argument.&lt;/p&gt;
 
-&lt;h2 id=&#34;faster-implementations-using-scipy-and-sympy&#34;&gt;Faster Implementations Using &lt;code&gt;scipy&lt;/code&gt; and &lt;code&gt;sympy&lt;/code&gt;&lt;/h2&gt;
+&lt;h2 id=&#34;implementations-based-on-scipy-and-sympy-libraries&#34;&gt;Implementations Based on &lt;code&gt;scipy&lt;/code&gt; and &lt;code&gt;sympy&lt;/code&gt; Libraries&lt;/h2&gt;
 
-&lt;p&gt;More promissing ways for computing binomial coeffitients could be found in the third party libraries: &lt;code&gt;scipy&lt;/code&gt; and &lt;code&gt;sympy&lt;/code&gt;:
+&lt;p&gt;Several third party libraries provide a functionality to compute binomial coefficients.
+Let&amp;rsquo;s take a look at &lt;code&gt;scipy&lt;/code&gt; and &lt;code&gt;sympy&lt;/code&gt;:
 We can easily install both of them using &lt;code&gt;pip&lt;/code&gt;-package manager:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;pip install scipy sympy
@@ -215,7 +216,8 @@ The function &lt;code&gt;fact_mod&lt;/code&gt; is recursive but uses Memoization
 The most tricky part is how to implemenent modular-division.
 From &lt;a href=&#34;https://en.wikipedia.org/wiki/Fermat%27s_little_theorem&#34; target=&#34;_blank&#34;&gt;Fermat&amp;rsquo;s little theorem&lt;/a&gt;,
 we know that if $M$ is prime and $0 &amp;lt; x &amp;lt; M$, then $x^{-1} \equiv x^{M-2} \pmod M$.
-This allows to compute the multiplicative inverse of $x$ using the Python&amp;rsquo;s built-in function &lt;a href=&#34;https://docs.python.org/3/library/functions.html#pow&#34; target=&#34;_blank&#34;&gt;pow&lt;/a&gt;.&lt;/p&gt;
+This allows to compute the multiplicative inverse of $x$ using the Python&amp;rsquo;s built-in function
+&lt;a href=&#34;https://docs.python.org/3/library/functions.html#pow&#34; target=&#34;_blank&#34;&gt;pow&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;Let&amp;rsquo;s test the new approach against other implementations:&lt;/p&gt;
 
@@ -305,10 +307,13 @@ Let&amp;rsquo;s look at the $n, m$-task. We have two non-overlapping sub-tasks (
 &lt;li&gt;Pick the $n$-th element, then $ F_{n, m} = F_{n-2, m-1} $.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;From the above, we can define the solution in the recursive form:
-$ F_{n, m} $ $ = F_{n - 1, m} + F_{n - 2, m - 1} $,
-let&amp;rsquo;s not forget to write down the corner cases:
-$F_{0, 0}$ $= F_{1, 1}$ $= 1$.&lt;/p&gt;
+&lt;p&gt;From the above, we can define the solution in the recursive form:&lt;/p&gt;
+
+&lt;p&gt;$ F_{n, m} $ $ = F_{n - 1, m} + F_{n - 2, m - 1} $,&lt;/p&gt;
+
+&lt;p&gt;let&amp;rsquo;s not forget to write down the corner cases:&lt;/p&gt;
+
+&lt;p&gt;$F_{0, 0}$ $= F_{1, 1}$ $= 1$.&lt;/p&gt;
 
 &lt;p&gt;Basically, we can combine the general and the corner cases into one expression:&lt;/p&gt;
 

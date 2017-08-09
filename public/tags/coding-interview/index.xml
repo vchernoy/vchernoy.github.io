@@ -62,10 +62,13 @@ Let&amp;rsquo;s look at the $n, m$-task. We have two non-overlapping sub-tasks (
 &lt;li&gt;Pick the $n$-th element, then $ F_{n, m} = F_{n-2, m-1} $.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;From the above, we can define the solution in the recursive form:
-$ F_{n, m} $ $ = F_{n - 1, m} + F_{n - 2, m - 1} $,
-let&amp;rsquo;s not forget to write down the corner cases:
-$F_{0, 0}$ $= F_{1, 1}$ $= 1$.&lt;/p&gt;
+&lt;p&gt;From the above, we can define the solution in the recursive form:&lt;/p&gt;
+
+&lt;p&gt;$ F_{n, m} $ $ = F_{n - 1, m} + F_{n - 2, m - 1} $,&lt;/p&gt;
+
+&lt;p&gt;let&amp;rsquo;s not forget to write down the corner cases:&lt;/p&gt;
+
+&lt;p&gt;$F_{0, 0}$ $= F_{1, 1}$ $= 1$.&lt;/p&gt;
 
 &lt;p&gt;Basically, we can combine the general and the corner cases into one expression:&lt;/p&gt;
 
