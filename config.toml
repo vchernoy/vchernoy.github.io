@@ -28,6 +28,9 @@ defaultContentLanguageInSubdir = false
 
 enableGitInfo = true
 
+[outputs]
+  home = [ "HTML", "CSS" ]
+
 #[blackfriday]
 #  hrefTargetBlank = true
 
@@ -41,6 +44,14 @@ enableGitInfo = true
 
 
 [params]
+  # Color theme.
+  #   Choose from `default`, `ocean`, or `forest`.
+  color_theme = "default"
+
+  # Font style.
+  #   Choose from `default` or `classic`.
+  font = "default"
+
   name = "Slava Chernoy"
   role = "Software Engineer"
 
