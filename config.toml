@@ -29,7 +29,8 @@ defaultContentLanguageInSubdir = false
 enableGitInfo = true
 
 [outputs]
-  home = [ "HTML", "CSS" ]
+  home = [ "HTML", "CSS", "RSS" ]
+  section = [ "HTML", "RSS" ]
 
 #[blackfriday]
 #  hrefTargetBlank = true
@@ -40,12 +41,12 @@ enableGitInfo = true
   hrefTargetBlank = true  # `true` opens external links in a new tab.
   fractions = true  # `false` disables smart fractions (e.g. 5/12 formatted as a fraction).
   smartypants = true  # `false` disables all smart punctuation substitutions (e.g. smart quotes, dashes, fractions).
-  extensions = ["backslashLineBreak"]
+  # extensions = ["backslashLineBreak"]
 
 
 [params]
   # Color theme.
-  #   Choose from `default`, `ocean`, or `forest`.
+  #   Choose from `default`, `ocean`, `forest`, `coffee`, `dark`, or `1950s`.
   color_theme = "default"
 
   # Font style.
@@ -74,6 +75,15 @@ enableGitInfo = true
   #   (relative to /static/css and /static/js respectively)
   custom_css = []
   custom_js  = []
+
+  # Show estimated reading time for posts?
+  reading_time = true
+
+  # Display comment count? Requires commenting to be enabled.
+  comment_count = true
+
+  # Display next/previous section pager?
+  section_pager = false
 
   # Social/Academic Networking
   [[params.social]]
@@ -122,7 +132,7 @@ enableGitInfo = true
 [[menu.main]]
   name = "Posts"
   url = "#posts"
-  weight = 3
+  weight = 2 
 
 # Taxonomies.
 [taxonomies]
