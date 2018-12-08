@@ -41,6 +41,7 @@ body {
   font-size: 1rem;
   line-height: inherit;
   color: inherit;
+  background-color: #fff;
   margin-top: 71px; /* Offset body content by navbar height. */
   padding-top: 0;
   counter-reset: captions;
@@ -148,11 +149,15 @@ figcaption h4 {
 pre,
 code {
   font-family: 'Roboto Mono', monospace;
+  color: #c7254e;
+  background-color: #f9f2f4;
 }
 
 pre {
   margin: 0 0 1rem 0;
   overflow: auto;
+  background-color: rgb(248, 248, 248); /* Match default highlight theme. */
+  border-color: rgb(248, 248, 248);
 }
 
 hr {
@@ -223,6 +228,68 @@ small,
 
 #modal-error {
   color: red;
+}
+
+/*************************************************
+ *  Gallery.
+ **************************************************/
+
+.gallery {
+  margin: 0.5em -4px 1.5em -4px;
+  font-size: 0;
+}
+
+a[data-fancybox] {
+  text-decoration: none;
+}
+
+a[data-fancybox] img {
+  height: 250px;
+  max-width: inherit;
+  display: inherit;
+  margin: 0;
+  padding: 4px;
+  box-shadow: none;
+  vertical-align: inherit;
+}
+
+.fancybox-caption {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  text-align: center;
+}
+
+/*************************************************
+ *  Pager.
+ **************************************************/
+
+.post-nav {
+  margin-top: 1rem;
+  font-size: 0.8rem;
+}
+
+.post-nav-item {
+  hyphens: auto;
+  word-wrap: break-word;
+  padding: 11px 0 12px;
+  width: 100%;
+}
+
+.post-nav-item a {
+  color: #2b2b2b;
+  line-height: 1.7;
+  text-transform: none;
+}
+
+.post-nav-item .meta-nav {
+  color: #767676;
+  font-weight: 900;
+  line-height: 2;
+  text-transform: uppercase;
+}
+
+.dark .post-nav-item a {
+  color: #ddd;
 }
 
 /*************************************************
@@ -317,6 +384,37 @@ small,
 
 .hero-overlay .btn-large {
   font-size: 1.1rem;
+}
+
+/*************************************************
+ *  Featurette Widget
+ **************************************************/
+
+.featurette {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: #555;
+  text-align: center;
+}
+
+.featurette h3 {
+  margin-top: 0;
+  margin-bottom: 5px;
+  font-weight: 400;
+  color: #333;
+}
+
+.dark .featurette,
+.dark .featurette h3 {
+  color: #fff;
+}
+
+.featurette-icon {
+  display: block;
+  width: 100%;
+  color: #0095eb;
+  font-size: 3rem;
+  text-align: center;
 }
 
 /*************************************************
@@ -559,6 +657,12 @@ article {
   margin-bottom: 60px;
   padding-left: 0;
   padding-right: 0;
+}
+
+.article-style td img,
+.article-style td video {
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .article-style figure {
@@ -1298,4 +1402,111 @@ div.alert a:hover {
   color: #fff;
   background-color: #f44336; /* Material Red500 */
   border-color: #ebccd1;
+}
+
+
+/*************************************************
+ *  Dark themed components
+ **************************************************/
+
+body.dark {
+  color: rgb(248, 248, 242);
+}
+
+.dark h1,
+.dark h2,
+.dark h3,
+.dark h4,
+.dark h5,
+.dark h6 {
+  color: rgb(152, 166, 173);
+}
+
+.dark pre,
+.dark code {
+  color: rgb(139, 233, 253);
+  background-color: rgb(68, 71, 90);
+
+}
+
+.dark pre {
+  background-color: rgb(68, 71, 90);
+  border-color: rgb(68, 71, 90);
+}
+
+.dark ul.share li a {
+  background-color: #0095eb;
+}
+
+.dark table table {
+  background-color: rgb(40, 42, 54);
+}
+
+/* Table Striped */
+.dark table > tbody > tr:nth-child(odd) > td,
+.dark table > tbody > tr:nth-child(odd) > th {
+  background-color: rgb(50, 52, 64);
+}
+
+/* Table Hover */
+.dark table > tbody > tr:hover > td,
+.dark table > tbody > tr:hover > th {
+  background-color: rgb(60, 62, 74);
+}
+
+.dark .article-title a {
+  color: #fff;
+}
+
+.dark #profile .portrait-title h2 {
+  color: #fff;
+}
+
+.dark #profile .portrait-title h3 {
+  color: rgba(255, 255, 255, 0.54);
+}
+
+.dark ul.ul-edu li .description p.institution {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.dark .pub-icon {
+  color: rgba(255, 255, 255, 0.54);
+}
+
+.dark .talk-metadata {
+  color: rgba(255, 255, 255, 0.54);
+}
+
+.dark .pager li > a, .pager li > span {
+  background-color: rgb(40, 42, 54);
+  border: 1px solid #ddd;
+}
+
+.dark .card {
+  background: rgb(10, 12, 24);
+  box-shadow: 0 2px 4px 0 rgba(255, 255, 255, 0.2);
+}
+
+.dark .card h4 a {
+  color: #0095eb;
+  border-bottom: solid 1px transparent;
+}
+
+.dark .card .card-image.hover-overlay::before {
+  background: #666;
+}
+
+.dark .card .card-image.hover-overlay::after {
+  color: #fff;
+}
+
+.dark .navbar-default {
+  box-shadow: 0 0.125rem 0.25rem 0 rgba(255, 255, 255, .11);
+  border-color: #070707;
+}
+
+.dark select {
+  background: rgb(40, 42, 54);
+  color: rgb(248, 248, 242);
 }

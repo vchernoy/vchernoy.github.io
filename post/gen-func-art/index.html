@@ -8,8 +8,29 @@
   <meta name="theme" content="hugo-academic">
   <meta name="generator" content="Hugo 0.52" />
   <meta name="author" content="Slava Chernoy">
-  <meta name="description" content="Software Engineer">
 
+  
+  
+  
+  
+    
+      
+    
+  
+  <meta name="description" content="The notion of generating functions and its application to solving recursive equations are very well-known. For reader who did not have a chance to get familiar with the topics, I recommend to take a look at very good book: Concrete Mathematics: A Foundation for Computer Science, by Ronald L. Graham, Donald E. Knuth, Oren Patashnik.
+Generating functions are usually applied to single variable recursive equations. But actually, the technique may be extended to multivariate recursive equations, or even to a system of recursive equations.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://vchernoy.xyz/post/gen-func-art/">
+
+  
+
+
+  
+
+  
+  
+  <meta name="theme-color" content="#0095eb">
   
   
   
@@ -26,12 +47,11 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha512-6MXa8B6uaO18Hid6blRMetEIoPqHf7Ux1tnyIQdpt9qI5OACx7C+O3IVTr98vwGnlcg0LOLa02i9Y1HpVhlfiw==" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.1/css/academicons.min.css" integrity="sha512-NThgw3XKQ1absAahW6to7Ey42uycrVvfNfyjqcFNgCmOCQ5AR4AO0SiXrN+8ZtYeappp56lk1WtvjVmEa+VR6A==" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" integrity="sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=" crossorigin="anonymous">
   
   
-
-
   
-
+  
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Montserrat:400,700%7cRoboto:400,400italic,700%7cRoboto&#43;Mono">
   
   <link rel="stylesheet" href="/styles.css">
@@ -54,17 +74,32 @@
 
   
 
+  <link rel="manifest" href="/site.webmanifest">
   <link rel="icon" type="image/png" href="/img/icon.png">
-  <link rel="apple-touch-icon" type="image/png" href="/img/apple-touch-icon.png">
+  <link rel="apple-touch-icon" type="image/png" href="/img/icon-192.png">
 
   <link rel="canonical" href="https://vchernoy.xyz/post/gen-func-art/">
+
+  <meta property="twitter:card" content="summary_large_image">
+  
+  <meta property="og:site_name" content="Software and Math">
+  <meta property="og:url" content="https://vchernoy.xyz/post/gen-func-art/">
+  <meta property="og:title" content="The Art of Generating Functions | Software and Math">
+  <meta property="og:description" content="The notion of generating functions and its application to solving recursive equations are very well-known. For reader who did not have a chance to get familiar with the topics, I recommend to take a look at very good book: Concrete Mathematics: A Foundation for Computer Science, by Ronald L. Graham, Donald E. Knuth, Oren Patashnik.
+Generating functions are usually applied to single variable recursive equations. But actually, the technique may be extended to multivariate recursive equations, or even to a system of recursive equations.">
+  <meta property="og:locale" content="en-us">
+  
+  <meta property="article:published_time" content="2017-07-05T07:29:43&#43;00:00">
+  
+  <meta property="article:modified_time" content="2017-08-09T14:14:17-07:00">
+  
 
   
 
   <title>The Art of Generating Functions | Software and Math</title>
 
 </head>
-<body id="top" data-spy="scroll" data-target="#navbar-main" data-offset="71">
+<body id="top" data-spy="scroll" data-target="#toc" data-offset="71" >
 
 <nav class="navbar navbar-default navbar-fixed-top" id="navbar-main">
   <div class="container">
@@ -87,34 +122,50 @@
     <div class="collapse navbar-collapse">
 
       
+      
       <ul class="nav navbar-nav navbar-right">
         
 
+        
+        
+        
+        
+        
+          
         
 
         <li class="nav-item">
           <a href="/#about">
             
             <span>Home</span>
+            
           </a>
         </li>
 
         
         
 
+        
+        
+        
+        
+        
+          
         
 
         <li class="nav-item">
           <a href="/#posts">
             
             <span>Posts</span>
+            
           </a>
         </li>
 
         
         
+      
 
-        
+      
       </ul>
 
     </div>
@@ -128,8 +179,10 @@
 
 
   <div class="article-container">
-    <h1 itemprop="name">The Art of Generating Functions</h1>
-    
+    <div class="article-inner">
+      <h1 itemprop="name">The Art of Generating Functions</h1>
+
+      
 
 <div class="article-metadata">
 
@@ -137,9 +190,12 @@
     
         Last updated on
     
-    <time datetime="2017-07-05 07:29:43 &#43;0000 UTC" itemprop="datePublished">
+    <time datetime="2017-07-05 07:29:43 &#43;0000 UTC" itemprop="datePublished dateModified">
       Wed, Aug 9, 2017
     </time>
+  </span>
+  <span itemscope itemprop="author publisher" itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Slava Chernoy">
   </span>
 
   
@@ -161,8 +217,9 @@
 
 </div>
 
-    <div class="article-style" itemprop="articleBody">
-      
+
+      <div class="article-style" itemprop="articleBody">
+        
 
 <p>The notion of generating functions and its application to solving recursive equations are very well-known.
 For reader who did not have a chance to get familiar with the topics,
@@ -285,33 +342,34 @@ $ = \sum_t \sum_{n=t/2}^t {n \choose t-n} x^t $</p>
 An interested reader can try to prove by induction the correctness of the relations above.
 If you liked the topic, you are wellcome to take a look at the next post where we extend the tools to mutivariate recursions.</p>
 
-    </div>
+      </div>
 
-    
-    
-    
-    <div class="article-tags">
       
-      <a class="btn btn-primary btn-outline" href="/tags/math">math</a>
-      
-      <a class="btn btn-primary btn-outline" href="/tags/generating-function">generating function</a>
-      
-      <a class="btn btn-primary btn-outline" href="/tags/recursion">recursion</a>
-      
-      <a class="btn btn-primary btn-outline" href="/tags/dynamic-programming">dynamic programming</a>
-      
-      <a class="btn btn-primary btn-outline" href="/tags/binomial">binomial</a>
-      
-      <a class="btn btn-primary btn-outline" href="/tags/combinatorics">combinatorics</a>
-      
-      <a class="btn btn-primary btn-outline" href="/tags/golden-ratio">golden ratio</a>
-      
-      <a class="btn btn-primary btn-outline" href="/tags/fibonacci-numbers">fibonacci numbers</a>
-      
-    </div>
-    
-    
 
+
+<div class="article-tags">
+  
+  <a class="btn btn-primary btn-outline" href="/tags/math">math</a>
+  
+  <a class="btn btn-primary btn-outline" href="/tags/generating-function">generating function</a>
+  
+  <a class="btn btn-primary btn-outline" href="/tags/recursion">recursion</a>
+  
+  <a class="btn btn-primary btn-outline" href="/tags/dynamic-programming">dynamic programming</a>
+  
+  <a class="btn btn-primary btn-outline" href="/tags/binomial">binomial</a>
+  
+  <a class="btn btn-primary btn-outline" href="/tags/combinatorics">combinatorics</a>
+  
+  <a class="btn btn-primary btn-outline" href="/tags/golden-ratio">golden ratio</a>
+  
+  <a class="btn btn-primary btn-outline" href="/tags/fibonacci-numbers">fibonacci numbers</a>
+  
+</div>
+
+
+
+    </div>
   </div>
 
 </article>
@@ -410,6 +468,7 @@ window.graphcomment_id = 'B8a3Q3Al1kTk';
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.3/imagesloaded.pkgd.min.js" integrity="sha512-umsR78NN0D23AzgoZ11K7raBD+R6hqKojyBZs1w8WvYlsI+QuKRGBx3LFCwhatzBunCjDuJpDHwxD13sLMbpRA==" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha512-iztkobsvnjKfAtTNdHkGVjAYTrrtlC7mGp/54c40wowO7LhURYl3gVzzcEqGl/qKXQltJ2HwMrdLcNUdo+N/RQ==" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.4/isotope.pkgd.min.js" integrity="sha512-VDBOIlDbuC4VWxGJNmuFRQ0Li0SKkDpmGyuhAG5LTDLd/dJ/S0WMVxriR2Y+CyPL5gzjpN4f/6iqWVBJlht0tQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" integrity="sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=" crossorigin="anonymous"></script>
     
     
     <script src="/js/hugo-academic.js"></script>
