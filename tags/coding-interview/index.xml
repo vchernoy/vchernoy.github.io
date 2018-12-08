@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Coding Interview on </title>
+    <title>coding interview on Software and Math</title>
     <link>https://vchernoy.xyz/tags/coding-interview/</link>
-    <description>Recent content in Coding Interview on </description>
+    <description>Recent content in coding interview on Software and Math</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 04 Jul 2017 07:29:43 +0000</lastBuildDate>
-    <atom:link href="/tags/coding-interview/" rel="self" type="application/rss+xml" />
+    
+	<atom:link href="https://vchernoy.xyz/tags/coding-interview/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>Introduction to Dynamic Programming and Memoization</title>
@@ -15,205 +17,8 @@
       <pubDate>Tue, 04 Jul 2017 07:29:43 +0000</pubDate>
       
       <guid>https://vchernoy.xyz/post/intro-to-dp/</guid>
-      <description>
-
-&lt;p&gt;In the post, we discuss the basics of &lt;em&gt;Recursion&lt;/em&gt;, &lt;em&gt;Dynamic Programming&lt;/em&gt; (DP), and &lt;em&gt;Memoization&lt;/em&gt;.
-As an example, we take a combinatorial problem, which has very short and clear description.
-This allows us to focus on DP and memoization.
-Note that the topics are very popular in coding interviews.
-Hopefully, this article will help to somebody to prepare for such types of questions.&lt;/p&gt;
-
-&lt;p&gt;In the next posts,
-we consider more advanced topics, like
-&lt;a href=&#34;https://vchernoy.xyz/post/gen-func-art/&#34;&gt;The Art of Generating Functions&lt;/a&gt; and
-&lt;a href=&#34;https://vchernoy.xyz/post/two-var-recursive-func/&#34;&gt;Cracking Multivariate Recursive Equations Using Generating Functions&lt;/a&gt;.
-The methods can be applied to the same combinatorial question.
-Let&amp;rsquo;s start from presenting the problem.&lt;/p&gt;
-
-&lt;h2 id=&#34;the-problem&#34;&gt;The Problem&lt;/h2&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;Compute the number of ways to choose $m$ elements from $n$ elements such that selected elements in one combination are not adjacent.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;For example, for $n=4$ and $m=2$, the answer is $3$, since from the $4$-element set: $\lbrace 1,2,3,4 \rbrace$,
-there are three feasible $2$-element combinations: $\lbrace 1,4 \rbrace$, $\lbrace 2,4 \rbrace$, $\lbrace 1,3 \rbrace$.&lt;/p&gt;
-
-&lt;p&gt;Another example: for $n=5$ and $m=3$, there is only one $3$-element combination: $\lbrace 1,3,5 \rbrace$.&lt;/p&gt;
-
-&lt;p&gt;If you are asked such question during coding interview, interviewer is, probably, expecting to cover with you the following topics:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;em&gt;Brute Force&lt;/em&gt; approach that generates and counts all the feasible combinations. It will work slow even for small input.&lt;/li&gt;
-&lt;li&gt;Recursive solution which counts the combination without generating them. It will work faster but still has exponential time ecomplexity.&lt;/li&gt;
-&lt;li&gt;Use DP or memoization techniques. In both cases, the time complexity becomes linear in $n$ and $m$.&lt;/li&gt;
-&lt;li&gt;Corner cases, recursion termination, call stack, testing.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Let&amp;rsquo;s talk about most important topics: building a recursive solution and optimize it using DP or memoization.&lt;/p&gt;
-
-&lt;h2 id=&#34;recursive-relation&#34;&gt;Recursive Relation&lt;/h2&gt;
-
-&lt;p&gt;Let&amp;rsquo;s define $F_{n, m}$ to be the function that computes the answer for given $n$ and $m$.
-Let&amp;rsquo;s look at the $n, m$-task. We have two non-overlapping sub-tasks (or cases):&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Skip the $n$-th element, then $ F_{n, m} = F_{n-1, m} $.&lt;/li&gt;
-&lt;li&gt;Pick the $n$-th element, then $ F_{n, m} = F_{n-2, m-1} $.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;From the above, we can define the solution in the recursive form:&lt;/p&gt;
-
-&lt;p&gt;$ F_{n, m} $ $ = F_{n - 1, m} + F_{n - 2, m - 1} $,&lt;/p&gt;
-
-&lt;p&gt;let&amp;rsquo;s not forget to write down the corner cases:&lt;/p&gt;
-
-&lt;p&gt;$F_{0, 0}$ $= F_{1, 1}$ $= 1$.&lt;/p&gt;
-
-&lt;p&gt;Basically, we can combine the general and the corner cases into one expression:&lt;/p&gt;
-
-&lt;p&gt;$$ F_{n, m} = F_{n - 1, m} + F_{n - 2, m - 1} + [n=m=0] + [n=m=1] $$&lt;/p&gt;
-
-&lt;p&gt;It is very common to define $F_{n,m} = 0$ for any negative $n$ or $m$.
-The indicator $[P]$ gives $1$ if the predicate $P$ is true.
-But what about special cases, like $n=1$ and $m=0$?
-Actually, the relation covers this:&lt;/p&gt;
-
-&lt;p&gt;$F_{1,0}$ $= F_{0,0} + F_{-1,-1} + [1=0=1] + [1=m=1]$ $=F_{0,0} + 0 + 0 + 0$ $=[0=0=0]$ $=1$.&lt;/p&gt;
-
-&lt;p&gt;It is non-intuitive, but there is no need to add extra corner cases!&lt;/p&gt;
-
-&lt;h2 id=&#34;memoization&#34;&gt;Memoization&lt;/h2&gt;
-
-&lt;p&gt;The function $F_{n,m}$ has a straighforward recursive implementation in any programming language.
-But the naive recursive solution will have exponential in $n$ time complexity and will be very slow.
-Let&amp;rsquo;s look at the following &lt;code&gt;Python 3&lt;/code&gt; code snippet that uses memoization technique:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;import functools
-import sys
-
-sys.setrecursionlimit(100000)
-
-@functools.lru_cache(maxsize=None)
-def f_mem(n, m):
-    if n &amp;lt; 0 or m &amp;lt; 0:
-        return 0
-
-    if n + 1 &amp;lt; 2*m:
-        return 0
-
-    if n == m == 0:
-        return 1
-
-    if n == m == 1:
-        return 1
-
-    return f_mem(n - 1, m) + f_mem(n - 2, m - 1)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Nice &lt;a href=&#34;https://docs.python.org/3/library/functools.html#functools.lru_cache&#34; target=&#34;_blank&#34;&gt;@functools.lru_cache&lt;/a&gt;
-notation creates a wrapper on the &lt;code&gt;f_mem&lt;/code&gt; function and internally caches the results of all calls.
-Such caching (or memoization) significantly improves the speed of the recursion,
-and basically reduces the number of calls to something like $O(n \cdot m)$.
-The recursion still may fail on the stack overflow even on relatively small values of $n$.
-That is why we increase the stack size for the Python interpreter by calling
-&lt;a href=&#34;https://docs.python.org/3/library/sys.html#sys.setrecursionlimit&#34; target=&#34;_blank&#34;&gt;sys.setrecursionlimit()-method&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h2 id=&#34;dynamic-programming-dp&#34;&gt;Dynamic Programming (DP)&lt;/h2&gt;
-
-&lt;p&gt;The next iterative implementation uses DP.
-Basically, it fills out the $n \times m$ table starting from the low values of $n$ and $m$.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;def f_dp(n, m):
-    assert n &amp;gt;= 0 and m &amp;gt;= 0
-
-    if n + 1 &amp;lt; 2*m:
-        return 0
-
-    table = [[0] * (m + 1) for _ in range(n + 1)]
-
-    table[0][0] = 1
-    if n &amp;gt;= 1:
-        table[1][0] = 1
-        if m &amp;gt;= 1:
-            table[1][1] = 1
-
-    for i in range(2, n+1):
-        table[i][0] = 1
-        for j in range(1, min(m, (i + 1) // 2) + 1):
-            table[i][j] = table[i-1][j] + table[i-2][j-1]
-
-    return table[n][m]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;The time and space complexities are $O(n\cdot m) $.
-More accurately, time complexity might be bounded by $\Theta(n\cdot \min(n,m))$.
-It is not hard to notice that the space consumption could be reduced to $O(\min(n, m))$.&lt;/p&gt;
-
-&lt;h2 id=&#34;testing&#34;&gt;Testing&lt;/h2&gt;
-
-&lt;p&gt;In order to measure the time and to check the correctness, let&amp;rsquo;s write the following helper function:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;import timeit
-
-M = 1000**3 + 7
-
-def test(n, m, funcs, number=1, module=__name__):
-    f_mem.cache_clear()
-    results = []
-    func_times = []
-    for func in funcs:
-        stmt=&#39;{}({},{})&#39;.format(func.__name__, n, m)
-        setup=&#39;from {} import {}&#39;.format(module, func.__name__)
-        t = timeit.timeit(stmt=stmt, setup=setup, number=number)
-        func_times.append(t)
-        results.append(func(n, m) % M)
-
-    assert len(set(results)) &amp;lt;= 1
-
-    if results:
-        print(&#39;f({},{}): {}&#39;.format(n, m, results[0]))
-
-    best_time = min(func_times)
-    for i, func in enumerate(funcs):
-        func_time = func_times[i]
-        print(&#39;{:&amp;gt;13}: {:8.4f} sec, x {:.2f}&#39;.format(func.__name__, func_time, func_time/best_time))
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;We can run it as following:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;test(n=6000, m=2000, funcs=[f_mem, f_dp])
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Which prints output similar to this one:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;f(6000,2000): 192496093
-        f_mem:   6.5852 sec, x 1.28
-         f_dp:   5.1507 sec, x 1.00
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;The function &lt;code&gt;test()&lt;/code&gt; computes $F_{6000, 2000}$ using two different ways.
-It validates that all the solutions are consistent and produce the same result.
-It also measures the time it takes to execute each method.
-For each run, it also prints the relative factor computed based on the fastest solution.
-The function&amp;rsquo;s result is printed modulo $M=1000^3+7$.&lt;/p&gt;
-
-&lt;p&gt;Memoization and DP techniques have $\Theta(n \cdot m)$ time complexity.
-Note that we ignore here a lot of interesting details, for example,
-Python has built-in long arithmetics for integers, which is used here and definetely not cheap.&lt;/p&gt;
-
-&lt;p&gt;Testing the implementations on different parameters,
-we may notice that there is no clear winner between the two algorithms.
-Probably, most of the time is spent on the long arithmetic computation.&lt;/p&gt;
-
-&lt;p&gt;Can we do even better?
-Definitely, we can!
-The table (or cache) could be preprocessed.
-Then computing the function $F_{n,m}$ will require just one query from the table (or from the cache, for memoization solution).
-As we mentioned before, such approach requires $\Theta(n\cdot m)$ space, which could be huge for $n=10000$.
-Actually, there is a way, how we can remain in very low memory consuption and still get very fast solution.
-We will discuss this in the next two posts.&lt;/p&gt;
-</description>
+      <description>In the post, we discuss the basics of Recursion, Dynamic Programming (DP), and Memoization. As an example, we take a combinatorial problem, which has very short and clear description. This allows us to focus on DP and memoization. Note that the topics are very popular in coding interviews. Hopefully, this article will help to somebody to prepare for such types of questions.
+In the next posts, we consider more advanced topics, like The Art of Generating Functions and Cracking Multivariate Recursive Equations Using Generating Functions.</description>
     </item>
     
   </channel>

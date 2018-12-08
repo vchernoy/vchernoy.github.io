@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Tags on </title>
+    <title>Tags on Software and Math</title>
     <link>https://vchernoy.xyz/tags/</link>
-    <description>Recent content in Tags on </description>
+    <description>Recent content in Tags on Software and Math</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 06 Jul 2017 07:29:43 +0000</lastBuildDate>
-    <atom:link href="/tags/" rel="self" type="application/rss+xml" />
+    
+	<atom:link href="https://vchernoy.xyz/tags/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
-      <title>Binomial</title>
+      <title>binomial</title>
       <link>https://vchernoy.xyz/tags/binomial/</link>
       <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>
       
@@ -19,7 +20,7 @@
     </item>
     
     <item>
-      <title>Coding Interview</title>
+      <title>coding interview</title>
       <link>https://vchernoy.xyz/tags/coding-interview/</link>
       <pubDate>Tue, 04 Jul 2017 07:29:43 +0000</pubDate>
       
@@ -28,7 +29,7 @@
     </item>
     
     <item>
-      <title>Combinarotics</title>
+      <title>combinarotics</title>
       <link>https://vchernoy.xyz/tags/combinarotics/</link>
       <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>
       
@@ -37,7 +38,7 @@
     </item>
     
     <item>
-      <title>Combinatorics</title>
+      <title>combinatorics</title>
       <link>https://vchernoy.xyz/tags/combinatorics/</link>
       <pubDate>Wed, 05 Jul 2017 07:29:43 +0000</pubDate>
       
@@ -46,7 +47,7 @@
     </item>
     
     <item>
-      <title>Dynamic Programming</title>
+      <title>dynamic programming</title>
       <link>https://vchernoy.xyz/tags/dynamic-programming/</link>
       <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>
       
@@ -55,7 +56,7 @@
     </item>
     
     <item>
-      <title>Fibonacci Numbers</title>
+      <title>fibonacci numbers</title>
       <link>https://vchernoy.xyz/tags/fibonacci-numbers/</link>
       <pubDate>Wed, 05 Jul 2017 07:29:43 +0000</pubDate>
       
@@ -64,7 +65,7 @@
     </item>
     
     <item>
-      <title>Generating Function</title>
+      <title>generating function</title>
       <link>https://vchernoy.xyz/tags/generating-function/</link>
       <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>
       
@@ -73,7 +74,7 @@
     </item>
     
     <item>
-      <title>Golden Ratio</title>
+      <title>golden ratio</title>
       <link>https://vchernoy.xyz/tags/golden-ratio/</link>
       <pubDate>Wed, 05 Jul 2017 07:29:43 +0000</pubDate>
       
@@ -82,7 +83,7 @@
     </item>
     
     <item>
-      <title>Math</title>
+      <title>math</title>
       <link>https://vchernoy.xyz/tags/math/</link>
       <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>
       
@@ -91,7 +92,7 @@
     </item>
     
     <item>
-      <title>Memoization</title>
+      <title>memoization</title>
       <link>https://vchernoy.xyz/tags/memoization/</link>
       <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>
       
@@ -100,7 +101,7 @@
     </item>
     
     <item>
-      <title>Multivariate Function</title>
+      <title>multivariate function</title>
       <link>https://vchernoy.xyz/tags/multivariate-function/</link>
       <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>
       
@@ -109,7 +110,7 @@
     </item>
     
     <item>
-      <title>Programming</title>
+      <title>programming</title>
       <link>https://vchernoy.xyz/tags/programming/</link>
       <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>
       
@@ -118,7 +119,7 @@
     </item>
     
     <item>
-      <title>Python</title>
+      <title>python</title>
       <link>https://vchernoy.xyz/tags/python/</link>
       <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>
       
@@ -127,7 +128,7 @@
     </item>
     
     <item>
-      <title>Recursion</title>
+      <title>recursion</title>
       <link>https://vchernoy.xyz/tags/recursion/</link>
       <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>
       
