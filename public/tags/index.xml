@@ -1,140 +1,110 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Software and Math</title>
     <link>https://vchernoy.xyz/tags/</link>
     <description>Recent content in Tags on Software and Math</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en-us</language>
-    
-	<atom:link href="https://vchernoy.xyz/tags/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Thu, 06 Jul 2017 07:29:43 +0000</lastBuildDate>
+    <atom:link href="https://vchernoy.xyz/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>binomial</title>
+      <title>Binomial</title>
       <link>https://vchernoy.xyz/tags/binomial/</link>
       <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>
-      
       <guid>https://vchernoy.xyz/tags/binomial/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>coding interview</title>
-      <link>https://vchernoy.xyz/tags/coding-interview/</link>
-      <pubDate>Tue, 04 Jul 2017 07:29:43 +0000</pubDate>
-      
-      <guid>https://vchernoy.xyz/tags/coding-interview/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>combinarotics</title>
+      <title>Combinarotics</title>
       <link>https://vchernoy.xyz/tags/combinarotics/</link>
       <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>
-      
       <guid>https://vchernoy.xyz/tags/combinarotics/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>combinatorics</title>
-      <link>https://vchernoy.xyz/tags/combinatorics/</link>
-      <pubDate>Wed, 05 Jul 2017 07:29:43 +0000</pubDate>
-      
-      <guid>https://vchernoy.xyz/tags/combinatorics/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>dynamic programming</title>
+      <title>Dynamic Programming</title>
       <link>https://vchernoy.xyz/tags/dynamic-programming/</link>
       <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>
-      
       <guid>https://vchernoy.xyz/tags/dynamic-programming/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>fibonacci numbers</title>
-      <link>https://vchernoy.xyz/tags/fibonacci-numbers/</link>
-      <pubDate>Wed, 05 Jul 2017 07:29:43 +0000</pubDate>
-      
-      <guid>https://vchernoy.xyz/tags/fibonacci-numbers/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>generating function</title>
+      <title>Generating Function</title>
       <link>https://vchernoy.xyz/tags/generating-function/</link>
       <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>
-      
       <guid>https://vchernoy.xyz/tags/generating-function/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>golden ratio</title>
-      <link>https://vchernoy.xyz/tags/golden-ratio/</link>
-      <pubDate>Wed, 05 Jul 2017 07:29:43 +0000</pubDate>
-      
-      <guid>https://vchernoy.xyz/tags/golden-ratio/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>math</title>
+      <title>Math</title>
       <link>https://vchernoy.xyz/tags/math/</link>
       <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>
-      
       <guid>https://vchernoy.xyz/tags/math/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>memoization</title>
+      <title>Memoization</title>
       <link>https://vchernoy.xyz/tags/memoization/</link>
       <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>
-      
       <guid>https://vchernoy.xyz/tags/memoization/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>multivariate function</title>
+      <title>Multivariate Function</title>
       <link>https://vchernoy.xyz/tags/multivariate-function/</link>
       <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>
-      
       <guid>https://vchernoy.xyz/tags/multivariate-function/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>programming</title>
+      <title>Programming</title>
       <link>https://vchernoy.xyz/tags/programming/</link>
       <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>
-      
       <guid>https://vchernoy.xyz/tags/programming/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>python</title>
+      <title>Python</title>
       <link>https://vchernoy.xyz/tags/python/</link>
       <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>
-      
       <guid>https://vchernoy.xyz/tags/python/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>recursion</title>
+      <title>Recursion</title>
       <link>https://vchernoy.xyz/tags/recursion/</link>
       <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>
-      
       <guid>https://vchernoy.xyz/tags/recursion/</guid>
       <description></description>
     </item>
-    
+    <item>
+      <title>Combinatorics</title>
+      <link>https://vchernoy.xyz/tags/combinatorics/</link>
+      <pubDate>Wed, 05 Jul 2017 07:29:43 +0000</pubDate>
+      <guid>https://vchernoy.xyz/tags/combinatorics/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Fibonacci Numbers</title>
+      <link>https://vchernoy.xyz/tags/fibonacci-numbers/</link>
+      <pubDate>Wed, 05 Jul 2017 07:29:43 +0000</pubDate>
+      <guid>https://vchernoy.xyz/tags/fibonacci-numbers/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Golden Ratio</title>
+      <link>https://vchernoy.xyz/tags/golden-ratio/</link>
+      <pubDate>Wed, 05 Jul 2017 07:29:43 +0000</pubDate>
+      <guid>https://vchernoy.xyz/tags/golden-ratio/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Coding Interview</title>
+      <link>https://vchernoy.xyz/tags/coding-interview/</link>
+      <pubDate>Tue, 04 Jul 2017 07:29:43 +0000</pubDate>
+      <guid>https://vchernoy.xyz/tags/coding-interview/</guid>
+      <description></description>
+    </item>
   </channel>
 </rss>

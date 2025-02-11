@@ -1,25 +1,19 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>multivariate function on Software and Math</title>
+    <title>Multivariate Function on Software and Math</title>
     <link>https://vchernoy.xyz/tags/multivariate-function/</link>
-    <description>Recent content in multivariate function on Software and Math</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Multivariate Function on Software and Math</description>
+    <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 06 Jul 2017 07:29:43 +0000</lastBuildDate>
-    
-	<atom:link href="https://vchernoy.xyz/tags/multivariate-function/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <atom:link href="https://vchernoy.xyz/tags/multivariate-function/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Cracking Multivariate Recursive Equations Using Generating Functions</title>
       <link>https://vchernoy.xyz/post/two-var-recursive-func/</link>
       <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>
-      
       <guid>https://vchernoy.xyz/post/two-var-recursive-func/</guid>
-      <description>In this post, we return back to the combinatorial problem discussed in Introduction to Dynamic Programming and Memoization post. We will show that generating functions may work great not only for single variable case (see The Art of Generating Functions), but also could be very useful for hacking two-variable relations (and of course, in general for multivariate case too).
-For making the post self-contained, we repeat the problem definition here.</description>
+      <description>&lt;p&gt;In this post, we return back to the combinatorial problem discussed in &lt;a href=&#34;https://vchernoy.xyz/post/intro-to-dp/&#34;&gt;Introduction to Dynamic Programming and Memoization&lt;/a&gt; post.&#xA;We will show that generating functions may work great not only for single variable case (see &lt;a href=&#34;https://vchernoy.xyz/post/gen-func-art/&#34;&gt;The Art of Generating Functions&lt;/a&gt;),&#xA;but also could be very useful for hacking two-variable relations (and of course, in general for multivariate case too).&lt;/p&gt;&#xA;&lt;p&gt;For making the post self-contained, we repeat the problem definition here.&lt;/p&gt;&#xA;&lt;h2 id=&#34;the-problem&#34;&gt;The Problem&lt;/h2&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;Compute the number of ways to choose $m$ elements from $n$ elements such that selected elements in one combination are not adjacent.&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>
