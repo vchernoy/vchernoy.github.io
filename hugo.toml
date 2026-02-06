@@ -22,6 +22,11 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 ignoreLogs = ["warning-goldmark-raw-html"]
 preserveTaxonomyNames = true
 
+# Recommended for GitHub Actions (image cache in cacheDir)
+[caches]
+  [caches.images]
+    dir = ":cacheDir/images"
+
 [pagination]
   pagerSize = 10
 
