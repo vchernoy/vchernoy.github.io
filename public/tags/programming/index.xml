@@ -1,26 +1,352 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Programming on Software and Math</title>
-    <link>https://vchernoy.xyz/tags/programming/</link>
-    <description>Recent content in Programming on Software and Math</description>
-    <generator>Hugo</generator>
-    <language>en-us</language>
-    <lastBuildDate>Thu, 06 Jul 2017 07:29:43 +0000</lastBuildDate>
-    <atom:link href="https://vchernoy.xyz/tags/programming/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Cracking Multivariate Recursive Equations Using Generating Functions</title>
-      <link>https://vchernoy.xyz/post/two-var-recursive-func/</link>
-      <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>
-      <guid>https://vchernoy.xyz/post/two-var-recursive-func/</guid>
-      <description>&lt;p&gt;In this post, we return back to the combinatorial problem discussed in &lt;a href=&#34;https://vchernoy.xyz/post/intro-to-dp/&#34;&gt;Introduction to Dynamic Programming and Memoization&lt;/a&gt; post.&#xA;We will show that generating functions may work great not only for single variable case (see &lt;a href=&#34;https://vchernoy.xyz/post/gen-func-art/&#34;&gt;The Art of Generating Functions&lt;/a&gt;),&#xA;but also could be very useful for hacking two-variable relations (and of course, in general for multivariate case too).&lt;/p&gt;&#xA;&lt;p&gt;For making the post self-contained, we repeat the problem definition here.&lt;/p&gt;&#xA;&lt;h2 id=&#34;the-problem&#34;&gt;The Problem&lt;/h2&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;Compute the number of ways to choose $m$ elements from $n$ elements such that selected elements in one combination are not adjacent.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Introduction to Dynamic Programming and Memoization</title>
-      <link>https://vchernoy.xyz/post/intro-to-dp/</link>
-      <pubDate>Tue, 04 Jul 2017 07:29:43 +0000</pubDate>
-      <guid>https://vchernoy.xyz/post/intro-to-dp/</guid>
-      <description>&lt;p&gt;In the post, we discuss the basics of &lt;em&gt;Recursion&lt;/em&gt;, &lt;em&gt;Dynamic Programming&lt;/em&gt; (DP), and &lt;em&gt;Memoization&lt;/em&gt;.&#xA;As an example, we take a combinatorial problem, which has very short and clear description.&#xA;This allows us to focus on DP and memoization.&#xA;Note that the topics are very popular in coding interviews.&#xA;Hopefully, this article will help to somebody to prepare for such types of questions.&lt;/p&gt;&#xA;&lt;p&gt;In the next posts,&#xA;we consider more advanced topics, like&#xA;&lt;a href=&#34;https://vchernoy.xyz/post/gen-func-art/&#34;&gt;The Art of Generating Functions&lt;/a&gt; and&#xA;&lt;a href=&#34;https://vchernoy.xyz/post/two-var-recursive-func/&#34;&gt;Cracking Multivariate Recursive Equations Using Generating Functions&lt;/a&gt;.&#xA;The methods can be applied to the same combinatorial question.&#xA;Let&amp;rsquo;s start from presenting the problem.&lt;/p&gt;</description>
-    </item>
-  </channel>
-</rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Programming |</title><link>/tags/programming/</link><atom:link href="/tags/programming/index.xml" rel="self" type="application/rss+xml"/><description>Programming</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Thu, 06 Jul 2017 07:29:43 +0000</lastBuildDate><image><url>/media/icon_hu_43cf117bf1a42c34.png</url><title>Programming</title><link>/tags/programming/</link></image><item><title>Cracking Multivariate Recursive Equations Using Generating Functions</title><link>/post/two-var-recursive-func/</link><pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate><guid>/post/two-var-recursive-func/</guid><description>&lt;p>In this post, we return back to the combinatorial problem discussed in &lt;a href="/post/intro-to-dp/">Introduction to Dynamic Programming and Memoization&lt;/a> post.
+We will show that generating functions may work great not only for single variable case (see &lt;a href="/post/gen-func-art/">The Art of Generating Functions&lt;/a>),
+but also could be very useful for hacking two-variable relations (and of course, in general for multivariate case too).&lt;/p>
+&lt;p>For making the post self-contained, we repeat the problem definition here.&lt;/p>
+&lt;h2 id="the-problem">The Problem&lt;/h2>
+&lt;blockquote>
+&lt;p>Compute the number of ways to choose $m$ elements from $n$ elements such that selected elements in one combination are not adjacent.&lt;/p>&lt;/blockquote>
+&lt;p>For example, for $n=4$ and $m=2$, the answer is $3$, since from the $4$-element set: $\lbrace 1,2,3,4 \rbrace$,
+there are three feasible $2$-element combinations: $\lbrace 1,4 \rbrace$, $\lbrace 2,4 \rbrace$, $\lbrace 1,3 \rbrace$.&lt;/p>
+&lt;p>Another example: for $n=5$ and $m=3$, there is only one $3$-element combination: $\lbrace 1,3,5 \rbrace$.&lt;/p>
+&lt;p>As we discussed in the first post, there is a nice recursive relation for this problem:&lt;/p>
+&lt;p>$$ F_{n, m} = F_{n - 1, m} + F_{n - 2, m - 1} + [n=m=0] + [n=m=1] $$&lt;/p>
+&lt;p>We assume that for any $n &amp;lt; 0$ or $m &amp;lt; 0$, $F_{n,m} = 0$.
+The indicator $[P]$ gives $1$ if the predicate $P$ is true.&lt;/p>
+&lt;h2 id="the-generating-function-for-f_nm">The Generating Function for $F_{n,m}$&lt;/h2>
+&lt;p>Let&amp;rsquo;s introduce the generating function $\Phi(x,y)$ of two (floating point) variables $x$ and $y$:&lt;/p>
+&lt;p>$$\Phi(x,y) = \sum_{n,m} F_{n,m} x^n y^m$$&lt;/p>
+&lt;p>Substituting the definition of $F_{n,m}$ and simplifying the sums, we will get:&lt;/p>
+&lt;p>$ \Phi(x,y) $
+$ = \sum_{n,m} F_{n,m} x^n y^m $
+$ = \sum_{n,m} \left(F_{n - 1, m} + F_{n - 2, m - 1} + [n=m=1] + [n=m=0] \right) x^n y^m$
+$ = \sum_{n,m} F_{n - 1, m} x^n y^m + \sum_{n,m} F_{n - 2, m - 1} x^n y^m + x \cdot y + 1 $
+$ = x \sum_{n,m} F_{n - 1, m} x^{n-1} y^m + x^2 y \sum_{n,m} F_{n - 2, m - 1} x^{n-2} y^{m-1} + x \cdot y + 1 $
+$ = x \Phi(x,y) + x^2 y \Phi(x,y) + x \cdot y + 1 $&lt;/p>
+&lt;p>We have just found the simple representation for the generating function:&lt;/p>
+&lt;p>$$\Phi(x, y) = \frac{1 + x \cdot y}{1 - x - x^2 y}$$&lt;/p>
+&lt;h2 id="the-closed-form-for-f_nm">The Closed Form for $F_{n,m}$&lt;/h2>
+&lt;p>Using the infinite series: $ \frac{1}{1-z} = \sum_{k\geq 0} z^k $,
+we can make the following transforms:&lt;/p>
+&lt;p>$\Phi(x, y) $
+$ = \frac{1 + x \cdot y}{1 - x - x^2 y}$
+$ = (1 + x \cdot y) \sum_{k\geq 0} (x + x^2 y)^k $
+$ = (1 + x \cdot y) \sum_{0 \leq i \leq k} {k \choose i} x^{k+i} y^i $
+$ = \sum_{0 \leq i \leq k} {k \choose i} x^{k+i} y^i + \sum_{0 \leq i \leq k} {k \choose i} x^{k+i+1} y^{i+1}$&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Introducing the new variables: $n=k+i, m=i$, we cat transform the first expression as follows:
+$ \sum_{0 \leq i \leq k} {k \choose i} x^{k+i} y^i $
+$ = \sum_{m \geq 0, n \geq 2m} {n-m \choose m} x^{n} y^m $.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>And introducing the new variables: $n=k+i+1, m=i+1$, we can transform the second expression similarly:
+$ \sum_{0 \leq i \leq k} {k \choose i} x^{k+i+1} y^{i+1} $
+$ = \sum_{m \geq 1, n \geq 2m-1} {n-m \choose m-1} x^n y^m $.&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>The last two transformations give us the closed form:&lt;/p>
+&lt;p>$F_{n, m} $
+$ = {n - m \choose m} + {n - m \choose m - 1}$.&lt;/p>
+&lt;p>Which actually equals to&lt;/p>
+&lt;p>$$ F_{n, m} = {n - m + 1 \choose m} $$&lt;/p>
+&lt;h2 id="fast-solutions-based-on-binomials">Fast Solutions Based on Binomials&lt;/h2>
+&lt;p>Now we can reflect this idea in very trivial Python code:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Python" data-lang="Python">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> math
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">f_binom&lt;/span>(n, m):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">assert&lt;/span> n &lt;span style="color:#f92672">&amp;gt;=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#f92672">and&lt;/span> m &lt;span style="color:#f92672">&amp;gt;=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> n &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span> &lt;span style="color:#f92672">&amp;lt;&lt;/span> &lt;span style="color:#ae81ff">2&lt;/span>&lt;span style="color:#f92672">*&lt;/span>m:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> binom(n &lt;span style="color:#f92672">-&lt;/span> m &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>, m)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">binom&lt;/span>(n, m):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">assert&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#f92672">&amp;lt;=&lt;/span> m &lt;span style="color:#f92672">&amp;lt;=&lt;/span> n
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> math&lt;span style="color:#f92672">.&lt;/span>factorial(n) &lt;span style="color:#f92672">//&lt;/span> math&lt;span style="color:#f92672">.&lt;/span>factorial(m) &lt;span style="color:#f92672">//&lt;/span> math&lt;span style="color:#f92672">.&lt;/span>factorial(n &lt;span style="color:#f92672">-&lt;/span> m)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>This implementation overperforms significantly the initial DP and memoization solutions.
+A naive implementation of &lt;code>math.factorial()&lt;/code> might make $n$ multiplications.
+This could still be faster than doing $\Theta(n)$ additions in DP approach.&lt;/p>
+&lt;p>The actual implementation of &lt;code>math.factorial()&lt;/code> is written in C
+and probably has precomputed results for some range of $n$
+and might even cache the results for bigger $n$.&lt;/p>
+&lt;h2 id="implementations-based-on-scipy-and-sympy-libraries">Implementations Based on &lt;code>scipy&lt;/code> and &lt;code>sympy&lt;/code> Libraries&lt;/h2>
+&lt;p>Several third party libraries provide a functionality to compute binomial coefficients.
+Let&amp;rsquo;s take a look at &lt;code>scipy&lt;/code> and &lt;code>sympy&lt;/code>.&lt;/p>
+&lt;p>We can install both of them using &lt;code>pip&lt;/code>-package manager:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>pip install scipy sympy
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>We can easily write two implementations of $F_{n,m}$ which will call &lt;code>scipy.special.comb()&lt;/code> or &lt;code>sympy.binomial()&lt;/code> functions:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Python" data-lang="Python">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> scipy.special
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">f_sci&lt;/span>(n, m):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">assert&lt;/span> n &lt;span style="color:#f92672">&amp;gt;=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#f92672">and&lt;/span> m &lt;span style="color:#f92672">&amp;gt;=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> n &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span> &lt;span style="color:#f92672">&amp;lt;&lt;/span> &lt;span style="color:#ae81ff">2&lt;/span>&lt;span style="color:#f92672">*&lt;/span>m:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> scipy&lt;span style="color:#f92672">.&lt;/span>special&lt;span style="color:#f92672">.&lt;/span>comb(n &lt;span style="color:#f92672">-&lt;/span> m &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>, m, exact&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#66d9ef">True&lt;/span>)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The second one is very similar to the first one:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Python" data-lang="Python">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> sympy
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">f_sym&lt;/span>(n, m):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">assert&lt;/span> n &lt;span style="color:#f92672">&amp;gt;=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#f92672">and&lt;/span> m &lt;span style="color:#f92672">&amp;gt;=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> n &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span> &lt;span style="color:#f92672">&amp;lt;&lt;/span> &lt;span style="color:#ae81ff">2&lt;/span>&lt;span style="color:#f92672">*&lt;/span>m:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> sympy&lt;span style="color:#f92672">.&lt;/span>binomial(n &lt;span style="color:#f92672">-&lt;/span> m &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>, m)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>We can use the same &lt;code>test()&lt;/code> helper function that we defined in &lt;a href="/post/intro-to-dp/">Introduction to Dynamic Programming and Memoization&lt;/a>.
+Let&amp;rsquo;s run it on all the 5 implementatnions:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python" data-lang="python">&lt;span style="display:flex;">&lt;span>funcs &lt;span style="color:#f92672">=&lt;/span> [f_mem, f_dp, f_binom, f_sci, f_sym]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>test(&lt;span style="color:#ae81ff">6000&lt;/span>, &lt;span style="color:#ae81ff">2000&lt;/span>, funcs)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>It will print something similar to following output:&lt;/p>
+&lt;pre tabindex="0">&lt;code>f(6000,2000): 192496093
+f_mem: 6.7195 sec, x 4195.10
+f_dp: 5.3249 sec, x 3324.43
+f_binom: 0.0016 sec, x 1.00
+f_sci: 0.0021 sec, x 1.32
+f_sym: 0.0043 sec, x 2.69
+&lt;/code>&lt;/pre>&lt;p>The first two methods, which are based on memoization and DP, are much slower than the last three,
+which are based on the binomial coefficients.&lt;/p>
+&lt;h2 id="the-intuition-for-the-time-complexity-analysis">The Intuition for the Time Complexity Analysis&lt;/h2>
+&lt;p>DP and memoization makes $O(n^2)$ of &amp;ldquo;addition&amp;rdquo; operations over long integers.
+The long integers are bounded by $F_{n,m}$ value, which could be bounded by $2^n$.
+One &amp;ldquo;addition&amp;rdquo; operation takes $O(N)$ time for $N$-digit integer input.
+For our case $N$ could be bounded by $ O(\log 2^n)$ $ = O(n)$.
+So the total time complexity is bounded by
+$ O(n^2 \cdot N) $
+$ = O(n^2 \cdot \log 2^n) $
+$ = O(n^2 \cdot n) $
+$ = O(n^3)$.&lt;/p>
+&lt;p>The binomial based solutions make $O(n)$ &amp;ldquo;multiplication&amp;rdquo; opearations over long integers
+The long integers could be bounded by $O(n!)$ $ = O(n^n)$.
+The &amp;ldquo;multiplication&amp;rdquo; opertion could be implemented in a naive way which runs $O(N^2)$ in time and is used for a small input.
+But it also has a more advanced implementation, which takes $O(N^{\log_2 3})$ $ = O(N^{1.59})$ and is used on big integers.
+Note that here $N$ denotes the number of digits in the input long integers for multiplication.
+In this case, $N$ is bounded by
+$ O(\log n!) $
+$ = O(\log (n^n)) $
+$ = O(n \log n) $.
+The total time complexity of the binomial based implementations is bounded by
+$ O\left(n \cdot N^{\log_2 3}\right) $
+$ = O\left(n \cdot (\log n!)^{\log_2 3}\right)$
+$ = O\left(n \cdot (n \log n)^{1.59}\right)$
+$ = O\left(n^{2.59} \cdot (\log n)^{1.59}\right)$.&lt;/p>
+&lt;p>This is not really a formal proof, but it gives some intuition why the last approach overperforms the former one.
+In practice, the results of factorial computation are cached,
+therefor we observe even bigger gap in performance (yeahh again not formal claim, just an intuition).&lt;/p>
+&lt;p>You can play with running tests on different $n$ and $m$.
+What I saw that actually there is no clear winner between the last 3 implementations.
+Probably, the most of the time is spent on the long arithmetic computation.&lt;/p>
+&lt;h2 id="modular-arithmetics">Modular Arithmetics&lt;/h2>
+&lt;p>In questions where it is required to count some objects, not rearly the answer might be very big even on very small input.
+In such case, typically it is asked to print the answer modulo some big prime integer, let&amp;rsquo;s say, $M=1000^3+7$.
+Since Python has built-in long arithmetics, we can apply modulo on the final result,
+but executing the entire agorithm with long arithmetics while knowing that only small part of it is really important is very costly,
+and of course, not that efficient.&lt;/p>
+&lt;p>Let&amp;rsquo;s look, briefly, at very simple change we can do for &lt;code>f_binom&lt;/code> function that will speed up the computation significantly:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python" data-lang="python">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">f_binom_mod&lt;/span>(n, m):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">assert&lt;/span> n &lt;span style="color:#f92672">&amp;gt;=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#f92672">and&lt;/span> m &lt;span style="color:#f92672">&amp;gt;=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> n &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span> &lt;span style="color:#f92672">&amp;lt;&lt;/span> &lt;span style="color:#ae81ff">2&lt;/span>&lt;span style="color:#f92672">*&lt;/span>m:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> binom_mod(n &lt;span style="color:#f92672">-&lt;/span> m &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>, m)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">binom_mod&lt;/span>(n, m):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">assert&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#f92672">&amp;lt;=&lt;/span> m &lt;span style="color:#f92672">&amp;lt;=&lt;/span> n
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> ((fact_mod(n) &lt;span style="color:#f92672">*&lt;/span> inv_mod(fact_mod(m))) &lt;span style="color:#f92672">%&lt;/span> M &lt;span style="color:#f92672">*&lt;/span> inv_mod(fact_mod(n &lt;span style="color:#f92672">-&lt;/span> m))) &lt;span style="color:#f92672">%&lt;/span> M
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">@functools.lru_cache&lt;/span>(maxsize&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#66d9ef">None&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">fact_mod&lt;/span>(m):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> m &lt;span style="color:#f92672">&amp;lt;=&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> (m &lt;span style="color:#f92672">*&lt;/span> fact_mod(m &lt;span style="color:#f92672">-&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>)) &lt;span style="color:#f92672">%&lt;/span> M
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">inv_mod&lt;/span>(x):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> pow(x, M &lt;span style="color:#f92672">-&lt;/span> &lt;span style="color:#ae81ff">2&lt;/span>, M)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>As we can see, all the operations are computed modulo $M$.
+The function &lt;code>fact_mod&lt;/code> is recursive but uses Memoization.
+The most tricky part is how to implemenent modular-division.
+From &lt;a href="https://en.wikipedia.org/wiki/Fermat%27s_little_theorem" target="_blank" rel="noopener">Fermat&amp;rsquo;s little theorem&lt;/a>,
+we know that if $M$ is prime and $0 &amp;lt; x &amp;lt; M$, then $x^{-1} \equiv x^{M-2} \pmod M$.
+This allows to compute the multiplicative inverse of $x$ using the Python&amp;rsquo;s built-in function
+&lt;a href="https://docs.python.org/3/library/functions.html#pow" target="_blank" rel="noopener">pow&lt;/a>.&lt;/p>
+&lt;p>Let&amp;rsquo;s test the new approach against other implementations:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python" data-lang="python">&lt;span style="display:flex;">&lt;span>fact_mod(&lt;span style="color:#ae81ff">10000&lt;/span>) &lt;span style="color:#75715e"># for caching factorials&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>funcs &lt;span style="color:#f92672">=&lt;/span> [f_binom_mod, f_binom, f_sci, f_sym]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>test(&lt;span style="color:#ae81ff">10000&lt;/span>, &lt;span style="color:#ae81ff">1000&lt;/span>, funcs)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>test(&lt;span style="color:#ae81ff">10000&lt;/span>, &lt;span style="color:#ae81ff">2000&lt;/span>, funcs)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>test(&lt;span style="color:#ae81ff">10000&lt;/span>, &lt;span style="color:#ae81ff">3000&lt;/span>, funcs)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>It is not a surprise that taking the benefits of modular computations results in the huge speedup in running-time:&lt;/p>
+&lt;pre tabindex="0">&lt;code>f(10000,1000): 450169549
+f_binom_mod: 0.0000 sec, x 1.00
+f_binom: 0.0073 sec, x 337.60
+f_sci: 0.0011 sec, x 49.33
+f_sym: 0.0076 sec, x 353.22
+f(10000,2000): 75198348
+f_binom_mod: 0.0000 sec, x 1.00
+f_binom: 0.0063 sec, x 368.94
+f_sci: 0.0026 sec, x 153.33
+f_sym: 0.0053 sec, x 308.93
+f(10000,3000): 679286557
+f_binom_mod: 0.0000 sec, x 1.00
+f_binom: 0.0060 sec, x 361.12
+f_sci: 0.0056 sec, x 338.13
+f_sym: 0.0053 sec, x 319.02
+&lt;/code>&lt;/pre></description></item><item><title>Introduction to Dynamic Programming and Memoization</title><link>/post/intro-to-dp/</link><pubDate>Tue, 04 Jul 2017 07:29:43 +0000</pubDate><guid>/post/intro-to-dp/</guid><description>&lt;p>In the post, we discuss the basics of &lt;em>Recursion&lt;/em>, &lt;em>Dynamic Programming&lt;/em> (DP), and &lt;em>Memoization&lt;/em>.
+As an example, we take a combinatorial problem, which has very short and clear description.
+This allows us to focus on DP and memoization.
+Note that the topics are very popular in coding interviews.
+Hopefully, this article will help to somebody to prepare for such types of questions.&lt;/p>
+&lt;p>In the next posts,
+we consider more advanced topics, like
+&lt;a href="/post/gen-func-art/">The Art of Generating Functions&lt;/a> and
+&lt;a href="/post/two-var-recursive-func/">Cracking Multivariate Recursive Equations Using Generating Functions&lt;/a>.
+The methods can be applied to the same combinatorial question.
+Let&amp;rsquo;s start from presenting the problem.&lt;/p>
+&lt;h2 id="the-problem">The Problem&lt;/h2>
+&lt;blockquote>
+&lt;p>Compute the number of ways to choose $m$ elements from $n$ elements such that selected elements in one combination are not adjacent.&lt;/p>&lt;/blockquote>
+&lt;p>For example, for $n=4$ and $m=2$, the answer is $3$, since from the $4$-element set: $\lbrace 1,2,3,4 \rbrace$,
+there are three feasible $2$-element combinations: $\lbrace 1,4 \rbrace$, $\lbrace 2,4 \rbrace$, $\lbrace 1,3 \rbrace$.&lt;/p>
+&lt;p>Another example: for $n=5$ and $m=3$, there is only one $3$-element combination: $\lbrace 1,3,5 \rbrace$.&lt;/p>
+&lt;p>If you are asked such question during coding interview, interviewer is, probably, expecting to cover with you the following topics:&lt;/p>
+&lt;ol>
+&lt;li>&lt;em>Brute Force&lt;/em> approach that generates and counts all the feasible combinations. It will work slow even for small input.&lt;/li>
+&lt;li>Recursive solution which counts the combination without generating them. It will work faster but still has exponential time complexity.&lt;/li>
+&lt;li>Use DP or memoization techniques. In both cases, the time complexity becomes linear in $n$ and $m$.&lt;/li>
+&lt;li>Corner cases, recursion termination, call stack, testing.&lt;/li>
+&lt;/ol>
+&lt;p>Let&amp;rsquo;s talk about most important topics: building a recursive solution and optimize it using DP or memoization.&lt;/p>
+&lt;h2 id="recursive-relation">Recursive Relation&lt;/h2>
+&lt;p>Let&amp;rsquo;s define $F_{n, m}$ to be the function that computes the answer for given $n$ and $m$.
+Let&amp;rsquo;s look at the $n, m$-task. We have two non-overlapping sub-tasks (or cases):&lt;/p>
+&lt;ul>
+&lt;li>Skip the $n$-th element, then $ F_{n, m} = F_{n-1, m} $.&lt;/li>
+&lt;li>Pick the $n$-th element, then $ F_{n, m} = F_{n-2, m-1} $.&lt;/li>
+&lt;/ul>
+&lt;p>From the above, we can define the solution in the recursive form:&lt;/p>
+&lt;p>$ F_{n, m} $ $ = F_{n - 1, m} + F_{n - 2, m - 1} $,&lt;/p>
+&lt;p>let&amp;rsquo;s not forget to write down the corner cases:&lt;/p>
+&lt;p>$F_{0, 0}$ $= F_{1, 1}$ $= 1$.&lt;/p>
+&lt;p>Basically, we can combine the general and the corner cases into one expression:&lt;/p>
+&lt;p>$$ F_{n, m} = F_{n - 1, m} + F_{n - 2, m - 1} + [n=m=0] + [n=m=1] $$&lt;/p>
+&lt;p>It is very common to define $F_{n,m} = 0$ for any negative $n$ or $m$.
+The indicator $[P]$ gives $1$ if the predicate $P$ is true.
+But what about special cases, like $n=1$ and $m=0$?
+Actually, the relation covers this:&lt;/p>
+&lt;p>$F_{1,0}$ $= F_{0,0} + F_{-1,-1} + [1=0=1] + [1=m=1]$ $=F_{0,0} + 0 + 0 + 0$ $=[0=0=0]$ $=1$.&lt;/p>
+&lt;p>It is non-intuitive, but there is no need to add extra corner cases!&lt;/p>
+&lt;h2 id="memoization">Memoization&lt;/h2>
+&lt;p>The function $F_{n,m}$ has a straighforward recursive implementation in any programming language.
+But the naive recursive solution will have exponential in $n$ time complexity and will be very slow.
+Let&amp;rsquo;s look at the following &lt;code>Python 3&lt;/code> code snippet that uses memoization technique:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python" data-lang="python">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> functools
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> sys
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sys&lt;span style="color:#f92672">.&lt;/span>setrecursionlimit(&lt;span style="color:#ae81ff">100000&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">@functools.lru_cache&lt;/span>(maxsize&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#66d9ef">None&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">f_mem&lt;/span>(n: int, m: int) &lt;span style="color:#f92672">-&amp;gt;&lt;/span> int:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> n &lt;span style="color:#f92672">&amp;lt;&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#f92672">or&lt;/span> m &lt;span style="color:#f92672">&amp;lt;&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> n &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span> &lt;span style="color:#f92672">&amp;lt;&lt;/span> &lt;span style="color:#ae81ff">2&lt;/span>&lt;span style="color:#f92672">*&lt;/span>m:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> n &lt;span style="color:#f92672">==&lt;/span> m &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> n &lt;span style="color:#f92672">==&lt;/span> m &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> f_mem(n &lt;span style="color:#f92672">-&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>, m) &lt;span style="color:#f92672">+&lt;/span> f_mem(n &lt;span style="color:#f92672">-&lt;/span> &lt;span style="color:#ae81ff">2&lt;/span>, m &lt;span style="color:#f92672">-&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Nice &lt;a href="https://docs.python.org/3/library/functools.html#functools.lru_cache" target="_blank" rel="noopener">@functools.lru_cache&lt;/a>
+notation creates a wrapper on the &lt;code>f_mem&lt;/code> function and internally caches the results of all calls.
+Such caching (or memoization) significantly improves the speed of the recursion,
+and basically reduces the number of calls to something like $O(n \cdot m)$.
+The recursion still may fail on the stack overflow even on relatively small values of $n$.
+That is why we increase the stack size for the Python interpreter by calling
+&lt;a href="https://docs.python.org/3/library/sys.html#sys.setrecursionlimit" target="_blank" rel="noopener">sys.setrecursionlimit()-method&lt;/a>.&lt;/p>
+&lt;h2 id="dynamic-programming-dp">Dynamic Programming (DP)&lt;/h2>
+&lt;p>The next iterative implementation uses DP.
+Basically, it fills out the $n \times m$ table starting from the low values of $n$ and $m$.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python" data-lang="python">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">f_dp&lt;/span>(n: int, m: int) &lt;span style="color:#f92672">-&amp;gt;&lt;/span> int:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">assert&lt;/span> n &lt;span style="color:#f92672">&amp;gt;=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#f92672">and&lt;/span> m &lt;span style="color:#f92672">&amp;gt;=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> n &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span> &lt;span style="color:#f92672">&amp;lt;&lt;/span> &lt;span style="color:#ae81ff">2&lt;/span>&lt;span style="color:#f92672">*&lt;/span>m:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> table &lt;span style="color:#f92672">=&lt;/span> [[&lt;span style="color:#ae81ff">0&lt;/span>] &lt;span style="color:#f92672">*&lt;/span> (m &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>) &lt;span style="color:#66d9ef">for&lt;/span> _ &lt;span style="color:#f92672">in&lt;/span> range(n &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>)]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> table[&lt;span style="color:#ae81ff">0&lt;/span>][&lt;span style="color:#ae81ff">0&lt;/span>] &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> n &lt;span style="color:#f92672">&amp;gt;=&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> table[&lt;span style="color:#ae81ff">1&lt;/span>][&lt;span style="color:#ae81ff">0&lt;/span>] &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> m &lt;span style="color:#f92672">&amp;gt;=&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> table[&lt;span style="color:#ae81ff">1&lt;/span>][&lt;span style="color:#ae81ff">1&lt;/span>] &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> i &lt;span style="color:#f92672">in&lt;/span> range(&lt;span style="color:#ae81ff">2&lt;/span>, n&lt;span style="color:#f92672">+&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> table[i][&lt;span style="color:#ae81ff">0&lt;/span>] &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> j &lt;span style="color:#f92672">in&lt;/span> range(&lt;span style="color:#ae81ff">1&lt;/span>, min(m, (i &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>) &lt;span style="color:#f92672">//&lt;/span> &lt;span style="color:#ae81ff">2&lt;/span>) &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> table[i][j] &lt;span style="color:#f92672">=&lt;/span> table[i&lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>][j] &lt;span style="color:#f92672">+&lt;/span> table[i&lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">2&lt;/span>][j&lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> table[n][m]
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The time and space complexities are $O(n\cdot m) $.
+More accurately, time complexity might be bounded by $\Theta(n\cdot \min(n,m))$.
+It is not hard to notice that the space consumption could be reduced to $O(\min(n, m))$.&lt;/p>
+&lt;h2 id="testing">Testing&lt;/h2>
+&lt;p>In order to measure the time and to check the correctness, let&amp;rsquo;s write the following helper function:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python" data-lang="python">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> timeit
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>M &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">1000&lt;/span>&lt;span style="color:#f92672">**&lt;/span>&lt;span style="color:#ae81ff">3&lt;/span> &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">7&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">test&lt;/span>(n, m, funcs, number&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>, module&lt;span style="color:#f92672">=&lt;/span>__name__):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> f_mem&lt;span style="color:#f92672">.&lt;/span>cache_clear()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> results &lt;span style="color:#f92672">=&lt;/span> []
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> func_times &lt;span style="color:#f92672">=&lt;/span> []
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> func &lt;span style="color:#f92672">in&lt;/span> funcs:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> stmt&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#39;&lt;/span>&lt;span style="color:#e6db74">{}&lt;/span>&lt;span style="color:#e6db74">(&lt;/span>&lt;span style="color:#e6db74">{}&lt;/span>&lt;span style="color:#e6db74">,&lt;/span>&lt;span style="color:#e6db74">{}&lt;/span>&lt;span style="color:#e6db74">)&amp;#39;&lt;/span>&lt;span style="color:#f92672">.&lt;/span>format(func&lt;span style="color:#f92672">.&lt;/span>__name__, n, m)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> setup&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#39;from &lt;/span>&lt;span style="color:#e6db74">{}&lt;/span>&lt;span style="color:#e6db74"> import &lt;/span>&lt;span style="color:#e6db74">{}&lt;/span>&lt;span style="color:#e6db74">&amp;#39;&lt;/span>&lt;span style="color:#f92672">.&lt;/span>format(module, func&lt;span style="color:#f92672">.&lt;/span>__name__)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> t &lt;span style="color:#f92672">=&lt;/span> timeit&lt;span style="color:#f92672">.&lt;/span>timeit(stmt&lt;span style="color:#f92672">=&lt;/span>stmt, setup&lt;span style="color:#f92672">=&lt;/span>setup, number&lt;span style="color:#f92672">=&lt;/span>number)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> func_times&lt;span style="color:#f92672">.&lt;/span>append(t)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> results&lt;span style="color:#f92672">.&lt;/span>append(func(n, m) &lt;span style="color:#f92672">%&lt;/span> M)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">assert&lt;/span> len(set(results)) &lt;span style="color:#f92672">&amp;lt;=&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> results:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#39;f(&lt;/span>&lt;span style="color:#e6db74">{}&lt;/span>&lt;span style="color:#e6db74">,&lt;/span>&lt;span style="color:#e6db74">{}&lt;/span>&lt;span style="color:#e6db74">): &lt;/span>&lt;span style="color:#e6db74">{}&lt;/span>&lt;span style="color:#e6db74">&amp;#39;&lt;/span>&lt;span style="color:#f92672">.&lt;/span>format(n, m, results[&lt;span style="color:#ae81ff">0&lt;/span>]))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> best_time &lt;span style="color:#f92672">=&lt;/span> min(func_times)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> i, func &lt;span style="color:#f92672">in&lt;/span> enumerate(funcs):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> func_time &lt;span style="color:#f92672">=&lt;/span> func_times[i]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#39;&lt;/span>&lt;span style="color:#e6db74">{:&amp;gt;13}&lt;/span>&lt;span style="color:#e6db74">: &lt;/span>&lt;span style="color:#e6db74">{:8.4f}&lt;/span>&lt;span style="color:#e6db74"> sec, x &lt;/span>&lt;span style="color:#e6db74">{:.2f}&lt;/span>&lt;span style="color:#e6db74">&amp;#39;&lt;/span>&lt;span style="color:#f92672">.&lt;/span>format(func&lt;span style="color:#f92672">.&lt;/span>__name__, func_time, func_time&lt;span style="color:#f92672">/&lt;/span>best_time))
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>We can run it as following:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python" data-lang="python">&lt;span style="display:flex;">&lt;span>test(n&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#ae81ff">6000&lt;/span>, m&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#ae81ff">2000&lt;/span>, funcs&lt;span style="color:#f92672">=&lt;/span>[f_mem, f_dp])
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Which prints output similar to this one:&lt;/p>
+&lt;pre tabindex="0">&lt;code>f(6000,2000): 192496093
+f_mem: 6.5852 sec, x 1.28
+f_dp: 5.1507 sec, x 1.00
+&lt;/code>&lt;/pre>&lt;p>The function &lt;code>test()&lt;/code> computes $F_{6000, 2000}$ using two different ways.
+It validates that all the solutions are consistent and produce the same result.
+It also measures the time it takes to execute each method.
+For each run, it also prints the relative factor computed based on the fastest solution.
+The function&amp;rsquo;s result is printed modulo $M=1000^3+7$.&lt;/p>
+&lt;p>Memoization and DP techniques have $\Theta(n \cdot m)$ time complexity.
+Note that we ignore here a lot of interesting details, for example,
+Python has built-in long arithmetics for integers, which is used here and definetely not cheap.&lt;/p>
+&lt;p>Testing the implementations on different parameters,
+we may notice that there is no clear winner between the two algorithms.
+Probably, most of the time is spent on the long arithmetic computation.&lt;/p>
+&lt;p>Can we do even better?
+Definitely, we can!
+The table (or cache) could be preprocessed.
+Then computing the function $F_{n,m}$ will require just one query from the table (or from the cache, for memoization solution).
+As we mentioned before, such approach requires $\Theta(n\cdot m)$ space, which could be huge for $n=10000$.
+Actually, there is a way, how we can remain in very low memory consuption and still get very fast solution.
+We will discuss this in the next two posts.&lt;/p></description></item></channel></rss>
