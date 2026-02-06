@@ -2,7 +2,7 @@
 date = "2017-07-06T07:29:43Z"
 highlight = true
 math = true
-tags = ["math", "python", "generating function", "recursion", "dynamic programming", "memoization", "binomial", "multivariate function", "programming", "combinarotics"]
+tags = ["math", "python", "generating function", "recursion", "dynamic programming", "memoization", "binomial", "multivariate function", "programming", "combinatorics"]
 title = "Cracking Multivariate Recursive Equations Using Generating Functions"
 
 [header]

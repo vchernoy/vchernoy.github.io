@@ -36,7 +36,7 @@ Another example: for $n=5$ and $m=3$, there is only one $3$-element combination:
 If you are asked such question during coding interview, interviewer is, probably, expecting to cover with you the following topics:
 
 1. _Brute Force_ approach that generates and counts all the feasible combinations. It will work slow even for small input.
-2. Recursive solution which counts the combination without generating them. It will work faster but still has exponential time ecomplexity.
+2. Recursive solution which counts the combination without generating them. It will work faster but still has exponential time complexity.
 3. Use DP or memoization techniques. In both cases, the time complexity becomes linear in $n$ and $m$.
 4. Corner cases, recursion termination, call stack, testing.
 
@@ -84,7 +84,7 @@ import sys
 sys.setrecursionlimit(100000)
 
 @functools.lru_cache(maxsize=None)
-def f_mem(n, m):
+def f_mem(n: int, m: int) -> int:
     if n < 0 or m < 0:
         return 0
 
@@ -114,7 +114,7 @@ The next iterative implementation uses DP.
 Basically, it fills out the $n \times m$ table starting from the low values of $n$ and $m$.
 
 ```python
-def f_dp(n, m):
+def f_dp(n: int, m: int) -> int:
     assert n >= 0 and m >= 0
 
     if n + 1 < 2*m:

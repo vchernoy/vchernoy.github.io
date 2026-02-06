@@ -1,0 +1,14 @@
+{{ $ga := site.Params.googleAnalytics | default "" }}
+{{ if eq $ga "" }}
+  {{ $ga = site.Config.Services.GoogleAnalytics.ID | default "" }}
+{{ end }}
+
+{{ if hugo.IsProduction | and $ga }}
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ $ga }}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', '{{ $ga }}');
+</script>
+{{ end }}
