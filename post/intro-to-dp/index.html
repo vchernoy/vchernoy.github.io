@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<!-- This site was created with Hugo Blox. https://hugoblox.com -->
+<!-- Last Published: February 6, 2026 --><html lang="en-us" >
+
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  
+  
+    <meta name="generator" content="Hugo Blox Builder 5.9.7" />
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+
+  
+  
+  
+    
+      
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto+Mono&family=Roboto:wght@400;700&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto+Mono&family=Roboto:wght@400;700&display=swap" media="print" onload="this.media='all'">
+    
+  
+
+  
+  
+
+  
+  
+    
+    <script src="/js/mathjax-config.js"></script>
+  
+
+  
+
+  <link rel="stylesheet" href="/css/vendor-bundle.min.26c458e6907dc03073573976b7f4044e.css" media="print" onload="this.media='all'">
+
+  
+  
+  
+    
+    
+
+    
+    
+    
+    
+      
+      
+    
+    
+    
+
+    
+    
+    
+
+    
+
+    
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+  
+
+  
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.c0e352886d22860db4df90f1df196e9c.css" />
+
+  
+  
+  
+
+  
+  
+  
+  
+  
+  
+  
+    
+    
+    <link rel="stylesheet" href="/css/libs/chroma/github-light.min.css" title="hl-light" media="print" onload="this.media='all'" disabled>
+    <link rel="stylesheet" href="/css/libs/chroma/dracula.min.css" title="hl-dark" media="print" onload="this.media='all'" >
+  
+
+  
+  
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-102853829-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-102853829-1');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+<meta name="description" content="In the post, we discuss the basics of Recursion, Dynamic Programming (DP), and Memoization.
+As an example, we take a combinatorial problem, which has very short and clear description.
+This allows us to focus on DP and memoization.
+Note that the topics are very popular in coding interviews.
+Hopefully, this article will help to somebody to prepare for such types of questions.
+In the next posts,
+we consider more advanced topics, like
+The Art of Generating Functions and
+Cracking Multivariate Recursive Equations Using Generating Functions.
+The methods can be applied to the same combinatorial question.
+Let&rsquo;s start from presenting the problem." />
+
+
+
+<link rel="alternate" hreflang="en-us" href="/post/intro-to-dp/" />
+<link rel="canonical" href="/post/intro-to-dp/" />
+
+
+
+
+
+<link rel="icon" type="image/png" href="/media/icon_hu_857dd55c234bc14f.png" />
+<link rel="apple-touch-icon" type="image/png" href="/media/icon_hu_88611cbd7a187137.png" />
+
+<meta name="theme-color" content="#bbdefb" />
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+<meta property="twitter:card" content="summary" />
+<meta property="twitter:image" content="/media/icon_hu_43cf117bf1a42c34.png" />
+
+
+
+  
+
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="" />
+<meta property="og:url" content="/post/intro-to-dp/" />
+<meta property="og:title" content="Introduction to Dynamic Programming and Memoization | " />
+<meta property="og:description" content="In the post, we discuss the basics of Recursion, Dynamic Programming (DP), and Memoization.
+As an example, we take a combinatorial problem, which has very short and clear description.
+This allows us to focus on DP and memoization.
+Note that the topics are very popular in coding interviews.
+Hopefully, this article will help to somebody to prepare for such types of questions.
+In the next posts,
+we consider more advanced topics, like
+The Art of Generating Functions and
+Cracking Multivariate Recursive Equations Using Generating Functions.
+The methods can be applied to the same combinatorial question.
+Let&rsquo;s start from presenting the problem." /><meta property="og:image" content="/media/icon_hu_43cf117bf1a42c34.png" /><meta property="og:locale" content="en-us" />
+
+  
+    <meta
+      property="article:published_time"
+      content="2017-07-04T07:29:43&#43;00:00"
+    />
+  
+  
+    <meta property="article:modified_time" content="2017-07-04T07:29:43&#43;00:00">
+  
+
+
+
+
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "/post/intro-to-dp/"
+  },
+  "headline": "Introduction to Dynamic Programming and Memoization",
+  
+  "datePublished": "2017-07-04T07:29:43Z",
+  "dateModified": "2017-07-04T07:29:43Z",
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "/media/icon_hu_19349546d07106a3.png"
+    }
+  },
+  "description": "\u003cp\u003eIn the post, we discuss the basics of \u003cem\u003eRecursion\u003c/em\u003e, \u003cem\u003eDynamic Programming\u003c/em\u003e (DP), and \u003cem\u003eMemoization\u003c/em\u003e.\nAs an example, we take a combinatorial problem, which has very short and clear description.\nThis allows us to focus on DP and memoization.\nNote that the topics are very popular in coding interviews.\nHopefully, this article will help to somebody to prepare for such types of questions.\u003c/p\u003e\n\u003cp\u003eIn the next posts,\nwe consider more advanced topics, like\n\u003ca href=\"/post/gen-func-art/\"\u003eThe Art of Generating Functions\u003c/a\u003e and\n\u003ca href=\"/post/two-var-recursive-func/\"\u003eCracking Multivariate Recursive Equations Using Generating Functions\u003c/a\u003e.\nThe methods can be applied to the same combinatorial question.\nLet\u0026rsquo;s start from presenting the problem.\u003c/p\u003e"
+}
+</script>
+
+  
+
+  
+
+
+
+
+  
+  
+  
+
+  
+  
+
+  
+
+
+  
+  <title>Introduction to Dynamic Programming and Memoization | </title>
+
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper  dark " data-wc-page-id="0174611b38a7a83ea5946a1ff8a98b2c" >
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="/js/wowchemy-init.min.db21e13b9b5c4f4b947717750ec8b3cc.js"></script>
+
+  
+
+
+
+
+  <div class="page-header header--fixed">
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+<header>
+  <nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+    <div class="container-xl">
+
+      
+      <div class="d-none d-lg-inline-flex">
+        <a class="navbar-brand" href="/"></a>
+      </div>
+      
+
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+      <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+      
+      <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+        <a class="navbar-brand" href="/"></a>
+      </div>
+      
+
+      
+      
+      <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+        
+        <ul class="navbar-nav d-md-inline-flex">
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#about"><span>Home</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#posts"><span>Posts</span></a>
+          </li>
+
+          
+          
+
+        
+
+          
+        </ul>
+      </div>
+
+      <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+        
+        
+
+        
+        
+        
+
+        
+        
+        
+
+        
+        
+
+      </ul>
+
+    </div>
+  </nav>
+</header>
+
+
+  </div>
+
+  <div class="page-body">
+    
+    
+    
+
+    <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>Introduction to Dynamic Programming and Memoization</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Jul 4, 2017
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    6 min read
+  </span>
+  
+
+  
+  
+  
+  
+
+  
+  
+
+</div>
+
+    
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      <p>In the post, we discuss the basics of <em>Recursion</em>, <em>Dynamic Programming</em> (DP), and <em>Memoization</em>.
+As an example, we take a combinatorial problem, which has very short and clear description.
+This allows us to focus on DP and memoization.
+Note that the topics are very popular in coding interviews.
+Hopefully, this article will help to somebody to prepare for such types of questions.</p>
+<p>In the next posts,
+we consider more advanced topics, like
+<a href="/post/gen-func-art/">The Art of Generating Functions</a> and
+<a href="/post/two-var-recursive-func/">Cracking Multivariate Recursive Equations Using Generating Functions</a>.
+The methods can be applied to the same combinatorial question.
+Let&rsquo;s start from presenting the problem.</p>
+<h2 id="the-problem">The Problem</h2>
+<blockquote>
+<p>Compute the number of ways to choose $m$ elements from $n$ elements such that selected elements in one combination are not adjacent.</p></blockquote>
+<p>For example, for $n=4$ and $m=2$, the answer is $3$, since from the $4$-element set: $\lbrace 1,2,3,4 \rbrace$,
+there are three feasible $2$-element combinations: $\lbrace 1,4 \rbrace$, $\lbrace 2,4 \rbrace$, $\lbrace 1,3 \rbrace$.</p>
+<p>Another example: for $n=5$ and $m=3$, there is only one $3$-element combination: $\lbrace 1,3,5 \rbrace$.</p>
+<p>If you are asked such question during coding interview, interviewer is, probably, expecting to cover with you the following topics:</p>
+<ol>
+<li><em>Brute Force</em> approach that generates and counts all the feasible combinations. It will work slow even for small input.</li>
+<li>Recursive solution which counts the combination without generating them. It will work faster but still has exponential time complexity.</li>
+<li>Use DP or memoization techniques. In both cases, the time complexity becomes linear in $n$ and $m$.</li>
+<li>Corner cases, recursion termination, call stack, testing.</li>
+</ol>
+<p>Let&rsquo;s talk about most important topics: building a recursive solution and optimize it using DP or memoization.</p>
+<h2 id="recursive-relation">Recursive Relation</h2>
+<p>Let&rsquo;s define $F_{n, m}$ to be the function that computes the answer for given $n$ and $m$.
+Let&rsquo;s look at the $n, m$-task. We have two non-overlapping sub-tasks (or cases):</p>
+<ul>
+<li>Skip the $n$-th element, then $ F_{n, m} = F_{n-1, m} $.</li>
+<li>Pick the $n$-th element, then $ F_{n, m} = F_{n-2, m-1} $.</li>
+</ul>
+<p>From the above, we can define the solution in the recursive form:</p>
+<p>$ F_{n, m} $ $ = F_{n - 1, m} + F_{n - 2, m - 1} $,</p>
+<p>let&rsquo;s not forget to write down the corner cases:</p>
+<p>$F_{0, 0}$ $= F_{1, 1}$ $= 1$.</p>
+<p>Basically, we can combine the general and the corner cases into one expression:</p>
+<p>$$ F_{n, m} = F_{n - 1, m} + F_{n - 2, m - 1} + [n=m=0] + [n=m=1] $$</p>
+<p>It is very common to define $F_{n,m} = 0$ for any negative $n$ or $m$.
+The indicator $[P]$ gives $1$ if the predicate $P$ is true.
+But what about special cases, like $n=1$ and $m=0$?
+Actually, the relation covers this:</p>
+<p>$F_{1,0}$ $= F_{0,0} + F_{-1,-1} + [1=0=1] + [1=m=1]$ $=F_{0,0} + 0 + 0 + 0$ $=[0=0=0]$ $=1$.</p>
+<p>It is non-intuitive, but there is no need to add extra corner cases!</p>
+<h2 id="memoization">Memoization</h2>
+<p>The function $F_{n,m}$ has a straighforward recursive implementation in any programming language.
+But the naive recursive solution will have exponential in $n$ time complexity and will be very slow.
+Let&rsquo;s look at the following <code>Python 3</code> code snippet that uses memoization technique:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> functools
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> sys
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sys<span style="color:#f92672">.</span>setrecursionlimit(<span style="color:#ae81ff">100000</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@functools.lru_cache</span>(maxsize<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">f_mem</span>(n: int, m: int) <span style="color:#f92672">-&gt;</span> int:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> n <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">or</span> m <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> n <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>m:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> n <span style="color:#f92672">==</span> m <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> n <span style="color:#f92672">==</span> m <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> f_mem(n <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>, m) <span style="color:#f92672">+</span> f_mem(n <span style="color:#f92672">-</span> <span style="color:#ae81ff">2</span>, m <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)
+</span></span></code></pre></div><p>Nice <a href="https://docs.python.org/3/library/functools.html#functools.lru_cache" target="_blank" rel="noopener">@functools.lru_cache</a>
+notation creates a wrapper on the <code>f_mem</code> function and internally caches the results of all calls.
+Such caching (or memoization) significantly improves the speed of the recursion,
+and basically reduces the number of calls to something like $O(n \cdot m)$.
+The recursion still may fail on the stack overflow even on relatively small values of $n$.
+That is why we increase the stack size for the Python interpreter by calling
+<a href="https://docs.python.org/3/library/sys.html#sys.setrecursionlimit" target="_blank" rel="noopener">sys.setrecursionlimit()-method</a>.</p>
+<h2 id="dynamic-programming-dp">Dynamic Programming (DP)</h2>
+<p>The next iterative implementation uses DP.
+Basically, it fills out the $n \times m$ table starting from the low values of $n$ and $m$.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">f_dp</span>(n: int, m: int) <span style="color:#f92672">-&gt;</span> int:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">assert</span> n <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">and</span> m <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> n <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>m:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    table <span style="color:#f92672">=</span> [[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">*</span> (m <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>) <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(n <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>)]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    table[<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> n <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">1</span>:
+</span></span><span style="display:flex;"><span>        table[<span style="color:#ae81ff">1</span>][<span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> m <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">1</span>:
+</span></span><span style="display:flex;"><span>            table[<span style="color:#ae81ff">1</span>][<span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">2</span>, n<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>):
+</span></span><span style="display:flex;"><span>        table[i][<span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1</span>, min(m, (i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">//</span> <span style="color:#ae81ff">2</span>) <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>):
+</span></span><span style="display:flex;"><span>            table[i][j] <span style="color:#f92672">=</span> table[i<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>][j] <span style="color:#f92672">+</span> table[i<span style="color:#f92672">-</span><span style="color:#ae81ff">2</span>][j<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> table[n][m]
+</span></span></code></pre></div><p>The time and space complexities are $O(n\cdot m) $.
+More accurately, time complexity might be bounded by $\Theta(n\cdot \min(n,m))$.
+It is not hard to notice that the space consumption could be reduced to $O(\min(n, m))$.</p>
+<h2 id="testing">Testing</h2>
+<p>In order to measure the time and to check the correctness, let&rsquo;s write the following helper function:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> timeit
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>M <span style="color:#f92672">=</span> <span style="color:#ae81ff">1000</span><span style="color:#f92672">**</span><span style="color:#ae81ff">3</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">7</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test</span>(n, m, funcs, number<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, module<span style="color:#f92672">=</span>__name__):
+</span></span><span style="display:flex;"><span>    f_mem<span style="color:#f92672">.</span>cache_clear()
+</span></span><span style="display:flex;"><span>    results <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>    func_times <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> func <span style="color:#f92672">in</span> funcs:
+</span></span><span style="display:flex;"><span>        stmt<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">{}</span><span style="color:#e6db74">(</span><span style="color:#e6db74">{}</span><span style="color:#e6db74">,</span><span style="color:#e6db74">{}</span><span style="color:#e6db74">)&#39;</span><span style="color:#f92672">.</span>format(func<span style="color:#f92672">.</span>__name__, n, m)
+</span></span><span style="display:flex;"><span>        setup<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;from </span><span style="color:#e6db74">{}</span><span style="color:#e6db74"> import </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">.</span>format(module, func<span style="color:#f92672">.</span>__name__)
+</span></span><span style="display:flex;"><span>        t <span style="color:#f92672">=</span> timeit<span style="color:#f92672">.</span>timeit(stmt<span style="color:#f92672">=</span>stmt, setup<span style="color:#f92672">=</span>setup, number<span style="color:#f92672">=</span>number)
+</span></span><span style="display:flex;"><span>        func_times<span style="color:#f92672">.</span>append(t)
+</span></span><span style="display:flex;"><span>        results<span style="color:#f92672">.</span>append(func(n, m) <span style="color:#f92672">%</span> M)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">assert</span> len(set(results)) <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> results:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#39;f(</span><span style="color:#e6db74">{}</span><span style="color:#e6db74">,</span><span style="color:#e6db74">{}</span><span style="color:#e6db74">): </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">.</span>format(n, m, results[<span style="color:#ae81ff">0</span>]))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    best_time <span style="color:#f92672">=</span> min(func_times)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i, func <span style="color:#f92672">in</span> enumerate(funcs):
+</span></span><span style="display:flex;"><span>        func_time <span style="color:#f92672">=</span> func_times[i]
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">{:&gt;13}</span><span style="color:#e6db74">: </span><span style="color:#e6db74">{:8.4f}</span><span style="color:#e6db74"> sec, x </span><span style="color:#e6db74">{:.2f}</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">.</span>format(func<span style="color:#f92672">.</span>__name__, func_time, func_time<span style="color:#f92672">/</span>best_time))
+</span></span></code></pre></div><p>We can run it as following:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>test(n<span style="color:#f92672">=</span><span style="color:#ae81ff">6000</span>, m<span style="color:#f92672">=</span><span style="color:#ae81ff">2000</span>, funcs<span style="color:#f92672">=</span>[f_mem, f_dp])
+</span></span></code></pre></div><p>Which prints output similar to this one:</p>
+<pre tabindex="0"><code>f(6000,2000): 192496093
+        f_mem:   6.5852 sec, x 1.28
+         f_dp:   5.1507 sec, x 1.00
+</code></pre><p>The function <code>test()</code> computes $F_{6000, 2000}$ using two different ways.
+It validates that all the solutions are consistent and produce the same result.
+It also measures the time it takes to execute each method.
+For each run, it also prints the relative factor computed based on the fastest solution.
+The function&rsquo;s result is printed modulo $M=1000^3+7$.</p>
+<p>Memoization and DP techniques have $\Theta(n \cdot m)$ time complexity.
+Note that we ignore here a lot of interesting details, for example,
+Python has built-in long arithmetics for integers, which is used here and definetely not cheap.</p>
+<p>Testing the implementations on different parameters,
+we may notice that there is no clear winner between the two algorithms.
+Probably, most of the time is spent on the long arithmetic computation.</p>
+<p>Can we do even better?
+Definitely, we can!
+The table (or cache) could be preprocessed.
+Then computing the function $F_{n,m}$ will require just one query from the table (or from the cache, for memoization solution).
+As we mentioned before, such approach requires $\Theta(n\cdot m)$ space, which could be huge for $n=10000$.
+Actually, there is a way, how we can remain in very low memory consuption and still get very fast solution.
+We will discuss this in the next two posts.</p>
+
+    </div>
+
+    
+
+
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tags/math/">Math</a>
+  
+  <a class="badge badge-light" href="/tags/python/">Python</a>
+  
+  <a class="badge badge-light" href="/tags/recursion/">Recursion</a>
+  
+  <a class="badge badge-light" href="/tags/dynamic-programming/">Dynamic Programming</a>
+  
+  <a class="badge badge-light" href="/tags/memoization/">Memoization</a>
+  
+  <a class="badge badge-light" href="/tags/binomial/">Binomial</a>
+  
+  <a class="badge badge-light" href="/tags/coding-interview/">Coding Interview</a>
+  
+  <a class="badge badge-light" href="/tags/programming/">Programming</a>
+  
+  <a class="badge badge-light" href="/tags/combinatorics/">Combinatorics</a>
+  
+</div>
+
+
+
+<div class="share-box">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=%2Fpost%2Fintro-to-dp%2F&amp;text=Introduction&#43;to&#43;Dynamic&#43;Programming&#43;and&#43;Memoization" target="_blank" rel="noopener" class="share-btn-twitter" aria-label="twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=%2Fpost%2Fintro-to-dp%2F&amp;t=Introduction&#43;to&#43;Dynamic&#43;Programming&#43;and&#43;Memoization" target="_blank" rel="noopener" class="share-btn-facebook" aria-label="facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      
+      
+        
+      
+      <li>
+        <a href="mailto:?subject=Introduction%20to%20Dynamic%20Programming%20and%20Memoization&amp;body=%2Fpost%2Fintro-to-dp%2F" target="_blank" rel="noopener" class="share-btn-email" aria-label="envelope">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=%2Fpost%2Fintro-to-dp%2F&amp;title=Introduction&#43;to&#43;Dynamic&#43;Programming&#43;and&#43;Memoization" target="_blank" rel="noopener" class="share-btn-linkedin" aria-label="linkedin-in">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      
+      
+      <li>
+        <a href="whatsapp://send?text=Introduction&#43;to&#43;Dynamic&#43;Programming&#43;and&#43;Memoization%20%2Fpost%2Fintro-to-dp%2F" target="_blank" rel="noopener" class="share-btn-whatsapp" aria-label="whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=%2Fpost%2Fintro-to-dp%2F&amp;title=Introduction&#43;to&#43;Dynamic&#43;Programming&#43;and&#43;Memoization" target="_blank" rel="noopener" class="share-btn-weibo" aria-label="weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section id="comments">
+  <div id="graphcomment"></div>
+<script type="text/javascript">
+ 
+window.graphcomment_id = 'B8a3Q3Al1kTk';
+ 
+(function() {
+    var gc = document.createElement('script'); gc.type = 'text/javascript'; gc.async = true;
+    gc.src = 'https://graphcomment.com/js/integration.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(gc);
+})();
+</script>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+  </div>
+</article>
+  </div>
+
+  <div class="page-footer">
+    
+    
+    <div class="container">
+      <footer class="site-footer">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  <p class="powered-by">
+    
+    
+    
+      
+      
+      
+      
+      
+      
+      Published with <!-- raw HTML omitted -->Hugo Blox Builder<!-- raw HTML omitted --> — the free, <!-- raw HTML omitted -->open source<!-- raw HTML omitted --> website builder that empowers creators.
+    
+  </p>
+</footer>
+
+    </div>
+    
+  </div>
+
+  
+
+
+<script src="/js/vendor-bundle.min.50933d940896e49f984a778650d5f7f5.js"></script>
+
+
+
+
+  
+
+  
+  
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script id="page-data" type="application/json">{"use_headroom":true}</script>
+
+
+  <script src="/js/wowchemy-headroom.db4755770454eb63685f8de785c0a172.js" type="module"></script>
+
+
+
+
+
+
+
+
+
+
+<script src="/en/js/wowchemy.min.b42cee516846615f6e61f624dc63a325.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
