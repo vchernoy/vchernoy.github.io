@@ -53,18 +53,18 @@ $ = \Phi \cdot ( 2 x y z + x y + x z + y z ) + 1 + x + y + z$&lt;/p&gt;
 &lt;p&gt;Using&lt;/p&gt;
 &lt;p&gt;$$\frac{1}{1-\rho} = \sum_{i \geq 0} \rho^i$$&lt;/p&gt;
 &lt;p&gt;and the multinomial expansion&lt;/p&gt;
-&lt;p&gt;$$(x_1+x_2+x_3+x_4)^N = \sum_{k_1+k_2+k_3+k_4=N} \binom{N}{k_1,k_2,k_3,k_4} x_1^{k_1} x_2^{k_2} x_3^{k_3} x_4^{k_4}$$&lt;/p&gt;
+&lt;p&gt;$$(x_1+x_2+x_3+x_4)^N = \sum_{r_1+r_2+r_3+r_4=N} \binom{N}{r_1,r_2,r_3,r_4} x_1^{r_1} x_2^{r_2} x_3^{r_3} x_4^{r_4}$$&lt;/p&gt;
 &lt;p&gt;with&lt;/p&gt;
-&lt;p&gt;$$\binom{N}{k_1,k_2,k_3,k_4} = \frac{N!}{k_1!\cdot k_2!\cdot k_3!\cdot k_4!}$$&lt;/p&gt;
+&lt;p&gt;$$\binom{N}{r_1,r_2,r_3,r_4} = \frac{N!}{r_1!\cdot r_2!\cdot r_3!\cdot r_4!}$$&lt;/p&gt;
 &lt;p&gt;we expand the denominator of $\Phi$. Let $\rho = 2xyz + xy + xz + yz$. Then&lt;/p&gt;
 &lt;p&gt;$$\Phi = \frac{1+x+y+z}{1-\rho} = (1+x+y+z) \sum_{N \geq 0} \rho^N$$&lt;/p&gt;
-&lt;p&gt;Expanding $\rho^N$ with the multinomial theorem (and writing $k_4 = N - k_1 - k_2 - k_3$):&lt;/p&gt;
+&lt;p&gt;Expanding $\rho^N$ with the multinomial theorem (and writing $r_4 = N - r_1 - r_2 - r_3$):&lt;/p&gt;
 &lt;p&gt;$\sum_{N \geq 0} \rho^N = \sum_{N}(2 x y z + x y + x z + y z)^N $
-$ = \sum_{k_1+k_2+k_3+k_4=N} \binom{N} {k_1,k_2,k_3,k_4} (2 x y z)^{k_1} \cdot (x y)^{k_2} \cdot (x z)^{k_3} \cdot (y z)^{k_4}$
-$ = \sum_{k_1+k_2+k_3+k_4=N} \binom{N} {k_1,k_2,k_3,k_4} 2^{k_1} x^{k_1+k_2+k_3} y^{k_1+k_2+k_4} z^{k_1+k_3+k_4}$
-$ = \sum_{k_1+k_2+k_3 \leq N} \binom{N} {k_1,k_2,k_3, N-k_1-k_2-k_3} 2^{k_1} x^{k_1+k_2+k_3} y^{N-k_3} z^{N-k_2}$&lt;/p&gt;
+$ = \sum_{r_1+r_2+r_3+r_4=N} \binom{N} {r_1,r_2,r_3,r_4} (2 x y z)^{r_1} \cdot (x y)^{r_2} \cdot (x z)^{r_3} \cdot (y z)^{r_4}$
+$ = \sum_{r_1+r_2+r_3+r_4=N} \binom{N} {r_1,r_2,r_3,r_4} 2^{r_1} x^{r_1+r_2+r_3} y^{r_1+r_2+r_4} z^{r_1+r_3+r_4}$
+$ = \sum_{r_1+r_2+r_3 \leq N} \binom{N} {r_1,r_2,r_3, N-r_1-r_2-r_3} 2^{r_1} x^{r_1+r_2+r_3} y^{N-r_3} z^{N-r_2}$&lt;/p&gt;
 &lt;p&gt;So we have&lt;/p&gt;
-&lt;p&gt;$$ \Phi = (1 + x + y + z) \sum_{k_1+k_2+k_3 \leq N} \binom{N} {k_1,k_2,k_3, N-k_1-k_2-k_3} 2^{k_1} x^{k_1+k_2+k_3} y^{N-k_3} z^{N-k_2}$$&lt;/p&gt;
+&lt;p&gt;$$ \Phi = (1 + x + y + z) \sum_{r_1+r_2+r_3 \leq N} \binom{N} {r_1,r_2,r_3, N-r_1-r_2-r_3} 2^{r_1} x^{r_1+r_2+r_3} y^{N-r_3} z^{N-r_2}$$&lt;/p&gt;
 &lt;p&gt;Extracting the coefficient of $x^n y^m z^k$ gives the closed form. The full expression has four sums (from the numerator $1+x+y+z$):&lt;/p&gt;
 &lt;p&gt;$$a_{n,m,k} = \sum_{N=\max(n,m,k)}^{ (n+m+k)/2 } \binom{N}{n+m+k-2N, N-n, N-m, N-k} 2^{n+m+k-2N}$$
 $$ + \sum_{N=\max(n,m-1,k)}^{ (n+m+k-1)/2 } \binom{N}{n+m+k-2N-1, N-n, N-m+1, N-k} 2^{n+m+k-2N-1}$$
@@ -108,12 +108,12 @@ $$ + \sum_{N=\max(n,m,k-1)}^{ (n+m+k-1)/2 } \binom{N}{n+m+k-2N-1, N-n, N-m, N-k+
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; a_rec(n, m &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, k &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    )
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@functools.lru_cache&lt;/span&gt;(maxsize&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;)
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;binom4&lt;/span&gt;(N: int, k1: int, k2: int, k3: int) &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; int:
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    k4 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; N &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; k1 &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; k2 &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; k3
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;binom4&lt;/span&gt;(N: int, r1: int, r2: int, r3: int) &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; int:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    r4 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; N &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; r1 &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; r2 &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; r3
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; math&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;factorial(N) &lt;span style=&#34;color:#f92672&#34;&gt;//&lt;/span&gt; (
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        math&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;factorial(k1) &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; math&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;factorial(k2)
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; math&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;factorial(k3) &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; math&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;factorial(k4)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        math&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;factorial(r1) &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; math&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;factorial(r2)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; math&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;factorial(r3) &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; math&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;factorial(r4)
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    )
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;

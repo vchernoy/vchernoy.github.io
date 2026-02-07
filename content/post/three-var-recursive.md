@@ -66,26 +66,26 @@ $$\frac{1}{1-\rho} = \sum_{i \geq 0} \rho^i$$
 
 and the multinomial expansion
 
-$$(x_1+x_2+x_3+x_4)^N = \sum_{k_1+k_2+k_3+k_4=N} \binom{N}{k_1,k_2,k_3,k_4} x_1^{k_1} x_2^{k_2} x_3^{k_3} x_4^{k_4}$$
+$$(x_1+x_2+x_3+x_4)^N = \sum_{r_1+r_2+r_3+r_4=N} \binom{N}{r_1,r_2,r_3,r_4} x_1^{r_1} x_2^{r_2} x_3^{r_3} x_4^{r_4}$$
 
 with
 
-$$\binom{N}{k_1,k_2,k_3,k_4} = \frac{N!}{k_1!\cdot k_2!\cdot k_3!\cdot k_4!}$$
+$$\binom{N}{r_1,r_2,r_3,r_4} = \frac{N!}{r_1!\cdot r_2!\cdot r_3!\cdot r_4!}$$
 
 we expand the denominator of $\Phi$. Let $\rho = 2xyz + xy + xz + yz$. Then
 
 $$\Phi = \frac{1+x+y+z}{1-\rho} = (1+x+y+z) \sum_{N \geq 0} \rho^N$$
 
-Expanding $\rho^N$ with the multinomial theorem (and writing $k_4 = N - k_1 - k_2 - k_3$):
+Expanding $\rho^N$ with the multinomial theorem (and writing $r_4 = N - r_1 - r_2 - r_3$):
 
 $\sum_{N \geq 0} \rho^N = \sum_{N}(2 x y z + x y + x z + y z)^N $
-$ = \sum_{k_1+k_2+k_3+k_4=N} \binom{N} {k_1,k_2,k_3,k_4} (2 x y z)^{k_1} \cdot (x y)^{k_2} \cdot (x z)^{k_3} \cdot (y z)^{k_4}$
-$ = \sum_{k_1+k_2+k_3+k_4=N} \binom{N} {k_1,k_2,k_3,k_4} 2^{k_1} x^{k_1+k_2+k_3} y^{k_1+k_2+k_4} z^{k_1+k_3+k_4}$
-$ = \sum_{k_1+k_2+k_3 \leq N} \binom{N} {k_1,k_2,k_3, N-k_1-k_2-k_3} 2^{k_1} x^{k_1+k_2+k_3} y^{N-k_3} z^{N-k_2}$
+$ = \sum_{r_1+r_2+r_3+r_4=N} \binom{N} {r_1,r_2,r_3,r_4} (2 x y z)^{r_1} \cdot (x y)^{r_2} \cdot (x z)^{r_3} \cdot (y z)^{r_4}$
+$ = \sum_{r_1+r_2+r_3+r_4=N} \binom{N} {r_1,r_2,r_3,r_4} 2^{r_1} x^{r_1+r_2+r_3} y^{r_1+r_2+r_4} z^{r_1+r_3+r_4}$
+$ = \sum_{r_1+r_2+r_3 \leq N} \binom{N} {r_1,r_2,r_3, N-r_1-r_2-r_3} 2^{r_1} x^{r_1+r_2+r_3} y^{N-r_3} z^{N-r_2}$
 
 So we have
 
-$$ \Phi = (1 + x + y + z) \sum_{k_1+k_2+k_3 \leq N} \binom{N} {k_1,k_2,k_3, N-k_1-k_2-k_3} 2^{k_1} x^{k_1+k_2+k_3} y^{N-k_3} z^{N-k_2}$$
+$$ \Phi = (1 + x + y + z) \sum_{r_1+r_2+r_3 \leq N} \binom{N} {r_1,r_2,r_3, N-r_1-r_2-r_3} 2^{r_1} x^{r_1+r_2+r_3} y^{N-r_3} z^{N-r_2}$$
 
 Extracting the coefficient of $x^n y^m z^k$ gives the closed form. The full expression has four sums (from the numerator $1+x+y+z$):
 
@@ -141,12 +141,12 @@ def a_rec(n: int, m: int, k: int) -> int:
 
 ```python
 @functools.lru_cache(maxsize=None)
-def binom4(N: int, k1: int, k2: int, k3: int) -> int:
-    k4 = N - k1 - k2 - k3
+def binom4(N: int, r1: int, r2: int, r3: int) -> int:
+    r4 = N - r1 - r2 - r3
 
     return math.factorial(N) // (
-        math.factorial(k1) * math.factorial(k2)
-        * math.factorial(k3) * math.factorial(k4)
+        math.factorial(r1) * math.factorial(r2)
+        * math.factorial(r3) * math.factorial(r4)
     )
 
 

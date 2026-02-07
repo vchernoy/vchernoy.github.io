@@ -747,18 +747,18 @@ $ = \Phi \cdot ( 2 x y z + x y + x z + y z ) + 1 + x + y + z$</p>
 <p>Using</p>
 <p>$$\frac{1}{1-\rho} = \sum_{i \geq 0} \rho^i$$</p>
 <p>and the multinomial expansion</p>
-<p>$$(x_1+x_2+x_3+x_4)^N = \sum_{k_1+k_2+k_3+k_4=N} \binom{N}{k_1,k_2,k_3,k_4} x_1^{k_1} x_2^{k_2} x_3^{k_3} x_4^{k_4}$$</p>
+<p>$$(x_1+x_2+x_3+x_4)^N = \sum_{r_1+r_2+r_3+r_4=N} \binom{N}{r_1,r_2,r_3,r_4} x_1^{r_1} x_2^{r_2} x_3^{r_3} x_4^{r_4}$$</p>
 <p>with</p>
-<p>$$\binom{N}{k_1,k_2,k_3,k_4} = \frac{N!}{k_1!\cdot k_2!\cdot k_3!\cdot k_4!}$$</p>
+<p>$$\binom{N}{r_1,r_2,r_3,r_4} = \frac{N!}{r_1!\cdot r_2!\cdot r_3!\cdot r_4!}$$</p>
 <p>we expand the denominator of $\Phi$. Let $\rho = 2xyz + xy + xz + yz$. Then</p>
 <p>$$\Phi = \frac{1+x+y+z}{1-\rho} = (1+x+y+z) \sum_{N \geq 0} \rho^N$$</p>
-<p>Expanding $\rho^N$ with the multinomial theorem (and writing $k_4 = N - k_1 - k_2 - k_3$):</p>
+<p>Expanding $\rho^N$ with the multinomial theorem (and writing $r_4 = N - r_1 - r_2 - r_3$):</p>
 <p>$\sum_{N \geq 0} \rho^N = \sum_{N}(2 x y z + x y + x z + y z)^N $
-$ = \sum_{k_1+k_2+k_3+k_4=N} \binom{N} {k_1,k_2,k_3,k_4} (2 x y z)^{k_1} \cdot (x y)^{k_2} \cdot (x z)^{k_3} \cdot (y z)^{k_4}$
-$ = \sum_{k_1+k_2+k_3+k_4=N} \binom{N} {k_1,k_2,k_3,k_4} 2^{k_1} x^{k_1+k_2+k_3} y^{k_1+k_2+k_4} z^{k_1+k_3+k_4}$
-$ = \sum_{k_1+k_2+k_3 \leq N} \binom{N} {k_1,k_2,k_3, N-k_1-k_2-k_3} 2^{k_1} x^{k_1+k_2+k_3} y^{N-k_3} z^{N-k_2}$</p>
+$ = \sum_{r_1+r_2+r_3+r_4=N} \binom{N} {r_1,r_2,r_3,r_4} (2 x y z)^{r_1} \cdot (x y)^{r_2} \cdot (x z)^{r_3} \cdot (y z)^{r_4}$
+$ = \sum_{r_1+r_2+r_3+r_4=N} \binom{N} {r_1,r_2,r_3,r_4} 2^{r_1} x^{r_1+r_2+r_3} y^{r_1+r_2+r_4} z^{r_1+r_3+r_4}$
+$ = \sum_{r_1+r_2+r_3 \leq N} \binom{N} {r_1,r_2,r_3, N-r_1-r_2-r_3} 2^{r_1} x^{r_1+r_2+r_3} y^{N-r_3} z^{N-r_2}$</p>
 <p>So we have</p>
-<p>$$ \Phi = (1 + x + y + z) \sum_{k_1+k_2+k_3 \leq N} \binom{N} {k_1,k_2,k_3, N-k_1-k_2-k_3} 2^{k_1} x^{k_1+k_2+k_3} y^{N-k_3} z^{N-k_2}$$</p>
+<p>$$ \Phi = (1 + x + y + z) \sum_{r_1+r_2+r_3 \leq N} \binom{N} {r_1,r_2,r_3, N-r_1-r_2-r_3} 2^{r_1} x^{r_1+r_2+r_3} y^{N-r_3} z^{N-r_2}$$</p>
 <p>Extracting the coefficient of $x^n y^m z^k$ gives the closed form. The full expression has four sums (from the numerator $1+x+y+z$):</p>
 <p>$$a_{n,m,k} = \sum_{N=\max(n,m,k)}^{ (n+m+k)/2 } \binom{N}{n+m+k-2N, N-n, N-m, N-k} 2^{n+m+k-2N}$$
 $$ + \sum_{N=\max(n,m-1,k)}^{ (n+m+k-1)/2 } \binom{N}{n+m+k-2N-1, N-n, N-m+1, N-k} 2^{n+m+k-2N-1}$$
@@ -802,12 +802,12 @@ $$ + \sum_{N=\max(n,m,k-1)}^{ (n+m+k-1)/2 } \binom{N}{n+m+k-2N-1, N-n, N-m, N-k+
 </span></span><span style="display:flex;"><span>        <span style="color:#f92672">+</span> a_rec(n, m <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>, k <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)
 </span></span><span style="display:flex;"><span>    )
 </span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#a6e22e">@functools.lru_cache</span>(maxsize<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>)
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">binom4</span>(N: int, k1: int, k2: int, k3: int) <span style="color:#f92672">-&gt;</span> int:
-</span></span><span style="display:flex;"><span>    k4 <span style="color:#f92672">=</span> N <span style="color:#f92672">-</span> k1 <span style="color:#f92672">-</span> k2 <span style="color:#f92672">-</span> k3
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">binom4</span>(N: int, r1: int, r2: int, r3: int) <span style="color:#f92672">-&gt;</span> int:
+</span></span><span style="display:flex;"><span>    r4 <span style="color:#f92672">=</span> N <span style="color:#f92672">-</span> r1 <span style="color:#f92672">-</span> r2 <span style="color:#f92672">-</span> r3
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> math<span style="color:#f92672">.</span>factorial(N) <span style="color:#f92672">//</span> (
-</span></span><span style="display:flex;"><span>        math<span style="color:#f92672">.</span>factorial(k1) <span style="color:#f92672">*</span> math<span style="color:#f92672">.</span>factorial(k2)
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">*</span> math<span style="color:#f92672">.</span>factorial(k3) <span style="color:#f92672">*</span> math<span style="color:#f92672">.</span>factorial(k4)
+</span></span><span style="display:flex;"><span>        math<span style="color:#f92672">.</span>factorial(r1) <span style="color:#f92672">*</span> math<span style="color:#f92672">.</span>factorial(r2)
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">*</span> math<span style="color:#f92672">.</span>factorial(r3) <span style="color:#f92672">*</span> math<span style="color:#f92672">.</span>factorial(r4)
 </span></span><span style="display:flex;"><span>    )
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>
