@@ -290,15 +290,15 @@
 <meta name="description" content="This post extends the generating-function technique from the two-variable recursion to a three-variable case. I originally wrote this as an answer to a Math Stack Exchange question; here it is adapted for the blog with clearer exposition and code.
 The Problem
 We want to solve the recurrence
-$a(m,n,k) = 2a(m-1,n-1,k-1) &#43; a(m-1,n-1,k)$
-$ &#43; a(m-1,n,k-1) &#43; a(m,n-1,k-1)$
+$a_{n,m,k} = 2a_{n-1,m-1,k-1} &#43; a_{n-1,m-1,k}$
+$ &#43; a_{n,m-1,k-1} &#43; a_{n-1,m,k-1}$
 where $m$, $n$, $k$ are nonnegative integers, with boundary conditions:
 
-$a(0,0,0) = a(1,0,0) = a(0,1,0) = a(0,0,1) = 1$
-$a(m,0,0) = a(0,m,0) = a(0,0,m) = 0$ for any $m &gt; 1$
-$a(m,n,k)$ is symmetric in $m$, $n$, $k$
+$a_{0,0,0} = a_{0,1,0} = a_{1,0,0} = a_{0,0,1} = 1$
+$a_{n,0,0} = a_{0,n,0} = a_{0,0,n} = 0$ for any $n &gt; 1$
+$a_{n,m,k}$ is symmetric in $n$, $m$, $k$
 
-A subtlety: $a(0,1,1)$ is not defined by the recurrence alone, since it would require values like $a(-1,0,0)$. We take $a(m,n,k) = 0$ whenever any argument is negative." />
+A subtlety: $a_{1,0,1}$ is not defined by the recurrence alone, since it would require values like $a_{0,-1,0}$. We take $a_{n,m,k} = 0$ whenever any subscript is negative." />
 
 
 
@@ -345,15 +345,15 @@ A subtlety: $a(0,1,1)$ is not defined by the recurrence alone, since it would re
 <meta property="og:description" content="This post extends the generating-function technique from the two-variable recursion to a three-variable case. I originally wrote this as an answer to a Math Stack Exchange question; here it is adapted for the blog with clearer exposition and code.
 The Problem
 We want to solve the recurrence
-$a(m,n,k) = 2a(m-1,n-1,k-1) &#43; a(m-1,n-1,k)$
-$ &#43; a(m-1,n,k-1) &#43; a(m,n-1,k-1)$
+$a_{n,m,k} = 2a_{n-1,m-1,k-1} &#43; a_{n-1,m-1,k}$
+$ &#43; a_{n,m-1,k-1} &#43; a_{n-1,m,k-1}$
 where $m$, $n$, $k$ are nonnegative integers, with boundary conditions:
 
-$a(0,0,0) = a(1,0,0) = a(0,1,0) = a(0,0,1) = 1$
-$a(m,0,0) = a(0,m,0) = a(0,0,m) = 0$ for any $m &gt; 1$
-$a(m,n,k)$ is symmetric in $m$, $n$, $k$
+$a_{0,0,0} = a_{0,1,0} = a_{1,0,0} = a_{0,0,1} = 1$
+$a_{n,0,0} = a_{0,n,0} = a_{0,0,n} = 0$ for any $n &gt; 1$
+$a_{n,m,k}$ is symmetric in $n$, $m$, $k$
 
-A subtlety: $a(0,1,1)$ is not defined by the recurrence alone, since it would require values like $a(-1,0,0)$. We take $a(m,n,k) = 0$ whenever any argument is negative." /><meta property="og:image" content="/media/icon_hu_43cf117bf1a42c34.png" /><meta property="og:locale" content="en-us" />
+A subtlety: $a_{1,0,1}$ is not defined by the recurrence alone, since it would require values like $a_{0,-1,0}$. We take $a_{n,m,k} = 0$ whenever any subscript is negative." /><meta property="og:image" content="/media/icon_hu_43cf117bf1a42c34.png" /><meta property="og:locale" content="en-us" />
 
   
     <meta
@@ -408,7 +408,7 @@ A subtlety: $a(0,1,1)$ is not defined by the recurrence alone, since it would re
       "url": "/media/icon_hu_19349546d07106a3.png"
     }
   },
-  "description": "\u003cp\u003eThis post extends the generating-function technique from the \u003ca href=\"/post/two-var-recursive-func/\"\u003etwo-variable recursion\u003c/a\u003e to a three-variable case. I originally wrote this as an answer to a \u003ca href=\"https://math.stackexchange.com/questions/1093271/how-to-solve-this-multivariable-recursion/2730331#2730331\" target=\"_blank\" rel=\"noopener\"\u003eMath Stack Exchange question\u003c/a\u003e; here it is adapted for the blog with clearer exposition and code.\u003c/p\u003e\n\u003ch2 id=\"the-problem\"\u003eThe Problem\u003c/h2\u003e\n\u003cp\u003eWe want to solve the recurrence\u003c/p\u003e\n\u003cp\u003e$a(m,n,k) = 2a(m-1,n-1,k-1) + a(m-1,n-1,k)$\n$ + a(m-1,n,k-1) + a(m,n-1,k-1)$\u003c/p\u003e\n\u003cp\u003ewhere $m$, $n$, $k$ are nonnegative integers, with boundary conditions:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e$a(0,0,0) = a(1,0,0) = a(0,1,0) = a(0,0,1) = 1$\u003c/li\u003e\n\u003cli\u003e$a(m,0,0) = a(0,m,0) = a(0,0,m) = 0$ for any $m \u0026gt; 1$\u003c/li\u003e\n\u003cli\u003e$a(m,n,k)$ is symmetric in $m$, $n$, $k$\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eA subtlety: $a(0,1,1)$ is not defined by the recurrence alone, since it would require values like $a(-1,0,0)$. We take $a(m,n,k) = 0$ whenever any argument is negative.\u003c/p\u003e"
+  "description": "\u003cp\u003eThis post extends the generating-function technique from the \u003ca href=\"/post/two-var-recursive-func/\"\u003etwo-variable recursion\u003c/a\u003e to a three-variable case. I originally wrote this as an answer to a \u003ca href=\"https://math.stackexchange.com/questions/1093271/how-to-solve-this-multivariable-recursion/2730331#2730331\" target=\"_blank\" rel=\"noopener\"\u003eMath Stack Exchange question\u003c/a\u003e; here it is adapted for the blog with clearer exposition and code.\u003c/p\u003e\n\u003ch2 id=\"the-problem\"\u003eThe Problem\u003c/h2\u003e\n\u003cp\u003eWe want to solve the recurrence\u003c/p\u003e\n\u003cp\u003e$a_{n,m,k} = 2a_{n-1,m-1,k-1} + a_{n-1,m-1,k}$\n$ + a_{n,m-1,k-1} + a_{n-1,m,k-1}$\u003c/p\u003e\n\u003cp\u003ewhere $m$, $n$, $k$ are nonnegative integers, with boundary conditions:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e$a_{0,0,0} = a_{0,1,0} = a_{1,0,0} = a_{0,0,1} = 1$\u003c/li\u003e\n\u003cli\u003e$a_{n,0,0} = a_{0,n,0} = a_{0,0,n} = 0$ for any $n \u0026gt; 1$\u003c/li\u003e\n\u003cli\u003e$a_{n,m,k}$ is symmetric in $n$, $m$, $k$\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eA subtlety: $a_{1,0,1}$ is not defined by the recurrence alone, since it would require values like $a_{0,-1,0}$. We take $a_{n,m,k} = 0$ whenever any subscript is negative.\u003c/p\u003e"
 }
 </script>
 
@@ -714,33 +714,33 @@ A subtlety: $a(0,1,1)$ is not defined by the recurrence alone, since it would re
       <p>This post extends the generating-function technique from the <a href="/post/two-var-recursive-func/">two-variable recursion</a> to a three-variable case. I originally wrote this as an answer to a <a href="https://math.stackexchange.com/questions/1093271/how-to-solve-this-multivariable-recursion/2730331#2730331" target="_blank" rel="noopener">Math Stack Exchange question</a>; here it is adapted for the blog with clearer exposition and code.</p>
 <h2 id="the-problem">The Problem</h2>
 <p>We want to solve the recurrence</p>
-<p>$a(m,n,k) = 2a(m-1,n-1,k-1) + a(m-1,n-1,k)$
-$ + a(m-1,n,k-1) + a(m,n-1,k-1)$</p>
+<p>$a_{n,m,k} = 2a_{n-1,m-1,k-1} + a_{n-1,m-1,k}$
+$ + a_{n,m-1,k-1} + a_{n-1,m,k-1}$</p>
 <p>where $m$, $n$, $k$ are nonnegative integers, with boundary conditions:</p>
 <ul>
-<li>$a(0,0,0) = a(1,0,0) = a(0,1,0) = a(0,0,1) = 1$</li>
-<li>$a(m,0,0) = a(0,m,0) = a(0,0,m) = 0$ for any $m &gt; 1$</li>
-<li>$a(m,n,k)$ is symmetric in $m$, $n$, $k$</li>
+<li>$a_{0,0,0} = a_{0,1,0} = a_{1,0,0} = a_{0,0,1} = 1$</li>
+<li>$a_{n,0,0} = a_{0,n,0} = a_{0,0,n} = 0$ for any $n &gt; 1$</li>
+<li>$a_{n,m,k}$ is symmetric in $n$, $m$, $k$</li>
 </ul>
-<p>A subtlety: $a(0,1,1)$ is not defined by the recurrence alone, since it would require values like $a(-1,0,0)$. We take $a(m,n,k) = 0$ whenever any argument is negative.</p>
+<p>A subtlety: $a_{1,0,1}$ is not defined by the recurrence alone, since it would require values like $a_{0,-1,0}$. We take $a_{n,m,k} = 0$ whenever any subscript is negative.</p>
 <h2 id="the-generating-function">The Generating Function</h2>
 <p>Define</p>
-<p>$$\Phi(x,y,z) = \sum_{m,n,k \geq 0} a(m,n,k) \cdot x^m y^n z^k$$</p>
-<p>Using the initial values above, we can write the recurrence including boundary terms as follow:</p>
-<p>$a(m, n, k) = 2a(m-1, n-1, k-1) + a(m-1, n-1, k)$
-$ + a(m-1, n, k-1) + a(m, n-1, k-1)$
-$ + [m=n=k=0] + [m=n=0 \wedge k=1]$
-$ + [m=k=0 \wedge n=1] + [n=k=0 \wedge m=1]$</p>
+<p>$$\Phi(x,y,z) = \sum_{n,m,k \geq 0} a_{n,m,k} \cdot x^n y^m z^k$$</p>
+<p>Using the initial values above, we can write the recurrence including boundary terms as follows:</p>
+<p>$a_{n,m,k} = 2a_{n-1,m-1,k-1} + a_{n-1,m-1,k}$
+$ + a_{n,m-1,k-1} + a_{n-1,m,k-1}$
+$ + [n=m=k=0] + [n=m=0 \wedge k=1]$
+$ + [n=k=0 \wedge m=1] + [m=k=0 \wedge n=1]$</p>
 <p>Substituting the recurrence into the generating function and collecting terms:</p>
-<p>$\Phi(x,y,z) = \sum_{m,n,k} a(m,n,k) \cdot x^m y^n z^k $
-$ = 2\sum_{m,n,k} a(m,n,k) \cdot x^{m+1} y^{n+1} z^{k+1} $
-$   + \sum_{m,n,k} a(m,n,k) \cdot x^{m+1} y^{n+1} z^k $
-$   + \sum_{m,n,k} a(m,n,k) \cdot x^{m+1} y^n z^{k+1} $
-$   + \sum_{m,n,k} a(m,n,k) \cdot x^m y^{n+1} z^{k+1} $
+<p>$\Phi(x,y,z) = \sum_{n,m,k} a_{n,m,k} \cdot x^n y^m z^k $
+$ = 2\sum_{n,m,k} a_{n,m,k} \cdot x^{n+1} y^{m+1} z^{k+1} $
+$   + \sum_{n,m,k} a_{n,m,k} \cdot x^{n+1} y^{m+1} z^k $
+$   + \sum_{n,m,k} a_{n,m,k} \cdot x^{n+1} y^m z^{k+1} $
+$   + \sum_{n,m,k} a_{n,m,k} \cdot x^n y^{m+1} z^{k+1} $
 $   + 1 + x + y + z $
 $ = 2 \Phi \cdot x y z + \Phi \cdot x y + \Phi \cdot x z + \Phi \cdot y z + 1 + x + y + z$
 $ = \Phi \cdot ( 2 x y z + x y + x z + y z ) + 1 + x + y + z$</p>
-<p>where the boundary terms $1 + x + y + z$ come from $a(0,0,0)$, $a(1,0,0)$, $a(0,1,0)$, $a(0,0,1)$.</p>
+<p>where the boundary terms $1 + x + y + z$ come from $a_{0,0,0}$, $a_{1,0,0}$, $a_{0,1,0}$, $a_{0,0,1}$.</p>
 <p>Solving for $\Phi$:</p>
 <p>$$\Phi(x,y,z) = \frac{1 + x + y + z}{1 - 2xyz - xy - xz - yz}$$</p>
 <h2 id="from-generating-function-to-closed-form">From Generating Function to Closed Form</h2>
@@ -759,65 +759,89 @@ $ = \sum_{k_1+k_2+k_3+k_4=N} \binom{N} {k_1,k_2,k_3,k_4} 2^{k_1} x^{k_1+k_2+k_3}
 $ = \sum_{k_1+k_2+k_3 \leq N} \binom{N} {k_1,k_2,k_3, N-k_1-k_2-k_3} 2^{k_1} x^{k_1+k_2+k_3} y^{N-k_3} z^{N-k_2}$</p>
 <p>So we have</p>
 <p>$$ \Phi = (1 + x + y + z) \sum_{k_1+k_2+k_3 \leq N} \binom{N} {k_1,k_2,k_3, N-k_1-k_2-k_3} 2^{k_1} x^{k_1+k_2+k_3} y^{N-k_3} z^{N-k_2}$$</p>
-<p>Extracting the coefficient of $x^m y^n z^k$ gives the closed form. The full expression has four sums (from the numerator $1+x+y+z$):</p>
-<p>$$a(m,n,k) = \sum_{N=\max(m,n,k)}^{ (m+n+k)/2 } \binom{N}{m+n+k-2N, N-m, N-n, N-k} 2^{m+n+k-2N}$$
-$$ + \sum_{N=\max(m-1,n,k)}^{ (m+n+k-1)/2 } \binom{N}{m+n+k-2N-1, N-m+1, N-n, N-k} 2^{m+n+k-2N-1}$$
-$$ + \sum_{N=\max(m,n-1,k)}^{ (m+n+k-1)/2 } \binom{N}{m+n+k-2N-1, N-m, N-n+1, N-k} 2^{m+n+k-2N-1}$$
-$$ + \sum_{N=\max(m,n,k-1)}^{ (m+n+k-1)/2 } \binom{N}{m+n+k-2N-1, N-m, N-n, N-k+1} 2^{m+n+k-2N-1}$$</p>
-<p>There may be room to simplify this further; the symmetry in $m,n,k$ could help.</p>
+<p>Extracting the coefficient of $x^n y^m z^k$ gives the closed form. The full expression has four sums (from the numerator $1+x+y+z$):</p>
+<p>$$a_{n,m,k} = \sum_{N=\max(n,m,k)}^{ (n+m+k)/2 } \binom{N}{n+m+k-2N, N-n, N-m, N-k} 2^{n+m+k-2N}$$
+$$ + \sum_{N=\max(n,m-1,k)}^{ (n+m+k-1)/2 } \binom{N}{n+m+k-2N-1, N-n, N-m+1, N-k} 2^{n+m+k-2N-1}$$
+$$ + \sum_{N=\max(n-1,m,k)}^{ (n+m+k-1)/2 } \binom{N}{n+m+k-2N-1, N-n+1, N-m, N-k} 2^{n+m+k-2N-1}$$
+$$ + \sum_{N=\max(n,m,k-1)}^{ (n+m+k-1)/2 } \binom{N}{n+m+k-2N-1, N-n, N-m, N-k+1} 2^{n+m+k-2N-1}$$</p>
+<p>There may be room to simplify this further; the symmetry in $n,m,k$ could help.</p>
 <h2 id="complexity">Complexity</h2>
+<p><strong>Recursion with memoization (DP):</strong></p>
 <ul>
-<li><strong>Recursion with memoization (DP):</strong> $\Theta(m \cdot n \cdot k)$ time and space.</li>
-<li><strong>Closed form:</strong> Precompute factorials, then loop over $N$; time and space $\Theta(m+n+k)$, ignoring the cost of arithmetic on large integers.</li>
+<li>time and space: $\Theta(n \cdot m \cdot k)$.</li>
+</ul>
+<p><strong>Closed form:</strong></p>
+<ul>
+<li>Precompute factorials, then loop over $N$;</li>
+<li>time and space: $\Theta(n+m+k)$,</li>
+<li>we ignore the cost of arithmetic on large integers.</li>
 </ul>
 <h2 id="implementation">Implementation</h2>
 <p>Both the recursive and closed-form versions in Python:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> functools
 </span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> math
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#a6e22e">@functools.lru_cache</span>(maxsize<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">a_rec</span>(n: int, m: int, k: int) <span style="color:#f92672">-&gt;</span> int:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> (n <span style="color:#f92672">&lt;=</span> m <span style="color:#f92672">&lt;=</span> k):
+</span></span><span style="display:flex;"><span>        n,m,k <span style="color:#f92672">=</span> sorted([n,m,k])
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> a_rec(n,m,k)
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@functools.lru_cache</span>(maxsize<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>)
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">a_rec</span>(m: int, n: int, k: int) <span style="color:#f92672">-&gt;</span> int:
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> min(m, n, k) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> n <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>:
 </span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> m <span style="color:#f92672">+</span> n <span style="color:#f92672">+</span> k <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">or</span> m <span style="color:#f92672">+</span> n <span style="color:#f92672">+</span> k <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> n <span style="color:#f92672">+</span> m <span style="color:#f92672">+</span> k <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">1</span>:
 </span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> m <span style="color:#f92672">+</span> n <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">or</span> m <span style="color:#f92672">+</span> k <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">or</span> n <span style="color:#f92672">+</span> k <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> n <span style="color:#f92672">+</span> m <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">or</span> n <span style="color:#f92672">+</span> k <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">or</span> m <span style="color:#f92672">+</span> k <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
 </span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> n <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> int(m <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&gt;=</span> k)
+</span></span><span style="display:flex;"><span>    
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> (
-</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> a_rec(m <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>, n <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>, k <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">+</span> a_rec(m <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>, n <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>, k)
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">+</span> a_rec(m <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>, n, k <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">+</span> a_rec(m, n <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>, k <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> a_rec(n <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>, m <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>, k <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">+</span> a_rec(n <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>, m <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>, k)
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">+</span> a_rec(n <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>, m, k <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">+</span> a_rec(n, m <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>, k <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)
 </span></span><span style="display:flex;"><span>    )
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#a6e22e">@functools.lru_cache</span>(maxsize<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">binom4</span>(N: int, k1: int, k2: int, k3: int) <span style="color:#f92672">-&gt;</span> int:
+</span></span><span style="display:flex;"><span>    k4 <span style="color:#f92672">=</span> N <span style="color:#f92672">-</span> k1 <span style="color:#f92672">-</span> k2 <span style="color:#f92672">-</span> k3
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@functools.lru_cache</span>(maxsize<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>)
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_binom4</span>(N: int, a: int, b: int, c: int) <span style="color:#f92672">-&gt;</span> int:
-</span></span><span style="display:flex;"><span>    r <span style="color:#f92672">=</span> N <span style="color:#f92672">-</span> a <span style="color:#f92672">-</span> b <span style="color:#f92672">-</span> c
-</span></span><span style="display:flex;"><span>    vals <span style="color:#f92672">=</span> sorted([a, b, c, r])
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">assert</span> vals[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> math<span style="color:#f92672">.</span>factorial(N) <span style="color:#f92672">//</span> (
-</span></span><span style="display:flex;"><span>        math<span style="color:#f92672">.</span>factorial(vals[<span style="color:#ae81ff">0</span>]) <span style="color:#f92672">*</span> math<span style="color:#f92672">.</span>factorial(vals[<span style="color:#ae81ff">1</span>])
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">*</span> math<span style="color:#f92672">.</span>factorial(vals[<span style="color:#ae81ff">2</span>]) <span style="color:#f92672">*</span> math<span style="color:#f92672">.</span>factorial(vals[<span style="color:#ae81ff">3</span>])
+</span></span><span style="display:flex;"><span>        math<span style="color:#f92672">.</span>factorial(k1) <span style="color:#f92672">*</span> math<span style="color:#f92672">.</span>factorial(k2)
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">*</span> math<span style="color:#f92672">.</span>factorial(k3) <span style="color:#f92672">*</span> math<span style="color:#f92672">.</span>factorial(k4)
 </span></span><span style="display:flex;"><span>    )
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">a_closed</span>(m: int, n: int, k: int) <span style="color:#f92672">-&gt;</span> int:
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> min(m, n, k) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">a_closed</span>(n: int, m: int, k: int) <span style="color:#f92672">-&gt;</span> int:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> min(n, m, k) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>:
 </span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>
 </span></span><span style="display:flex;"><span>    s <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> N <span style="color:#f92672">in</span> range(max(m, n, k), (m <span style="color:#f92672">+</span> n <span style="color:#f92672">+</span> k) <span style="color:#f92672">//</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>):
-</span></span><span style="display:flex;"><span>        s <span style="color:#f92672">+=</span> _binom4(N, N <span style="color:#f92672">-</span> m, N <span style="color:#f92672">-</span> n, N <span style="color:#f92672">-</span> k) <span style="color:#f92672">*</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">**</span> (m <span style="color:#f92672">+</span> n <span style="color:#f92672">+</span> k <span style="color:#f92672">-</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> N)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> N <span style="color:#f92672">in</span> range(max(m <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>, n, k), (m <span style="color:#f92672">+</span> n <span style="color:#f92672">+</span> k <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">//</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>):
-</span></span><span style="display:flex;"><span>        s <span style="color:#f92672">+=</span> _binom4(N, N <span style="color:#f92672">-</span> m <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>, N <span style="color:#f92672">-</span> n, N <span style="color:#f92672">-</span> k) <span style="color:#f92672">*</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">**</span> (m <span style="color:#f92672">+</span> n <span style="color:#f92672">+</span> k <span style="color:#f92672">-</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> N <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> N <span style="color:#f92672">in</span> range(max(m, n <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>, k), (m <span style="color:#f92672">+</span> n <span style="color:#f92672">+</span> k <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">//</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>):
-</span></span><span style="display:flex;"><span>        s <span style="color:#f92672">+=</span> _binom4(N, N <span style="color:#f92672">-</span> m, N <span style="color:#f92672">-</span> n <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>, N <span style="color:#f92672">-</span> k) <span style="color:#f92672">*</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">**</span> (m <span style="color:#f92672">+</span> n <span style="color:#f92672">+</span> k <span style="color:#f92672">-</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> N <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> N <span style="color:#f92672">in</span> range(max(m, n, k <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>), (m <span style="color:#f92672">+</span> n <span style="color:#f92672">+</span> k <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">//</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>):
-</span></span><span style="display:flex;"><span>        s <span style="color:#f92672">+=</span> _binom4(N, N <span style="color:#f92672">-</span> m, N <span style="color:#f92672">-</span> n, N <span style="color:#f92672">-</span> k <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">*</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">**</span> (m <span style="color:#f92672">+</span> n <span style="color:#f92672">+</span> k <span style="color:#f92672">-</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> N <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> N <span style="color:#f92672">in</span> range(max(n, m, k), (n <span style="color:#f92672">+</span> m <span style="color:#f92672">+</span> k) <span style="color:#f92672">//</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>):
+</span></span><span style="display:flex;"><span>        s <span style="color:#f92672">+=</span> binom4(N, N <span style="color:#f92672">-</span> n, N <span style="color:#f92672">-</span> m, N <span style="color:#f92672">-</span> k) <span style="color:#f92672">*</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">**</span> (n <span style="color:#f92672">+</span> m <span style="color:#f92672">+</span> k <span style="color:#f92672">-</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> N)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> N <span style="color:#f92672">in</span> range(max(n, m <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>, k), (n <span style="color:#f92672">+</span> m <span style="color:#f92672">+</span> k <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">//</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>):
+</span></span><span style="display:flex;"><span>        s <span style="color:#f92672">+=</span> binom4(N, N <span style="color:#f92672">-</span> n, N <span style="color:#f92672">-</span> m <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>, N <span style="color:#f92672">-</span> k) <span style="color:#f92672">*</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">**</span> (n <span style="color:#f92672">+</span> m <span style="color:#f92672">+</span> k <span style="color:#f92672">-</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> N <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> N <span style="color:#f92672">in</span> range(max(n <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>, m, k), (n <span style="color:#f92672">+</span> m <span style="color:#f92672">+</span> k <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">//</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>):
+</span></span><span style="display:flex;"><span>        s <span style="color:#f92672">+=</span> binom4(N, N <span style="color:#f92672">-</span> n <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>, N <span style="color:#f92672">-</span> m, N <span style="color:#f92672">-</span> k) <span style="color:#f92672">*</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">**</span> (n <span style="color:#f92672">+</span> m <span style="color:#f92672">+</span> k <span style="color:#f92672">-</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> N <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> N <span style="color:#f92672">in</span> range(max(n, m, k <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>), (n <span style="color:#f92672">+</span> m <span style="color:#f92672">+</span> k <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">//</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>):
+</span></span><span style="display:flex;"><span>        s <span style="color:#f92672">+=</span> binom4(N, N <span style="color:#f92672">-</span> n, N <span style="color:#f92672">-</span> m, N <span style="color:#f92672">-</span> k <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">*</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">**</span> (n <span style="color:#f92672">+</span> m <span style="color:#f92672">+</span> k <span style="color:#f92672">-</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> N <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> s
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> timeit
+</span></span><span style="display:flex;"><span>setup_code <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;from __main__ import a_rec, a_closed&#34;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># Sanity check</span>
-</span></span><span style="display:flex;"><span>r, r1 <span style="color:#f92672">=</span> a_rec(<span style="color:#ae81ff">100</span>, <span style="color:#ae81ff">200</span>, <span style="color:#ae81ff">210</span>), a_closed(<span style="color:#ae81ff">100</span>, <span style="color:#ae81ff">200</span>, <span style="color:#ae81ff">210</span>)
-</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Recursive: </span><span style="color:#e6db74">{</span>r<span style="color:#e6db74">}</span><span style="color:#e6db74">, Closed: </span><span style="color:#e6db74">{</span>r1<span style="color:#e6db74">}</span><span style="color:#e6db74">, Match: </span><span style="color:#e6db74">{</span>r <span style="color:#f92672">==</span> r1<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
-</span></span></code></pre></div><p>We did not exploit the symmetry $a(m,n,k) = a(\sigma(m,n,k))$ for permutations $\sigma$; it could speed up computation but does not obviously simplify the closed expression.</p>
+</span></span><span style="display:flex;"><span>execution_time <span style="color:#f92672">=</span> timeit<span style="color:#f92672">.</span>timeit(<span style="color:#e6db74">&#39;a_rec(200, 300, 400)&#39;</span>, setup<span style="color:#f92672">=</span>setup_code, number<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Execution time for recursive:   </span><span style="color:#e6db74">{</span>execution_time<span style="color:#e6db74">}</span><span style="color:#e6db74"> seconds&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>execution_time <span style="color:#f92672">=</span> timeit<span style="color:#f92672">.</span>timeit(<span style="color:#e6db74">&#39;a_closed(200, 300, 400)&#39;</span>, setup<span style="color:#f92672">=</span>setup_code, number<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Execution time for closed form: </span><span style="color:#e6db74">{</span>execution_time<span style="color:#e6db74">}</span><span style="color:#e6db74"> seconds&#34;</span>)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Execution time for recursive:   8.308788761030883 seconds
+</span></span><span style="display:flex;"><span>Execution time for closed form: 0.003819321980699897 seconds
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Sanity check</span>
+</span></span><span style="display:flex;"><span>res0 <span style="color:#f92672">=</span> a_rec(<span style="color:#ae81ff">100</span>, <span style="color:#ae81ff">200</span>, <span style="color:#ae81ff">210</span>)
+</span></span><span style="display:flex;"><span>res1 <span style="color:#f92672">=</span> a_closed(<span style="color:#ae81ff">100</span>, <span style="color:#ae81ff">200</span>, <span style="color:#ae81ff">210</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Recursive: </span><span style="color:#e6db74">{</span>res0<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Closed:    </span><span style="color:#e6db74">{</span>res1<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Match: </span><span style="color:#e6db74">{</span>res0 <span style="color:#f92672">==</span> res1<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span></code></pre></div><p>We did not exploit the symmetry $a_{n,m,k} = a_{\sigma(n,m,k)}$ for permutations $\sigma$; it could speed up computation but does not obviously simplify the closed expression.</p>
 <hr>
 <p><em>Originally answered on <a href="https://math.stackexchange.com/questions/1093271/how-to-solve-this-multivariable-recursion/2730331#2730331" target="_blank" rel="noopener">Math Stack Exchange</a>.</em></p>
 

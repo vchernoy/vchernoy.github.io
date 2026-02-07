@@ -628,15 +628,15 @@
         <p>This post extends the generating-function technique from the <a href="/post/two-var-recursive-func/">two-variable recursion</a> to a three-variable case. I originally wrote this as an answer to a <a href="https://math.stackexchange.com/questions/1093271/how-to-solve-this-multivariable-recursion/2730331#2730331" target="_blank" rel="noopener">Math Stack Exchange question</a>; here it is adapted for the blog with clearer exposition and code.</p>
 <h2 id="the-problem">The Problem</h2>
 <p>We want to solve the recurrence</p>
-<p>$a(m,n,k) = 2a(m-1,n-1,k-1) + a(m-1,n-1,k)$
-$ + a(m-1,n,k-1) + a(m,n-1,k-1)$</p>
+<p>$a_{n,m,k} = 2a_{n-1,m-1,k-1} + a_{n-1,m-1,k}$
+$ + a_{n,m-1,k-1} + a_{n-1,m,k-1}$</p>
 <p>where $m$, $n$, $k$ are nonnegative integers, with boundary conditions:</p>
 <ul>
-<li>$a(0,0,0) = a(1,0,0) = a(0,1,0) = a(0,0,1) = 1$</li>
-<li>$a(m,0,0) = a(0,m,0) = a(0,0,m) = 0$ for any $m &gt; 1$</li>
-<li>$a(m,n,k)$ is symmetric in $m$, $n$, $k$</li>
+<li>$a_{0,0,0} = a_{0,1,0} = a_{1,0,0} = a_{0,0,1} = 1$</li>
+<li>$a_{n,0,0} = a_{0,n,0} = a_{0,0,n} = 0$ for any $n &gt; 1$</li>
+<li>$a_{n,m,k}$ is symmetric in $n$, $m$, $k$</li>
 </ul>
-<p>A subtlety: $a(0,1,1)$ is not defined by the recurrence alone, since it would require values like $a(-1,0,0)$. We take $a(m,n,k) = 0$ whenever any argument is negative.</p>
+<p>A subtlety: $a_{1,0,1}$ is not defined by the recurrence alone, since it would require values like $a_{0,-1,0}$. We take $a_{n,m,k} = 0$ whenever any subscript is negative.</p>
       </div>
     </a>
     

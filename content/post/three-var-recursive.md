@@ -17,49 +17,42 @@ This post extends the generating-function technique from the [two-variable recur
 
 We want to solve the recurrence
 
-$a(m,n,k) = 2a(m-1,n-1,k-1) + a(m-1,n-1,k)$
-$ + a(m-1,n,k-1) + a(m,n-1,k-1)$
+$a_{n,m,k} = 2a_{n-1,m-1,k-1} + a_{n-1,m-1,k}$
+$ + a_{n,m-1,k-1} + a_{n-1,m,k-1}$
 
 where $m$, $n$, $k$ are nonnegative integers, with boundary conditions:
 
-- $a(0,0,0) = a(1,0,0) = a(0,1,0) = a(0,0,1) = 1$
-- $a(m,0,0) = a(0,m,0) = a(0,0,m) = 0$ for any $m > 1$
-- $a(m,n,k)$ is symmetric in $m$, $n$, $k$
+- $a_{0,0,0} = a_{0,1,0} = a_{1,0,0} = a_{0,0,1} = 1$
+- $a_{n,0,0} = a_{0,n,0} = a_{0,0,n} = 0$ for any $n > 1$
+- $a_{n,m,k}$ is symmetric in $n$, $m$, $k$
 
-A subtlety: $a(0,1,1)$ is not defined by the recurrence alone, since it would require values like $a(-1,0,0)$. We take $a(m,n,k) = 0$ whenever any argument is negative.
+A subtlety: $a_{1,0,1}$ is not defined by the recurrence alone, since it would require values like $a_{0,-1,0}$. We take $a_{n,m,k} = 0$ whenever any subscript is negative.
 
 ## The Generating Function
 
 Define
 
-$$\Phi(x,y,z) = \sum_{m,n,k \geq 0} a(m,n,k) \cdot x^m y^n z^k$$
+$$\Phi(x,y,z) = \sum_{n,m,k \geq 0} a_{n,m,k} \cdot x^n y^m z^k$$
 
-Using the initial values above, we can write the recurrence including boundary terms as follow:
+Using the initial values above, we can write the recurrence including boundary terms as follows:
 
-$a(m, n, k) = 2a(m-1, n-1, k-1) + a(m-1, n-1, k)$
-$ + a(m-1, n, k-1) + a(m, n-1, k-1)$
-$ + [m=n=k=0] + [m=n=0 \wedge k=1]$
-$ + [m=k=0 \wedge n=1] + [n=k=0 \wedge m=1]$
-
-<!-- I believe there are still some initial conditions missing, since for example $a(0,1,1)$ is not well defined. Computing its value will result in negative arguments: 
- 
-$a(0,1,1) = 2a(-1, 0, 0) + a(-1, 0, 1) + a(-1, 1, 0) + a(0, 0, 0)$
-$ = 2a(-1, 0, 0) + 2a(-1, 0, 1) + 1$
-
-Adding the extra condition that $a(m,n,k)=0$ for any negative argument(s) solves the issue. -->
+$a_{n,m,k} = 2a_{n-1,m-1,k-1} + a_{n-1,m-1,k}$
+$ + a_{n,m-1,k-1} + a_{n-1,m,k-1}$
+$ + [n=m=k=0] + [n=m=0 \wedge k=1]$
+$ + [n=k=0 \wedge m=1] + [m=k=0 \wedge n=1]$
 
 Substituting the recurrence into the generating function and collecting terms:
 
-$\Phi(x,y,z) = \sum_{m,n,k} a(m,n,k) \cdot x^m y^n z^k $
-$ = 2\sum_{m,n,k} a(m,n,k) \cdot x^{m+1} y^{n+1} z^{k+1} $
-$   + \sum_{m,n,k} a(m,n,k) \cdot x^{m+1} y^{n+1} z^k $
-$   + \sum_{m,n,k} a(m,n,k) \cdot x^{m+1} y^n z^{k+1} $
-$   + \sum_{m,n,k} a(m,n,k) \cdot x^m y^{n+1} z^{k+1} $
+$\Phi(x,y,z) = \sum_{n,m,k} a_{n,m,k} \cdot x^n y^m z^k $
+$ = 2\sum_{n,m,k} a_{n,m,k} \cdot x^{n+1} y^{m+1} z^{k+1} $
+$   + \sum_{n,m,k} a_{n,m,k} \cdot x^{n+1} y^{m+1} z^k $
+$   + \sum_{n,m,k} a_{n,m,k} \cdot x^{n+1} y^m z^{k+1} $
+$   + \sum_{n,m,k} a_{n,m,k} \cdot x^n y^{m+1} z^{k+1} $
 $   + 1 + x + y + z $
 $ = 2 \Phi \cdot x y z + \Phi \cdot x y + \Phi \cdot x z + \Phi \cdot y z + 1 + x + y + z$
 $ = \Phi \cdot ( 2 x y z + x y + x z + y z ) + 1 + x + y + z$
 
-where the boundary terms $1 + x + y + z$ come from $a(0,0,0)$, $a(1,0,0)$, $a(0,1,0)$, $a(0,0,1)$. 
+where the boundary terms $1 + x + y + z$ come from $a_{0,0,0}$, $a_{1,0,0}$, $a_{0,1,0}$, $a_{0,0,1}$. 
 
 Solving for $\Phi$:
 
@@ -94,34 +87,24 @@ So we have
 
 $$ \Phi = (1 + x + y + z) \sum_{k_1+k_2+k_3 \leq N} \binom{N} {k_1,k_2,k_3, N-k_1-k_2-k_3} 2^{k_1} x^{k_1+k_2+k_3} y^{N-k_3} z^{N-k_2}$$
 
-<!-- $$ \Phi = (1 + x + y + z) \sum_{i_1+i_2+i_3 \leq N} \binom{N} {i_1,i_2,i_3, N-i_1-i_2-i_3} 2^{i_1} x^{i_1+i_2+i_3} y^{N-i_3} z^{N-i_2}$$ -->
+Extracting the coefficient of $x^n y^m z^k$ gives the closed form. The full expression has four sums (from the numerator $1+x+y+z$):
 
+$$a_{n,m,k} = \sum_{N=\max(n,m,k)}^{ (n+m+k)/2 } \binom{N}{n+m+k-2N, N-n, N-m, N-k} 2^{n+m+k-2N}$$
+$$ + \sum_{N=\max(n,m-1,k)}^{ (n+m+k-1)/2 } \binom{N}{n+m+k-2N-1, N-n, N-m+1, N-k} 2^{n+m+k-2N-1}$$
+$$ + \sum_{N=\max(n-1,m,k)}^{ (n+m+k-1)/2 } \binom{N}{n+m+k-2N-1, N-n+1, N-m, N-k} 2^{n+m+k-2N-1}$$
+$$ + \sum_{N=\max(n,m,k-1)}^{ (n+m+k-1)/2 } \binom{N}{n+m+k-2N-1, N-n, N-m, N-k+1} 2^{n+m+k-2N-1}$$
 
-<!-- $\Phi = \frac{1 + x + y + z}{1-2xyz - xy - xz - yz}$
-$ = (1 + x + y + z) \sum_N (2xyz + xy + xz + yz)^N$
-$ = (1 + x + y + z) \sum_{k_1+k_2+k_3+k_4=N} \binom{N}{k_1,k_2,k_3,k_4} (2xyz)^{k_1}(xy)^{k_2}(xz)^{k_3}(yz)^{k_4}$
-$ = (1 + x + y + z) \sum_{k_1+k_2+k_3 \leq N} \binom{N}{k_1,k_2,k_3,N-k_1-k_2-k_3} 2^{k_1} x^{k_1+k_2+k_3} y^{N-k_3} z^{N-k_2}$
-
-
-$ = \frac{1 + x + y + z}{1-2 x y z - x y - x z - y z} $
-$ = (1 + x + y + z) \sum_{N}(2 x y z + x y + x z + y z)^N $
-$ = (1 + x + y + z) \sum_{k_1+k_2+k_3+k_4=N} \binom{N} {k_1,k_2,k_3,k_4} (2 x y z)^{k_1} \cdot (x y)^{k_2} \cdot (x z)^{k_3} \cdot (y z)^{k_4}$
-$ = (1 + x + y + z) \sum_{k_1+k_2+k_3+k_4=N} \binom{N} {k_1,k_2,k_3,k_4} 2^{k_1} x^{k_1+k_2+k_3} y^{k_1+k_2+k_4} z^{k_1+k_3+k_4}$
-$ = (1 + x + y + z) \sum_{k_1+k_2+k_3\leq N} \binom{N} {k_1,k_2,k_3, N-k_1-k_2-k_3} 2^{k_1} x^{k_1+k_2+k_3} y^{N-k_3} z^{N-k_2}$ -->
-
-Extracting the coefficient of $x^m y^n z^k$ gives the closed form. The full expression has four sums (from the numerator $1+x+y+z$):
-
-$$a(m,n,k) = \sum_{N=\max(m,n,k)}^{ (m+n+k)/2 } \binom{N}{m+n+k-2N, N-m, N-n, N-k} 2^{m+n+k-2N}$$
-$$ + \sum_{N=\max(m-1,n,k)}^{ (m+n+k-1)/2 } \binom{N}{m+n+k-2N-1, N-m+1, N-n, N-k} 2^{m+n+k-2N-1}$$
-$$ + \sum_{N=\max(m,n-1,k)}^{ (m+n+k-1)/2 } \binom{N}{m+n+k-2N-1, N-m, N-n+1, N-k} 2^{m+n+k-2N-1}$$
-$$ + \sum_{N=\max(m,n,k-1)}^{ (m+n+k-1)/2 } \binom{N}{m+n+k-2N-1, N-m, N-n, N-k+1} 2^{m+n+k-2N-1}$$
-
-There may be room to simplify this further; the symmetry in $m,n,k$ could help.
+There may be room to simplify this further; the symmetry in $n,m,k$ could help.
 
 ## Complexity
 
-- **Recursion with memoization (DP):** $\Theta(m \cdot n \cdot k)$ time and space.
-- **Closed form:** Precompute factorials, then loop over $N$; time and space $\Theta(m+n+k)$, ignoring the cost of arithmetic on large integers.
+**Recursion with memoization (DP):** 
+- time and space: $\Theta(n \cdot m \cdot k)$.
+
+**Closed form:**
+- Precompute factorials, then loop over $N$; 
+- time and space: $\Theta(n+m+k)$, 
+- we ignore the cost of arithmetic on large integers.
 
 ## Implementation
 
@@ -130,52 +113,85 @@ Both the recursive and closed-form versions in Python:
 ```python
 import functools
 import math
-
-@functools.lru_cache(maxsize=None)
-def a_rec(m: int, n: int, k: int) -> int:
-    if min(m, n, k) < 0:
-        return 0
-    if m + n + k == 0 or m + n + k == 1:
-        return 1
-    if m + n == 0 or m + k == 0 or n + k == 0:
-        return 0
-    return (
-        2 * a_rec(m - 1, n - 1, k - 1)
-        + a_rec(m - 1, n - 1, k)
-        + a_rec(m - 1, n, k - 1)
-        + a_rec(m, n - 1, k - 1)
-    )
-
-@functools.lru_cache(maxsize=None)
-def _binom4(N: int, a: int, b: int, c: int) -> int:
-    r = N - a - b - c
-    vals = sorted([a, b, c, r])
-    assert vals[0] >= 0
-    return math.factorial(N) // (
-        math.factorial(vals[0]) * math.factorial(vals[1])
-        * math.factorial(vals[2]) * math.factorial(vals[3])
-    )
-
-def a_closed(m: int, n: int, k: int) -> int:
-    if min(m, n, k) < 0:
-        return 0
-    s = 0
-    for N in range(max(m, n, k), (m + n + k) // 2 + 1):
-        s += _binom4(N, N - m, N - n, N - k) * 2 ** (m + n + k - 2 * N)
-    for N in range(max(m - 1, n, k), (m + n + k - 1) // 2 + 1):
-        s += _binom4(N, N - m + 1, N - n, N - k) * 2 ** (m + n + k - 2 * N - 1)
-    for N in range(max(m, n - 1, k), (m + n + k - 1) // 2 + 1):
-        s += _binom4(N, N - m, N - n + 1, N - k) * 2 ** (m + n + k - 2 * N - 1)
-    for N in range(max(m, n, k - 1), (m + n + k - 1) // 2 + 1):
-        s += _binom4(N, N - m, N - n, N - k + 1) * 2 ** (m + n + k - 2 * N - 1)
-    return s
-
-# Sanity check
-r, r1 = a_rec(100, 200, 210), a_closed(100, 200, 210)
-print(f"Recursive: {r}, Closed: {r1}, Match: {r == r1}")
 ```
 
-We did not exploit the symmetry $a(m,n,k) = a(\sigma(m,n,k))$ for permutations $\sigma$; it could speed up computation but does not obviously simplify the closed expression.
+```python
+@functools.lru_cache(maxsize=None)
+def a_rec(n: int, m: int, k: int) -> int:
+    if not (n <= m <= k):
+        n,m,k = sorted([n,m,k])
+        return a_rec(n,m,k)
+
+    if n < 0:
+        return 0
+    if n + m + k <= 1:
+        return 1
+    if n + m == 0 or n + k == 0 or m + k == 0:
+        return 0
+    if n == 0:
+        return int(m + 1 >= k)
+    
+    return (
+        2 * a_rec(n - 1, m - 1, k - 1)
+        + a_rec(n - 1, m - 1, k)
+        + a_rec(n - 1, m, k - 1)
+        + a_rec(n, m - 1, k - 1)
+    )
+```
+
+```python
+@functools.lru_cache(maxsize=None)
+def binom4(N: int, k1: int, k2: int, k3: int) -> int:
+    k4 = N - k1 - k2 - k3
+
+    return math.factorial(N) // (
+        math.factorial(k1) * math.factorial(k2)
+        * math.factorial(k3) * math.factorial(k4)
+    )
+
+
+def a_closed(n: int, m: int, k: int) -> int:
+    if min(n, m, k) < 0:
+        return 0
+    s = 0
+    for N in range(max(n, m, k), (n + m + k) // 2 + 1):
+        s += binom4(N, N - n, N - m, N - k) * 2 ** (n + m + k - 2 * N)
+    for N in range(max(n, m - 1, k), (n + m + k - 1) // 2 + 1):
+        s += binom4(N, N - n, N - m + 1, N - k) * 2 ** (n + m + k - 2 * N - 1)
+    for N in range(max(n - 1, m, k), (n + m + k - 1) // 2 + 1):
+        s += binom4(N, N - n + 1, N - m, N - k) * 2 ** (n + m + k - 2 * N - 1)
+    for N in range(max(n, m, k - 1), (n + m + k - 1) // 2 + 1):
+        s += binom4(N, N - n, N - m, N - k + 1) * 2 ** (n + m + k - 2 * N - 1)
+    return s
+```
+
+```python
+import timeit
+setup_code = "from __main__ import a_rec, a_closed"
+
+execution_time = timeit.timeit('a_rec(200, 300, 400)', setup=setup_code, number=1)
+print(f"Execution time for recursive:   {execution_time} seconds")
+
+execution_time = timeit.timeit('a_closed(200, 300, 400)', setup=setup_code, number=1)
+print(f"Execution time for closed form: {execution_time} seconds")
+```
+
+```text
+Execution time for recursive:   8.308788761030883 seconds
+Execution time for closed form: 0.003819321980699897 seconds
+```
+
+```python
+# Sanity check
+res0 = a_rec(100, 200, 210)
+res1 = a_closed(100, 200, 210)
+
+print(f"Recursive: {res0}")
+print(f"Closed:    {res1}")
+print(f"Match: {res0 == res1}")
+```
+
+We did not exploit the symmetry $a_{n,m,k} = a_{\sigma(n,m,k)}$ for permutations $\sigma$; it could speed up computation but does not obviously simplify the closed expression.
 
 ---
 
