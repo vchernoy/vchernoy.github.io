@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- This site was created with Hugo Blox. https://hugoblox.com -->
-<!-- Last Published: February 6, 2026 --><html lang="en-us" >
+<!-- Last Published: February 7, 2026 --><html lang="en-us" >
 
 
 <head>
@@ -361,6 +361,10 @@
   
   
   
+    
+<link rel="stylesheet" href="/css/custom.css" />
+
+  
   
 
 
@@ -622,7 +626,8 @@
         <p>This post extends the generating-function technique from the <a href="/post/two-var-recursive-func/">two-variable recursion</a> to a three-variable case. I originally wrote this as an answer to a <a href="https://math.stackexchange.com/questions/1093271/how-to-solve-this-multivariable-recursion/2730331#2730331" target="_blank" rel="noopener">Math Stack Exchange question</a>; here it is adapted for the blog with clearer exposition and code.</p>
 <h2 id="the-problem">The Problem</h2>
 <p>We want to solve the recurrence</p>
-<p>$$a(m,n,k) = 2a(m-1,n-1,k-1) + a(m-1,n-1,k) + a(m-1,n,k-1) + a(m,n-1,k-1)$$</p>
+<p>$a(m,n,k) = 2a(m-1,n-1,k-1) + a(m-1,n-1,k)$
+$ + a(m-1,n,k-1) + a(m,n-1,k-1)$</p>
 <p>where $m$, $n$, $k$ are nonnegative integers, with boundary conditions:</p>
 <ul>
 <li>$a(0,0,0) = a(1,0,0) = a(0,1,0) = a(0,0,1) = 1$</li>
@@ -662,7 +667,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    6 min read
+    5 min read
   </span>
   
 

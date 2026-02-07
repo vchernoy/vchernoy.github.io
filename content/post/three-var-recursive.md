@@ -17,7 +17,8 @@ This post extends the generating-function technique from the [two-variable recur
 
 We want to solve the recurrence
 
-$$a(m,n,k) = 2a(m-1,n-1,k-1) + a(m-1,n-1,k) + a(m-1,n,k-1) + a(m,n-1,k-1)$$
+$a(m,n,k) = 2a(m-1,n-1,k-1) + a(m-1,n-1,k)$
+$ + a(m-1,n,k-1) + a(m,n-1,k-1)$
 
 where $m$, $n$, $k$ are nonnegative integers, with boundary conditions:
 
@@ -33,76 +34,87 @@ Define
 
 $$\Phi(x,y,z) = \sum_{m,n,k \geq 0} a(m,n,k) \cdot x^m y^n z^k$$
 
-Using the initial values above, we can write the recurrence including boundary terms as:
+Using the initial values above, we can write the recurrence including boundary terms as follow:
 
-$$a(m, n, k) = 2a(m-1, n-1, k-1) + a(m-1, n-1, k) + a(m-1, n, k-1) + a(m, n-1, k-1) + [m=n=k=0] + [m=n=0 \wedge k=1] + [m=k=0 \wedge n=1] + [n=k=0 \wedge m=1]$$
+$a(m, n, k) = 2a(m-1, n-1, k-1) + a(m-1, n-1, k)$
+$ + a(m-1, n, k-1) + a(m, n-1, k-1)$
+$ + [m=n=k=0] + [m=n=0 \wedge k=1]$
+$ + [m=k=0 \wedge n=1] + [n=k=0 \wedge m=1]$
 
-I believe there are still some initial conditions missing, since for example $a(0,1,1)$ is not well defined. Computing its value will result in negative arguments: 
+<!-- I believe there are still some initial conditions missing, since for example $a(0,1,1)$ is not well defined. Computing its value will result in negative arguments: 
  
- $a(0,1,1) = 2a(-1, 0, 0) + a(-1, 0, 1) + a(-1, 1, 0) + a(0, 0, 0) = 2a(-1, 0, 0) + 2a(-1, 0, 1) + 1$. 
+$a(0,1,1) = 2a(-1, 0, 0) + a(-1, 0, 1) + a(-1, 1, 0) + a(0, 0, 0)$
+$ = 2a(-1, 0, 0) + 2a(-1, 0, 1) + 1$
 
-Adding the extra condition that $a(m,n,k)=0$ for any negative argument(s) solves the issue.
+Adding the extra condition that $a(m,n,k)=0$ for any negative argument(s) solves the issue. -->
 
 Substituting the recurrence into the generating function and collecting terms:
 
+$\Phi(x,y,z) = \sum_{m,n,k} a(m,n,k) \cdot x^m y^n z^k $
+$ = 2\sum_{m,n,k} a(m,n,k) \cdot x^{m+1} y^{n+1} z^{k+1} $
+$   + \sum_{m,n,k} a(m,n,k) \cdot x^{m+1} y^{n+1} z^k $
+$   + \sum_{m,n,k} a(m,n,k) \cdot x^{m+1} y^n z^{k+1} $
+$   + \sum_{m,n,k} a(m,n,k) \cdot x^m y^{n+1} z^{k+1} $
+$   + 1 + x + y + z $
+$ = 2 \Phi \cdot x y z + \Phi \cdot x y + \Phi \cdot x z + \Phi \cdot y z + 1 + x + y + z$
+$ = \Phi \cdot ( 2 x y z + x y + x z + y z ) + 1 + x + y + z$
 
-$$ \Phi(x,y,z) =\sum_{m,n,k}a(m,n,k) \cdot x^m y^n z^k $$
-$$= 2\sum_{m,n,k}a(m,n,k) \cdot x^{m+1} y^{n+1} z^{k+1} + \sum_{m,n,k}a(m,n,
-k) \cdot x^{m+1} y^{n+1} z^k + \sum_{m,n,k}a(m,n,k) \cdot x^{m+1} y^n z^{k+1}
-+\sum_{m,n,k}a(m,n,k) \cdot x^m y^{n+1} z^{k+1} + 1 + x + y + z $$
-$$ 2\Phi(x,y,z) \cdot x y z + \Phi(x,y,z)\cdot x y + \Phi(x,y,z) \cdot x z + 
-\Phi(x,y,z) \cdot y z + 1 + x + y + z $$
-$$ \Phi(x,y,z)\left(2 x y z + x y + x z + y z\right) + 1 + x + y + z$$
+where the boundary terms $1 + x + y + z$ come from $a(0,0,0)$, $a(1,0,0)$, $a(0,1,0)$, $a(0,0,1)$. 
 
-
-
-$\Phi(x,y,z) = \sum_{m,n,k} a(m,n,k)\, x^m y^n z^k$
-
-$= 2\Phi\, xyz + \Phi\, xy + \Phi\, xz + \Phi\, yz + 1 + x + y + z$
-
-where the boundary terms $1 + x + y + z$ come from $a(0,0,0)$, $a(1,0,0)$, $a(0,1,0)$, $a(0,0,1)$. Solving for $\Phi$:
+Solving for $\Phi$:
 
 $$\Phi(x,y,z) = \frac{1 + x + y + z}{1 - 2xyz - xy - xz - yz}$$
 
 ## From Generating Function to Closed Form
 
-Using $\frac{1}{1-\rho} = \sum_{i \geq 0} \rho^i$ and the multinomial expansion
+Using 
+
+$$\frac{1}{1-\rho} = \sum_{i \geq 0} \rho^i$$ 
+
+and the multinomial expansion
 
 $$(x_1+x_2+x_3+x_4)^N = \sum_{k_1+k_2+k_3+k_4=N} \binom{N}{k_1,k_2,k_3,k_4} x_1^{k_1} x_2^{k_2} x_3^{k_3} x_4^{k_4}$$
 
-with $\binom{N}{k_1,k_2,k_3,k_4} = \frac{N!}{k_1!\cdot k_2!\cdot k_3!\cdot k_4!}$, we expand the denominator. Let $\rho = 2xyz + xy + xz + yz$. Then
+with
 
-$$\Phi = (1+x+y+z) \sum_{N \geq 0} \rho^N$$
+$$\binom{N}{k_1,k_2,k_3,k_4} = \frac{N!}{k_1!\cdot k_2!\cdot k_3!\cdot k_4!}$$
+
+we expand the denominator of $\Phi$. Let $\rho = 2xyz + xy + xz + yz$. Then
+
+$$\Phi = \frac{1+x+y+z}{1-\rho} = (1+x+y+z) \sum_{N \geq 0} \rho^N$$
 
 Expanding $\rho^N$ with the multinomial theorem (and writing $k_4 = N - k_1 - k_2 - k_3$):
 
-$\Phi = \frac{1 + x + y + z}{1-2xyz - xy - xz - yz}$
+$\sum_{N \geq 0} \rho^N = \sum_{N}(2 x y z + x y + x z + y z)^N $
+$ = \sum_{k_1+k_2+k_3+k_4=N} \binom{N} {k_1,k_2,k_3,k_4} (2 x y z)^{k_1} \cdot (x y)^{k_2} \cdot (x z)^{k_3} \cdot (y z)^{k_4}$
+$ = \sum_{k_1+k_2+k_3+k_4=N} \binom{N} {k_1,k_2,k_3,k_4} 2^{k_1} x^{k_1+k_2+k_3} y^{k_1+k_2+k_4} z^{k_1+k_3+k_4}$
+$ = \sum_{k_1+k_2+k_3 \leq N} \binom{N} {k_1,k_2,k_3, N-k_1-k_2-k_3} 2^{k_1} x^{k_1+k_2+k_3} y^{N-k_3} z^{N-k_2}$
 
-$= (1 + x + y + z) \sum_N (2xyz + xy + xz + yz)^N$
+So we have
 
-$= (1 + x + y + z) \sum_{k_1+k_2+k_3+k_4=N} \binom{N}{k_1,k_2,k_3,k_4} (2xyz)^{k_1}(xy)^{k_2}(xz)^{k_3}(yz)^{k_4}$
+$$ \Phi = (1 + x + y + z) \sum_{k_1+k_2+k_3 \leq N} \binom{N} {k_1,k_2,k_3, N-k_1-k_2-k_3} 2^{k_1} x^{k_1+k_2+k_3} y^{N-k_3} z^{N-k_2}$$
 
-$= (1 + x + y + z) \sum_{k_1+k_2+k_3 \leq N} \binom{N}{k_1,k_2,k_3,N-k_1-k_2-k_3} 2^{k_1} x^{k_1+k_2+k_3} y^{N-k_3} z^{N-k_2}$
+<!-- $$ \Phi = (1 + x + y + z) \sum_{i_1+i_2+i_3 \leq N} \binom{N} {i_1,i_2,i_3, N-i_1-i_2-i_3} 2^{i_1} x^{i_1+i_2+i_3} y^{N-i_3} z^{N-i_2}$$ -->
 
 
-$$= \frac{1 + x + y + z}{1-2 x y z - x y - x z - y z} $$
-$$= (1 + x + y + z) \sum_{N}(2 x y z + x y + x z + y z)^N $$
-$$= (1 + x + y + z) \sum_{k_1+k_2+k_3+k_4=N} \binom{N} {k_1,k_2,k_3,k_4} (2 x 
-y z)^{k_1} \cdot (x y)^{k_2} \cdot (x z)^{k_3} \cdot (y z)^{k_4}$$
-$$= (1 + x + y + z) \sum_{k_1+k_2+k_3+k_4=N} \binom{N} {k_1,k_2,k_3,k_4} 2^
-{k_1} x^{k_1+k_2+k_3} y^{k_1+k_2+k_4} z^{k_1+k_3+k_4}$$
-$$= (1 + x + y + z) \sum_{k_1+k_2+k_3\leq N} \binom{N} {k_1,k_2,k_3,
-N-k_1-k_2-k_3} 2^{k_1} x^{k_1+k_2+k_3} y^{N-k_3} z^{N-k_2}$$
+<!-- $\Phi = \frac{1 + x + y + z}{1-2xyz - xy - xz - yz}$
+$ = (1 + x + y + z) \sum_N (2xyz + xy + xz + yz)^N$
+$ = (1 + x + y + z) \sum_{k_1+k_2+k_3+k_4=N} \binom{N}{k_1,k_2,k_3,k_4} (2xyz)^{k_1}(xy)^{k_2}(xz)^{k_3}(yz)^{k_4}$
+$ = (1 + x + y + z) \sum_{k_1+k_2+k_3 \leq N} \binom{N}{k_1,k_2,k_3,N-k_1-k_2-k_3} 2^{k_1} x^{k_1+k_2+k_3} y^{N-k_3} z^{N-k_2}$
+
+
+$ = \frac{1 + x + y + z}{1-2 x y z - x y - x z - y z} $
+$ = (1 + x + y + z) \sum_{N}(2 x y z + x y + x z + y z)^N $
+$ = (1 + x + y + z) \sum_{k_1+k_2+k_3+k_4=N} \binom{N} {k_1,k_2,k_3,k_4} (2 x y z)^{k_1} \cdot (x y)^{k_2} \cdot (x z)^{k_3} \cdot (y z)^{k_4}$
+$ = (1 + x + y + z) \sum_{k_1+k_2+k_3+k_4=N} \binom{N} {k_1,k_2,k_3,k_4} 2^{k_1} x^{k_1+k_2+k_3} y^{k_1+k_2+k_4} z^{k_1+k_3+k_4}$
+$ = (1 + x + y + z) \sum_{k_1+k_2+k_3\leq N} \binom{N} {k_1,k_2,k_3, N-k_1-k_2-k_3} 2^{k_1} x^{k_1+k_2+k_3} y^{N-k_3} z^{N-k_2}$ -->
 
 Extracting the coefficient of $x^m y^n z^k$ gives the closed form. The full expression has four sums (from the numerator $1+x+y+z$):
 
-$$a(m,n,k) = \sum_{N=\max(m,n,k)}^{\lfloor (m+n+k)/2 \rfloor} \binom{N}{m+n+k-2N,\, N-m,\, N-n,\, N-k} 2^{m+n+k-2N}$$
-
-$$+ \sum_{N=\max(m-1,n,k)}^{\lfloor (m+n+k-1)/2 \rfloor} \binom{N}{m+n+k-2N-1,\, N-m+1,\, N-n,\, N-k} 2^{m+n+k-2N-1}$$
-
-$$+ \sum_{N=\max(m,n-1,k)}^{\lfloor (m+n+k-1)/2 \rfloor} \binom{N}{m+n+k-2N-1,\, N-m,\, N-n+1,\, N-k} 2^{m+n+k-2N-1}$$
-
-$$+ \sum_{N=\max(m,n,k-1)}^{\lfloor (m+n+k-1)/2 \rfloor} \binom{N}{m+n+k-2N-1,\, N-m,\, N-n,\, N-k+1} 2^{m+n+k-2N-1}$$
+$$a(m,n,k) = \sum_{N=\max(m,n,k)}^{ (m+n+k)/2 } \binom{N}{m+n+k-2N, N-m, N-n, N-k} 2^{m+n+k-2N}$$
+$$ + \sum_{N=\max(m-1,n,k)}^{ (m+n+k-1)/2 } \binom{N}{m+n+k-2N-1, N-m+1, N-n, N-k} 2^{m+n+k-2N-1}$$
+$$ + \sum_{N=\max(m,n-1,k)}^{ (m+n+k-1)/2 } \binom{N}{m+n+k-2N-1, N-m, N-n+1, N-k} 2^{m+n+k-2N-1}$$
+$$ + \sum_{N=\max(m,n,k-1)}^{ (m+n+k-1)/2 } \binom{N}{m+n+k-2N-1, N-m, N-n, N-k+1} 2^{m+n+k-2N-1}$$
 
 There may be room to simplify this further; the symmetry in $m,n,k$ could help.
 
