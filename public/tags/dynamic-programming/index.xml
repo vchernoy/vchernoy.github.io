@@ -5,12 +5,164 @@
     <link>/tags/dynamic-programming/</link>
       <atom:link href="/tags/dynamic-programming/index.xml" rel="self" type="application/rss+xml" />
     <description>Dynamic Programming</description>
-    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Fri, 07 Jul 2017 07:29:43 +0000</lastBuildDate>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Tue, 10 Apr 2018 03:14:00 +0000</lastBuildDate>
     <image>
       <url>/media/icon_hu_43cf117bf1a42c34.png</url>
       <title>Dynamic Programming</title>
       <link>/tags/dynamic-programming/</link>
     </image>
+    
+    <item>
+      <title>Solving a Three-Variable Recursion via Generating Functions</title>
+      <link>/post/three-var-recursive/</link>
+      <pubDate>Tue, 10 Apr 2018 03:14:00 +0000</pubDate>
+      <guid>/post/three-var-recursive/</guid>
+      <description>&lt;p&gt;This post extends the generating-function technique from the &lt;a href=&#34;/post/two-var-recursive-func/&#34;&gt;two-variable recursion&lt;/a&gt; to a three-variable case. I originally wrote this as an answer to a &lt;a href=&#34;https://math.stackexchange.com/questions/1093271/how-to-solve-this-multivariable-recursion/2730331#2730331&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Math Stack Exchange question&lt;/a&gt;; here it is adapted for the blog with clearer exposition and code.&lt;/p&gt;
+&lt;h2 id=&#34;the-problem&#34;&gt;The Problem&lt;/h2&gt;
+&lt;p&gt;We want to solve the recurrence
+$$
+\begin{aligned}
+a(m,n,k) &amp;amp;= 2a(m-1,n-1,k-1) + a(m-1,n-1,k) \
+&amp;amp;+ a(m-1,n,k-1) + a(m,n-1,k-1)
+\end{aligned}
+$$
+where $m$, $n$, $k$ are nonnegative integers, with boundary conditions:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$a(0,0,0) = a(1,0,0) = a(0,1,0) = a(0,0,1) = 1$&lt;/li&gt;
+&lt;li&gt;$a(m,0,0) = a(0,m,0) = a(0,0,m) = 0$ for any $m &amp;gt; 1$&lt;/li&gt;
+&lt;li&gt;$a(m,n,k)$ is symmetric in $m$,$n$,$k$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;A subtlety: $a(0,1,1)$ is not defined by the recurrence alone, since it would require values like $a(-1,0,0)$. We take $a(m,n,k) = 0$ whenever any argument is negative.&lt;/p&gt;
+&lt;h2 id=&#34;the-generating-function&#34;&gt;The Generating Function&lt;/h2&gt;
+&lt;p&gt;Define&lt;/p&gt;
+&lt;p&gt;$$\Phi(x,y,z) = \sum_{m,n,k \geq 0} a(m,n,k) \cdot x^m y^n z^k$$&lt;/p&gt;
+&lt;p&gt;Using the initial values above, we can define $a(m,n,k)$ as follows:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{aligned}
+a(m, n, k) &amp;amp;= 2a(m-1, n-1, k-1) + a(m-1, n-1, k) \
+&amp;amp;+ a(m-1, n, k-1) + a(m, n-1, k-1) \
+&amp;amp;+ [m=n=k=0] + [m=n=0 \wedge k=1] + [m=k=0 \wedge n=1] + [n=k=0 \wedge m=1]
+\end{aligned}
+$$&lt;/p&gt;
+&lt;p&gt;believe there are still some initial conditions missing, since for example $a(0,1,1)$ is not well defined. Computing its value will result in negative arguments: $a(0,1,1) = 2a(-1, 0, 0) + a(-1, 0, 1) + a(-1, 1, 0) + a(0, 0, 0) = 2a(-1, 0, 0) + 2a(-1, 0, 1) + 1$.&lt;/p&gt;
+&lt;p&gt;Adding the extra condition that $a(m,n,k)=0$ for any negative argument(s) solves the issue.&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s move forward and substitute the definition of $a(m,n,k)$ into the generating function:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{aligned}
+\Phi(x,y,z)
+&amp;amp;=\sum_{m,n,k}a(m,n,k) \cdot x^m y^n z^k \
+&amp;amp;= 2\sum_{m,n,k}a(m,n,k) \cdot x^{m+1} y^{n+1} z^{k+1} + \sum_{m,n,k}a(m,n,k) \cdot x^{m+1} y^{n+1} z^k + \sum_{m,n,k}a(m,n,k) \cdot x^{m+1} y^n z^{k+1}+\sum_{m,n,k}a(m,n,k) \cdot x^m y^{n+1} z^{k+1} + 1 + x + y + z \
+&amp;amp;= 2\Phi(x,y,z) \cdot x y z + \Phi(x,y,z)\cdot x y + \Phi(x,y,z) \cdot x z + \Phi(x,y,z) \cdot y z + 1 + x + y + z \
+&amp;amp;= \Phi(x,y,z)\left(2 x y z + x y + x z + y z\right) + 1 + x + y + z
+\end{aligned}
+$$&lt;/p&gt;
+&lt;p&gt;Substituting the recurrence and collecting terms, we get&lt;/p&gt;
+&lt;p&gt;$$
+\begin{aligned}
+\Phi(x,y,z)
+&amp;amp;= \sum_{m,n,k} a(m,n,k) \cdot x^m y^n z^k \
+&amp;amp;= 2\Phi \cdot xyz + \Phi \cdot xy + \Phi \cdot xz + \Phi \cdot yz + 1 + x + y + z
+\end{aligned}
+$$&lt;/p&gt;
+&lt;p&gt;where the boundary terms $1 + x + y + z$ come from $a(0,0,0)$, $a(1,0,0)$, $a(0,1,0)$, $a(0,0,1)$. Solving for $\Phi$:&lt;/p&gt;
+&lt;p&gt;$$\Phi(x,y,z) = \frac{1 + x + y + z}{1 - 2xyz - xy - xz - yz}$$&lt;/p&gt;
+&lt;h2 id=&#34;from-generating-function-to-closed-form&#34;&gt;From Generating Function to Closed Form&lt;/h2&gt;
+&lt;p&gt;Using $\frac{1}{1-\rho} = \sum_{i \geq 0} \rho^i$ and the multinomial expansion&lt;/p&gt;
+&lt;p&gt;$$(x_1+x_2+x_3+x_4)^N = \sum_{k_1+k_2+k_3+k_4=N} \binom{N}{k_1,k_2,k_3,k_4} x_1^{k_1} x_2^{k_2} x_3^{k_3} x_4^{k_4}$$&lt;/p&gt;
+&lt;p&gt;with $\binom{N}{k_1,k_2,k_3,k_4} = \frac{N!}{k_1!\cdot k_2!\cdot k_3!\cdot k_4!}$, we expand the denominator. Let $\rho = 2xyz + xy + xz + yz$. Then&lt;/p&gt;
+&lt;p&gt;$$
+\Phi = (1+x+y+z) \sum_{N \geq 0} \rho^N
+$$&lt;/p&gt;
+&lt;p&gt;$$
+\begin{aligned}
+&amp;amp;= \frac{1 + x + y + z}{1-2 x y z - x y - x z - y z} \
+&amp;amp;= (1 + x + y + z) \sum_{N}(2 x y z + x y + x z + y z)^N \
+&amp;amp;= (1 + x + y + z) \sum_{k_1+k_2+k_3+k_4=N} \binom{N} {k_1,k_2,k_3,k_4} (2 x y z)^{k_1} \cdot (x y)^{k_2} \cdot (x z)^{k_3} \cdot (y z)^{k_4}  \
+&amp;amp;= (1 + x + y + z) \sum_{k_1+k_2+k_3+k_4=N} \binom{N} {k_1,k_2,k_3,k_4} 2^{k_1} x^{k_1+k_2+k_3} y^{k_1+k_2+k_4} z^{k_1+k_3+k_4} \
+&amp;amp;= (1 + x + y + z) \sum_{k_1+k_2+k_3\leq N} \binom{N} {k_1,k_2,k_3,N-k_1-k_2-k_3} 2^{k_1} x^{k_1+k_2+k_3} y^{N-k_3} z^{N-k_2}
+\end{aligned}
+$$&lt;/p&gt;
+&lt;p&gt;Writing $\rho^N$ with terms $(2xyz)^{k_1}(xy)^{k_2}(xz)^{k_3}(yz)^{k_4}$ where $k_1+k_2+k_3+k_4 = N$, and extracting the coefficient of $x^m y^n z^k$, yields the closed form:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{aligned}
+a(m,n,k)
+&amp;amp;= \sum_{\max(m,n,k) \leq N \leq \frac{m+n+k}{2}}
+\binom{N}{m+n+k-2N, N-m, N-n, N-k} 2^{m+n+k-2N} \
+&amp;amp;\quad + \text{three similar sums from the } 1, x, y, z \text{ terms}
+\end{aligned}
+$$&lt;/p&gt;
+&lt;p&gt;The full expression has four sums corresponding to the four terms in the numerator $1+x+y+z$. The exact formulas are:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{aligned}
+a(m,n,k)
+&amp;amp;= \sum_{N=\max(m,n,k)}^{\lfloor (m+n+k)/2 \rfloor}
+\binom{N}{m+n+k-2N, N-m, N-n, N-k} 2^{m+n+k-2N} \
+&amp;amp;\quad + \sum_{N=\max(m-1,n,k)}^{\lfloor (m+n+k-1)/2 \rfloor}
+\binom{N}{m+n+k-2N-1, N-m+1, N-n, N-k} 2^{m+n+k-2N-1} \
+&amp;amp;\quad + \sum_{N=\max(m,n-1,k)}^{\lfloor (m+n+k-1)/2 \rfloor}
+\binom{N}{m+n+k-2N-1, N-m, N-n+1, N-k} 2^{m+n+k-2N-1} \
+&amp;amp;\quad + \sum_{N=\max(m,n,k-1)}^{\lfloor (m+n+k-1)/2 \rfloor}
+\binom{N}{m+n+k-2N-1, N-m, N-n, N-k+1} 2^{m+n+k-2N-1}
+\end{aligned}
+$$&lt;/p&gt;
+&lt;p&gt;There may be room to simplify this further; the symmetry in $m,n,k$ could help.&lt;/p&gt;
+&lt;h2 id=&#34;complexity&#34;&gt;Complexity&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Recursion with memoization (DP):&lt;/strong&gt; $\Theta(m \cdot n \cdot k)$ time and space.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Closed form:&lt;/strong&gt; Precompute factorials, then loop over $N$; time and space $\Theta(m+n+k)$, ignoring the cost of arithmetic on large integers.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;implementation&#34;&gt;Implementation&lt;/h2&gt;
+&lt;p&gt;Both the recursive and closed-form versions in Python:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; functools
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; math
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@functools.lru_cache&lt;/span&gt;(maxsize&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;a_rec&lt;/span&gt;(m: int, n: int, k: int) &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; int:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; min(m, n, k) &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; m &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; k &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;or&lt;/span&gt; m &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; k &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; m &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;or&lt;/span&gt; m &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; k &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;or&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; k &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; (
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; a_rec(m &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, n &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, k &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; a_rec(m &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, n &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, k)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; a_rec(m &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, n, k &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; a_rec(m, n &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, k &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    )
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@functools.lru_cache&lt;/span&gt;(maxsize&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;_binom4&lt;/span&gt;(N: int, a: int, b: int, c: int) &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; int:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    r &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; N &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; b &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; c
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    vals &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; sorted([a, b, c, r])
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;assert&lt;/span&gt; vals[&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; math&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;factorial(N) &lt;span style=&#34;color:#f92672&#34;&gt;//&lt;/span&gt; (
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        math&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;factorial(vals[&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;]) &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; math&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;factorial(vals[&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;])
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; math&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;factorial(vals[&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;]) &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; math&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;factorial(vals[&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;])
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    )
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;a_closed&lt;/span&gt;(m: int, n: int, k: int) &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; int:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; min(m, n, k) &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    s &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; N &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(max(m, n, k), (m &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; k) &lt;span style=&#34;color:#f92672&#34;&gt;//&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        s &lt;span style=&#34;color:#f92672&#34;&gt;+=&lt;/span&gt; _binom4(N, N &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; m, N &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; n, N &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; k) &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;**&lt;/span&gt; (m &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; k &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; N)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; N &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(max(m &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, n, k), (m &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; k &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;//&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        s &lt;span style=&#34;color:#f92672&#34;&gt;+=&lt;/span&gt; _binom4(N, N &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; m &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, N &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; n, N &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; k) &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;**&lt;/span&gt; (m &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; k &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; N &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; N &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(max(m, n &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, k), (m &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; k &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;//&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        s &lt;span style=&#34;color:#f92672&#34;&gt;+=&lt;/span&gt; _binom4(N, N &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; m, N &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, N &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; k) &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;**&lt;/span&gt; (m &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; k &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; N &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; N &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(max(m, n, k &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;), (m &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; k &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;//&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        s &lt;span style=&#34;color:#f92672&#34;&gt;+=&lt;/span&gt; _binom4(N, N &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; m, N &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; n, N &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; k &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;**&lt;/span&gt; (m &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; k &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; N &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; s
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Sanity check&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;r, r1 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; a_rec(&lt;span style=&#34;color:#ae81ff&#34;&gt;100&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;200&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;210&lt;/span&gt;), a_closed(&lt;span style=&#34;color:#ae81ff&#34;&gt;100&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;200&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;210&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;print(&lt;span style=&#34;color:#e6db74&#34;&gt;f&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Recursive: &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;r&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;, Closed: &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;r1&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;, Match: &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;r &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; r1&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;We did not exploit the symmetry $a(m,n,k) = a(\sigma(m,n,k))$ for permutations $\sigma$; it could speed up computation but does not obviously simplify the closed expression.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;Originally answered on &lt;a href=&#34;https://math.stackexchange.com/questions/1093271/how-to-solve-this-multivariable-recursion/2730331#2730331&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Math Stack Exchange&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Efficient Implementation of the Non-Adjacent Selection Formula</title>

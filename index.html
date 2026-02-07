@@ -341,7 +341,7 @@
 <meta property="og:description" content="Software Engineer" /><meta property="og:image" content="/media/icon_hu_43cf117bf1a42c34.png" /><meta property="og:locale" content="en-us" />
 
   
-    <meta property="og:updated_time" content="2026-02-08T19:47:43&#43;00:00" />
+    <meta property="og:updated_time" content="2018-04-10T03:14:00&#43;00:00" />
   
 
 
@@ -975,6 +975,108 @@
   <div class="media-body">
 
     <div class="section-subheading article-title mb-0 mt-0">
+      <a href="/post/three-var-recursive/" >Solving a Three-Variable Recursion via Generating Functions</a>
+    </div>
+
+    
+    <a href="/post/three-var-recursive/"  class="summary-link">
+      <div class="article-style">
+        <p>This post extends the generating-function technique from the <a href="/post/two-var-recursive-func/">two-variable recursion</a> to a three-variable case. I originally wrote this as an answer to a <a href="https://math.stackexchange.com/questions/1093271/how-to-solve-this-multivariable-recursion/2730331#2730331" target="_blank" rel="noopener">Math Stack Exchange question</a>; here it is adapted for the blog with clearer exposition and code.</p>
+<h2 id="the-problem">The Problem</h2>
+<p>We want to solve the recurrence
+$$
+\begin{aligned}
+a(m,n,k) &amp;= 2a(m-1,n-1,k-1) + a(m-1,n-1,k) \
+&amp;+ a(m-1,n,k-1) + a(m,n-1,k-1)
+\end{aligned}
+$$
+where $m$, $n$, $k$ are nonnegative integers, with boundary conditions:</p>
+<ul>
+<li>$a(0,0,0) = a(1,0,0) = a(0,1,0) = a(0,0,1) = 1$</li>
+<li>$a(m,0,0) = a(0,m,0) = a(0,0,m) = 0$ for any $m &gt; 1$</li>
+<li>$a(m,n,k)$ is symmetric in $m$,$n$,$k$</li>
+</ul>
+<p>A subtlety: $a(0,1,1)$ is not defined by the recurrence alone, since it would require values like $a(-1,0,0)$. We take $a(m,n,k) = 0$ whenever any argument is negative.</p>
+      </div>
+    </a>
+    
+
+    <div class="stream-meta article-metadata">
+
+      
+
+      
+        
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Apr 10, 2018
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    6 min read
+  </span>
+  
+
+  
+  
+  
+  
+
+  
+  
+
+</div>
+
+      
+    </div>
+
+    
+
+  </div>
+  <div class="ml-3">
+    
+    
+  </div>
+</div>
+
+  
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<div class="media stream-item view-compact">
+  <div class="media-body">
+
+    <div class="section-subheading article-title mb-0 mt-0">
       <a href="/post/perfect-distribution/" >Perfect Distribution: GCD in Disguise</a>
     </div>
 
@@ -1289,100 +1391,6 @@ but also could be very useful for hacking two-variable relations (and of course,
   <span class="middot-divider"></span>
   <span class="article-reading-time">
     3 min read
-  </span>
-  
-
-  
-  
-  
-  
-
-  
-  
-
-</div>
-
-      
-    </div>
-
-    
-
-  </div>
-  <div class="ml-3">
-    
-    
-  </div>
-</div>
-
-  
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-<div class="media stream-item view-compact">
-  <div class="media-body">
-
-    <div class="section-subheading article-title mb-0 mt-0">
-      <a href="/post/gen-func-art/" >The Art of Generating Functions</a>
-    </div>
-
-    
-    <a href="/post/gen-func-art/"  class="summary-link">
-      <div class="article-style">
-        <p>The notion of generating functions and its application to solving recursive equations are very well-known.
-For reader who did not have a chance to get familiar with the topics,
-I recommend to take a look at very good book:
-<a href="https://en.wikipedia.org/wiki/Concrete_Mathematics" target="_blank" rel="noopener">Concrete Mathematics: A Foundation for Computer Science, by Ronald L. Graham, Donald E. Knuth, Oren Patashnik</a>.</p>
-<p>Generating functions are usually applied to single variable recursive equations.
-But actually, the technique may be extended to multivariate recursive equations, or even to a system of recursive equations.
-Readers who are familiar with one-variable case, may jump directly to the next post:
-<a href="/post/two-var-recursive-func/">Cracking Multivariate Recursive Equations Using Generating Functions</a>.</p>
-      </div>
-    </a>
-    
-
-    <div class="stream-meta article-metadata">
-
-      
-
-      
-        
-
-
-<div class="article-metadata">
-
-  
-  
-
-  
-  <span class="article-date">
-    
-    
-      
-    
-    Jul 5, 2017
-  </span>
-  
-
-  
-
-  
-  <span class="middot-divider"></span>
-  <span class="article-reading-time">
-    4 min read
   </span>
   
 
