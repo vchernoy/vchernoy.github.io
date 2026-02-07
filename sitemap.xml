@@ -8,6 +8,30 @@
     <loc>/post/</loc>
     <lastmod>2017-08-02T07:29:43+00:00</lastmod>
   </url><url>
+    <loc>/tags/gcd/</loc>
+    <lastmod>2017-08-01T07:29:43+00:00</lastmod>
+  </url><url>
+    <loc>/tags/math/</loc>
+    <lastmod>2017-08-01T07:29:43+00:00</lastmod>
+  </url><url>
+    <loc>/post/perfect-distribution/</loc>
+    <lastmod>2017-08-01T07:29:43+00:00</lastmod>
+  </url><url>
+    <loc>/tags/python/</loc>
+    <lastmod>2017-08-01T07:29:43+00:00</lastmod>
+  </url><url>
+    <loc>/tags/recursion/</loc>
+    <lastmod>2017-08-01T07:29:43+00:00</lastmod>
+  </url><url>
+    <loc>/tags/recursive-functions/</loc>
+    <lastmod>2017-08-01T07:29:43+00:00</lastmod>
+  </url><url>
+    <loc>/tags/</loc>
+    <lastmod>2017-08-01T07:29:43+00:00</lastmod>
+  </url><url>
+    <loc>/tags/uniform-distribution/</loc>
+    <lastmod>2017-08-01T07:29:43+00:00</lastmod>
+  </url><url>
     <loc>/tags/binomial/</loc>
     <lastmod>2017-07-08T07:29:43+00:00</lastmod>
   </url><url>
@@ -20,19 +44,10 @@
     <loc>/tags/competitive-programming/</loc>
     <lastmod>2017-07-08T07:29:43+00:00</lastmod>
   </url><url>
-    <loc>/tags/math/</loc>
-    <lastmod>2017-07-08T07:29:43+00:00</lastmod>
-  </url><url>
     <loc>/tags/modular-arithmetic/</loc>
     <lastmod>2017-07-08T07:29:43+00:00</lastmod>
   </url><url>
     <loc>/tags/programming/</loc>
-    <lastmod>2017-07-08T07:29:43+00:00</lastmod>
-  </url><url>
-    <loc>/tags/python/</loc>
-    <lastmod>2017-07-08T07:29:43+00:00</lastmod>
-  </url><url>
-    <loc>/tags/</loc>
     <lastmod>2017-07-08T07:29:43+00:00</lastmod>
   </url><url>
     <loc>/tags/coding-interview/</loc>
@@ -54,9 +69,6 @@
     <lastmod>2017-07-06T07:29:43+00:00</lastmod>
   </url><url>
     <loc>/tags/multivariate-function/</loc>
-    <lastmod>2017-07-06T07:29:43+00:00</lastmod>
-  </url><url>
-    <loc>/tags/recursion/</loc>
     <lastmod>2017-07-06T07:29:43+00:00</lastmod>
   </url><url>
     <loc>/tags/fibonacci-numbers/</loc>
