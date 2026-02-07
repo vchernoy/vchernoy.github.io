@@ -4,7 +4,7 @@ math = true
 highlight = true
 tags = ["multiplicative hashing", "hash functions", "prime", "goldan ratio", "gcd", "coprimes", "prime"]
 title = "Multiplicative Hashing Functions -- Notes on Primes, Golden Ratio, and Evil"
-draft = true
+draft = false
 
 # Optional featured image (relative to `static/img/` folder).
 [header]
@@ -15,14 +15,12 @@ caption = ""
 
 ## Introduction
 
-Distribution of partitions amongst slices has a huge impact on the performance of XIV systems.
-Different solutions for this problem were discussed and implemented in Gen2 and Gen3.
-These approaches are not perfect; in fact, any solution for this problem has some drawbacks.
-Our goal is to find a "good" solution having not too much impact on customers and having acceptable cost in development and QA and have acceptable performance (as less collisions as possible).
-Due to great importance of this problem, we would like present a new approach not yet discussed.
+Mapping partitions (or keys) to slices (or buckets) in a distributed or sharded system has a large impact on performance.
+Different hash-based solutions for this problem exist; each has drawbacks.
+The goal is to choose a hash function that is simple to implement and gives acceptable performance with as few collisions as possible.
 
 The problem is defined as follows. Given a logical partition number $P$, compute the corresponding slice number $S = s(P)$.
-Where $0 ≤ P < 2^{32}$, $0 ≤ S < M$, and $M$ denotes the table size, e.g. in Gen2, $M = 2^{14}$.
+Where $0 ≤ P < 2^{32}$, $0 ≤ S < M$, and $M$ denotes the table size (e.g. $M = 2^{14}$).
 In our "binary" world, assumptions that input data (partition numbers) have uniform distribution are not always correct.
 Therefore, the hash function $s: P \to S$ must be designed very carefully.
 In addition to providing uniform distribution of hash values (slice numbers), it has to add some randomness.
@@ -32,13 +30,15 @@ usually explaining in two paragraphs what the book is saying just in one sentenc
 
 ## Basic Ideas
 
-In Gen2 we used the following hash function:
+A first approach is the division-remainder method with $M$ a power of 2:
+
 $s(P) = P \bmod M$,
 
-where $M = 2^{14}$ -- the table size or the number of slices. In Gen3 it was proposed to change the number of slices from a power of 2 to a prime number:
+where $M = 2^{14}$ is the table size (number of slices). A variant is to take $M$ prime instead:
+
 $s(P) = P \bmod M$,
 
-where $M = 16411$ is a prime number $> 2^{14}$. Such form of hashing is called "Division Remainder Method". The main idea of this Notes is to demonstrate another hashing method called "Multiplicative Method":
+where $M = 16411$ is a prime $> 2^{14}$. Both forms are called "Division Remainder Method". These notes focus on another method, the "Multiplicative Method":
 
 $$f(P) = A \cdot P \bmod W$$
 
@@ -107,7 +107,7 @@ uint32_t slice(uint32_t P) {
 }
 ```
 
-It really works well for any input data (partitions) and allows to use the same number of slices as in Gen2: $2^{14}$. As a read can see, the last function has only two operation, one is multiplication and other is logical shift. On some architectures this function may be faster then the second one finding a modulo!
+It works well for arbitrary input data and allows using the same number of slices $M = 2^{14}$. As the reader can see, the multiplicative version uses only a multiplication and a logical shift; on some architectures it can be faster than computing a modulo.
 
 Details for Math Fans
 
@@ -137,7 +137,11 @@ Actually, this condition on $M$ is too strong.
 For satisfying this property, it is sufficient that $M ≠ 2^i$ will hold.
 For example, $M = 15 · 12 · 97 = 17460$ (15 modules, 12 disks, 97 is a prime) is also "good".
 
-Since $M$ is prime, it seems that the following pattern is not common: $P = S + M · i$. But actually, primes that are close to a power of 2 are also not good. Knuth recommends to choose such $M$ that the following condition will not hold for any small integers $a$ and $j$: $r^j ≡ ± a \pmod M$. Where $r$ denotes the base of computation. From explanation of Knuth, the meaning of $r$ for our case is not too clear: whether $r=2$, $r=16$, or $r=256$? It seems the answer very depends on the type of input data. By Knuth, if $r=2$, the chosen $M$ is not so good, since $M = 16411 = 2^{14} + 27$, and hence $2^{14} ≡ -27 \pmod M$. For $r=16$, we get that $16^ ≡ -108 \pmod M$. For $r=256$, $16^2 ≡ -108 \pmod M$. Knuth explains that such $M$ may produce a hash code that is a simple composition of key digits (in $r$ base system). Instead of trying to understand this explanation, we will give some intuition. Working with numbers, a programmer usually chooses powers of 2 for sizes of structures and buffers (e.g., $2^{10}$ bytes). Then he defines the format of such data and introduces headers (e.g. the header size = 20 bytes). Hence, the size of data without the header becomes very close to the power of 2 (in our example, $2^{10} - 20 = 1004$). On the other hand, embedding this structure to an outer packet (assume the size of this outer header is 30 bytes) leads to the total size being also close to the power of 2 ($2^{10} + 30 = 1054$). As result, most of numbers in our "binary" world are either powers of 2 or close to them. Therefore, such choice of $M$ increases collisions. In other words, not only powers of 2 are *evil*, but primes closing to them are *evil* too.
+Since $M$ is prime, it seems that the following pattern is not common: $P = S + M · i$. But actually, primes that are close to a power of 2 are also not good. Knuth recommends to choose such $M$ that the following condition will not hold for any small integers $a$ and $j$: $r^j ≡ ± a \pmod M$. Where $r$ denotes the base of computation. From explanation of Knuth, the meaning of $r$ for our case is not too clear: whether $r=2$, $r=16$, or $r=256$? It seems the answer very depends on the type of input data. 
+
+By Knuth, if $r=2$, the chosen $M$ is not so good, since $M = 16411 = 2^{14} + 27$, and hence $2^{14} ≡ -27 \pmod M$. For $r=16$, we get that $16^4 ≡ -108 \pmod M$. For $r=256$, $256^2 ≡ -108 \pmod M$. 
+
+Knuth explains that such $M$ may produce a hash code that is a simple composition of key digits (in $r$ base system). Instead of trying to understand this explanation, we will give some intuition. Working with numbers, a programmer usually chooses powers of 2 for sizes of structures and buffers (e.g., $2^{10}$ bytes). Then he defines the format of such data and introduces headers (e.g. the header size = 20 bytes). Hence, the size of data without the header becomes very close to the power of 2 (in our example, $2^{10} - 20 = 1004$). On the other hand, embedding this structure to an outer packet (assume the size of this outer header is 30 bytes) leads to the total size being also close to the power of 2 ($2^{10} + 30 = 1054$). As result, most of numbers in our "binary" world are either powers of 2 or close to them. Therefore, such choice of $M$ increases collisions. In other words, not only powers of 2 are *evil*, but primes closing to them are *evil* too.
 
 As an example of a "good" prime, let's consider $M = 24571$. It is a bit smaller then the middle of $2^{14}$ and $2^{15}$.
 
@@ -172,7 +176,7 @@ We show the implementation of $p()$ in C code for the multiplicative hashing onl
 const uint32_t M = 2 << 14;
 const uint32_t B = 244002641;
 
-uint32$t partition(uint32_t S, uint32_t Id) {
+uint32_t partition(uint32_t S, uint32_t Id) {
     return (S << 18 + Id) * B;
 }
 ```

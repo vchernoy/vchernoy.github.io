@@ -331,7 +331,7 @@
 <meta property="og:description" content="Software Engineer" /><meta property="og:image" content="/media/icon_hu_43cf117bf1a42c34.png" /><meta property="og:locale" content="en-us" />
 
   
-    <meta property="og:updated_time" content="2017-08-01T07:29:43&#43;00:00" />
+    <meta property="og:updated_time" content="2017-08-02T07:29:43&#43;00:00" />
   
 
 
@@ -597,6 +597,104 @@
   
 
   
+  
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<div class="media stream-item view-compact">
+  <div class="media-body">
+
+    <div class="section-subheading article-title mb-0 mt-0">
+      <a href="/post/multiplicative-hash/" >Multiplicative Hashing Functions -- Notes on Primes, Golden Ratio, and Evil</a>
+    </div>
+
+    
+    <a href="/post/multiplicative-hash/"  class="summary-link">
+      <div class="article-style">
+        <h2 id="introduction">Introduction</h2>
+<p>Mapping partitions (or keys) to slices (or buckets) in a distributed or sharded system has a large impact on performance.
+Different hash-based solutions for this problem exist; each has drawbacks.
+The goal is to choose a hash function that is simple to implement and gives acceptable performance with as few collisions as possible.</p>
+<p>The problem is defined as follows. Given a logical partition number $P$, compute the corresponding slice number $S = s(P)$.
+Where $0 ≤ P &lt; 2^{32}$, $0 ≤ S &lt; M$, and $M$ denotes the table size (e.g. $M = 2^{14}$).
+In our &ldquo;binary&rdquo; world, assumptions that input data (partition numbers) have uniform distribution are not always correct.
+Therefore, the hash function $s: P \to S$ must be designed very carefully.
+In addition to providing uniform distribution of hash values (slice numbers), it has to add some randomness.
+Luckily, this field is well studied: well-known textbooks of Corman&rsquo;s and Knuth&rsquo;s have a good introduction to this field.
+The last one has more detail explanation; therefore, without hesitation, we make use of Knuth&rsquo;s book (Section 6.4.):
+usually explaining in two paragraphs what the book is saying just in one sentence.</p>
+      </div>
+    </a>
+    
+
+    <div class="stream-meta article-metadata">
+
+      
+
+      
+        
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Aug 2, 2017
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    12 min read
+  </span>
+  
+
+  
+  
+  
+  
+
+  
+  
+
+</div>
+
+      
+    </div>
+
+    
+
+  </div>
+  <div class="ml-3">
+    
+    
+  </div>
+</div>
+
   
     
 

@@ -154,6 +154,414 @@ $$ + \sum_{N=\max(n,m,k-1)}^{ (n+m+k-1)/2 } \binom{N}{n+m+k-2N-1, N-n, N-m, N-k+
     </item>
     
     <item>
+      <title>Multiplicative Hashing Functions -- Notes on Primes, Golden Ratio, and Evil</title>
+      <link>/post/multiplicative-hash/</link>
+      <pubDate>Wed, 02 Aug 2017 07:29:43 +0000</pubDate>
+      <guid>/post/multiplicative-hash/</guid>
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Mapping partitions (or keys) to slices (or buckets) in a distributed or sharded system has a large impact on performance.
+Different hash-based solutions for this problem exist; each has drawbacks.
+The goal is to choose a hash function that is simple to implement and gives acceptable performance with as few collisions as possible.&lt;/p&gt;
+&lt;p&gt;The problem is defined as follows. Given a logical partition number $P$, compute the corresponding slice number $S = s(P)$.
+Where $0 ≤ P &amp;lt; 2^{32}$, $0 ≤ S &amp;lt; M$, and $M$ denotes the table size (e.g. $M = 2^{14}$).
+In our &amp;ldquo;binary&amp;rdquo; world, assumptions that input data (partition numbers) have uniform distribution are not always correct.
+Therefore, the hash function $s: P \to S$ must be designed very carefully.
+In addition to providing uniform distribution of hash values (slice numbers), it has to add some randomness.
+Luckily, this field is well studied: well-known textbooks of Corman&amp;rsquo;s and Knuth&amp;rsquo;s have a good introduction to this field.
+The last one has more detail explanation; therefore, without hesitation, we make use of Knuth&amp;rsquo;s book (Section 6.4.):
+usually explaining in two paragraphs what the book is saying just in one sentence.&lt;/p&gt;
+&lt;h2 id=&#34;basic-ideas&#34;&gt;Basic Ideas&lt;/h2&gt;
+&lt;p&gt;A first approach is the division-remainder method with $M$ a power of 2:&lt;/p&gt;
+&lt;p&gt;$s(P) = P \bmod M$,&lt;/p&gt;
+&lt;p&gt;where $M = 2^{14}$ is the table size (number of slices). A variant is to take $M$ prime instead:&lt;/p&gt;
+&lt;p&gt;$s(P) = P \bmod M$,&lt;/p&gt;
+&lt;p&gt;where $M = 16411$ is a prime $&amp;gt; 2^{14}$. Both forms are called &amp;ldquo;Division Remainder Method&amp;rdquo;. These notes focus on another method, the &amp;ldquo;Multiplicative Method&amp;rdquo;:&lt;/p&gt;
+&lt;p&gt;$$f(P) = A \cdot P \bmod W$$&lt;/p&gt;
+&lt;p&gt;$$s(P) = f(P) \div (W \div M)$$&lt;/p&gt;
+&lt;p&gt;Where $W = 2^{32}$ &amp;ndash; the machine word, $M = 2^{14}$ &amp;ndash; the table size, $\div$ denotes an integer division, $W \div M = 2^{32 - 14} = 2^{18}$, $A = 2654435761$ &amp;ndash; some &amp;ldquo;magic&amp;rdquo; integer.
+It will be explained later, for now we assume that due to this magic, the value of $f(P)$ is almost random.
+It is easy to see that $s(P)$ is in valid interval of slices, between 0 and $M = 2^{14}$.&lt;/p&gt;
+&lt;h3 id=&#34;example-of-hash-codes&#34;&gt;Example of Hash Codes&lt;/h3&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;partition $P$&lt;/th&gt;
+          &lt;th&gt;dec $P$&lt;/th&gt;
+          &lt;th&gt;hex $P$&lt;/th&gt;
+          &lt;th&gt;binary $f(P)$&lt;/th&gt;
+          &lt;th&gt;binary $S$&lt;/th&gt;
+          &lt;th&gt;hex $S$&lt;/th&gt;
+          &lt;th&gt;dec $S$&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;$0$&lt;/td&gt;
+          &lt;td&gt;0&lt;/td&gt;
+          &lt;td&gt;00000000&lt;/td&gt;
+          &lt;td&gt;00000000000000000000000000000000&lt;/td&gt;
+          &lt;td&gt;00000000000000&lt;/td&gt;
+          &lt;td&gt;0000&lt;/td&gt;
+          &lt;td&gt;0&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;$1$&lt;/td&gt;
+          &lt;td&gt;1&lt;/td&gt;
+          &lt;td&gt;00000001&lt;/td&gt;
+          &lt;td&gt;10011110001101110111100110110001&lt;/td&gt;
+          &lt;td&gt;10011110001101&lt;/td&gt;
+          &lt;td&gt;278D&lt;/td&gt;
+          &lt;td&gt;10125&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;$2$&lt;/td&gt;
+          &lt;td&gt;2&lt;/td&gt;
+          &lt;td&gt;00000002&lt;/td&gt;
+          &lt;td&gt;00111100011011101111001101100010&lt;/td&gt;
+          &lt;td&gt;00111100011011&lt;/td&gt;
+          &lt;td&gt;0F1B&lt;/td&gt;
+          &lt;td&gt;3867&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;$3$&lt;/td&gt;
+          &lt;td&gt;3&lt;/td&gt;
+          &lt;td&gt;00000003&lt;/td&gt;
+          &lt;td&gt;11011010101001100110110100010011&lt;/td&gt;
+          &lt;td&gt;11011010101001&lt;/td&gt;
+          &lt;td&gt;36A9&lt;/td&gt;
+          &lt;td&gt;13993&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;$2^{14}-1$&lt;/td&gt;
+          &lt;td&gt;16383&lt;/td&gt;
+          &lt;td&gt;00003FFF&lt;/td&gt;
+          &lt;td&gt;01000000001101001100011001001111&lt;/td&gt;
+          &lt;td&gt;01000000001101&lt;/td&gt;
+          &lt;td&gt;100D&lt;/td&gt;
+          &lt;td&gt;4109&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;$2^{14}$&lt;/td&gt;
+          &lt;td&gt;16384&lt;/td&gt;
+          &lt;td&gt;00004000&lt;/td&gt;
+          &lt;td&gt;11011110011011000100000000000000&lt;/td&gt;
+          &lt;td&gt;11011110011011&lt;/td&gt;
+          &lt;td&gt;379B&lt;/td&gt;
+          &lt;td&gt;14235&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;$2^{14}+1$&lt;/td&gt;
+          &lt;td&gt;16385&lt;/td&gt;
+          &lt;td&gt;00004001&lt;/td&gt;
+          &lt;td&gt;01111100101000111011100110110001&lt;/td&gt;
+          &lt;td&gt;01111100101000&lt;/td&gt;
+          &lt;td&gt;1F28&lt;/td&gt;
+          &lt;td&gt;7976&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;$2^{14}+2$&lt;/td&gt;
+          &lt;td&gt;16386&lt;/td&gt;
+          &lt;td&gt;00004002&lt;/td&gt;
+          &lt;td&gt;00011010110110110011001101100010&lt;/td&gt;
+          &lt;td&gt;00011010110110&lt;/td&gt;
+          &lt;td&gt;06B6&lt;/td&gt;
+          &lt;td&gt;1718&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;$2^{15}-1$&lt;/td&gt;
+          &lt;td&gt;32767&lt;/td&gt;
+          &lt;td&gt;00007FFF&lt;/td&gt;
+          &lt;td&gt;00011110101000010000011001001111&lt;/td&gt;
+          &lt;td&gt;00011110101000&lt;/td&gt;
+          &lt;td&gt;07A8&lt;/td&gt;
+          &lt;td&gt;1960&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;$2^{15}$&lt;/td&gt;
+          &lt;td&gt;32768&lt;/td&gt;
+          &lt;td&gt;00008000&lt;/td&gt;
+          &lt;td&gt;10111100110110001000000000000000&lt;/td&gt;
+          &lt;td&gt;10111100110110&lt;/td&gt;
+          &lt;td&gt;2F36&lt;/td&gt;
+          &lt;td&gt;12086&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;$2^{15}+1$&lt;/td&gt;
+          &lt;td&gt;32769&lt;/td&gt;
+          &lt;td&gt;00008001&lt;/td&gt;
+          &lt;td&gt;01011011000011111111100110110001&lt;/td&gt;
+          &lt;td&gt;01011011000011&lt;/td&gt;
+          &lt;td&gt;16C3&lt;/td&gt;
+          &lt;td&gt;5827&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;$2^{15}+2$&lt;/td&gt;
+          &lt;td&gt;32770&lt;/td&gt;
+          &lt;td&gt;00008002&lt;/td&gt;
+          &lt;td&gt;11111001010001110111001101100010&lt;/td&gt;
+          &lt;td&gt;11111001010001&lt;/td&gt;
+          &lt;td&gt;3E51&lt;/td&gt;
+          &lt;td&gt;15953&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;$2^{30}-1$&lt;/td&gt;
+          &lt;td&gt;1073741823&lt;/td&gt;
+          &lt;td&gt;3FFFFFFF&lt;/td&gt;
+          &lt;td&gt;10100001110010001000011001001111&lt;/td&gt;
+          &lt;td&gt;10100001110010&lt;/td&gt;
+          &lt;td&gt;2872&lt;/td&gt;
+          &lt;td&gt;10354&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;$2^{30}$&lt;/td&gt;
+          &lt;td&gt;1073741824&lt;/td&gt;
+          &lt;td&gt;40000000&lt;/td&gt;
+          &lt;td&gt;01000000000000000000000000000000&lt;/td&gt;
+          &lt;td&gt;01000000000000&lt;/td&gt;
+          &lt;td&gt;1000&lt;/td&gt;
+          &lt;td&gt;4096&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;$2^{30}+1$&lt;/td&gt;
+          &lt;td&gt;1073741825&lt;/td&gt;
+          &lt;td&gt;40000001&lt;/td&gt;
+          &lt;td&gt;11011110001101110111100110110001&lt;/td&gt;
+          &lt;td&gt;11011110001101&lt;/td&gt;
+          &lt;td&gt;378D&lt;/td&gt;
+          &lt;td&gt;14221&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;$2^{30}+2$&lt;/td&gt;
+          &lt;td&gt;1073741826&lt;/td&gt;
+          &lt;td&gt;40000002&lt;/td&gt;
+          &lt;td&gt;01111100011011101111001101100010&lt;/td&gt;
+          &lt;td&gt;01111100011011&lt;/td&gt;
+          &lt;td&gt;1F1B&lt;/td&gt;
+          &lt;td&gt;7963&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;$2^{31}-1$&lt;/td&gt;
+          &lt;td&gt;2147483647&lt;/td&gt;
+          &lt;td&gt;7FFFFFFF&lt;/td&gt;
+          &lt;td&gt;11100001110010001000011001001111&lt;/td&gt;
+          &lt;td&gt;11100001110010&lt;/td&gt;
+          &lt;td&gt;3872&lt;/td&gt;
+          &lt;td&gt;14450&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;$2^{31}$&lt;/td&gt;
+          &lt;td&gt;2147483648&lt;/td&gt;
+          &lt;td&gt;80000000&lt;/td&gt;
+          &lt;td&gt;10000000000000000000000000000000&lt;/td&gt;
+          &lt;td&gt;10000000000000&lt;/td&gt;
+          &lt;td&gt;2000&lt;/td&gt;
+          &lt;td&gt;8192&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;$2^{31}+1$&lt;/td&gt;
+          &lt;td&gt;2147483649&lt;/td&gt;
+          &lt;td&gt;80000001&lt;/td&gt;
+          &lt;td&gt;00011110001101110111100110110001&lt;/td&gt;
+          &lt;td&gt;00011110001101&lt;/td&gt;
+          &lt;td&gt;078D&lt;/td&gt;
+          &lt;td&gt;1933&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;$2^{31}+2$&lt;/td&gt;
+          &lt;td&gt;2147483650&lt;/td&gt;
+          &lt;td&gt;80000002&lt;/td&gt;
+          &lt;td&gt;10111100011011101111001101100010&lt;/td&gt;
+          &lt;td&gt;10111100011011&lt;/td&gt;
+          &lt;td&gt;2F1B&lt;/td&gt;
+          &lt;td&gt;12059&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;$2^{32}-1$&lt;/td&gt;
+          &lt;td&gt;4294967295&lt;/td&gt;
+          &lt;td&gt;FFFFFFFF&lt;/td&gt;
+          &lt;td&gt;01100001110010001000011001001111&lt;/td&gt;
+          &lt;td&gt;01100001110010&lt;/td&gt;
+          &lt;td&gt;1872&lt;/td&gt;
+          &lt;td&gt;6258&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;implementation-in-c&#34;&gt;Implementation in C&lt;/h3&gt;
+&lt;p&gt;The new hashing function looks at bit complicated, so let&amp;rsquo;s consider how it (and others) could be implemented in C code. The type uint32_t denotes 32-bit unsigned integer. We start from examples of Division Remainder hashing. For $M$ being a power of 2:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;uint32_t&lt;/span&gt; M &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;14&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;uint32_t&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;slice&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;uint32_t&lt;/span&gt; P) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; P &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt; (M &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;For prime $M$:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;uint32_t&lt;/span&gt; M &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;16411&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;uint32_t&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;slice&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;uint32_t&lt;/span&gt; P) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; P &lt;span style=&#34;color:#f92672&#34;&gt;%&lt;/span&gt; M;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The next function implements Multiplicative hashing:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;uint32_t&lt;/span&gt; M &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;14&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;uint32_t&lt;/span&gt; A &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2654435761&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;uint32_t&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;slice&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;uint32_t&lt;/span&gt; P) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; (P &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; A) &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;18&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;It works well for arbitrary input data and allows using the same number of slices $M = 2^{14}$. As the reader can see, the multiplicative version uses only a multiplication and a logical shift; on some architectures it can be faster than computing a modulo.&lt;/p&gt;
+&lt;p&gt;Details for Math Fans&lt;/p&gt;
+&lt;p&gt;In this section we describe properties of every approach. On analysis of the simple functions, we demonstrate the informal tools that we later apply to more complex functions. We hope that even non great fan of mathematics will be able to catch the main point.&lt;/p&gt;
+&lt;h2 id=&#34;the-power-of-2-is-evil&#34;&gt;The Power of 2 is Evil&lt;/h2&gt;
+&lt;p&gt;The first function we will consider is $s(P) = P \bmod 2^{14}$.
+Let&amp;rsquo;s recall some properties of this function.&lt;/p&gt;
+&lt;p&gt;Flipping just one bit in the given partition not always leads to a change in the corresponding slice (in hash-value).
+More formal: for some bit $i$, &amp;ldquo;occasionally&amp;rdquo; $s(P) = s(P + 2^i)$ holds; here we assume for simplicity that $P$ has $i$ bit cleared.
+In our &amp;ldquo;binary&amp;rdquo; world, partitions differing in only one bit may have a strong correlation.
+Therefore, we are expecting that a &amp;ldquo;good&amp;rdquo; hashing will produce different hash-code for them (i.e., it will place the partitions in different slices).
+But for this function, the property fails on any partition $P ≥ 2^{14}$.
+There are simple templates of partitions having the same hash-code.
+For example, for any $i$ and $S$, partitions $P = S + 2^{14} \cdot i$ will be placed by the function to the same slice $S$.
+From a &amp;ldquo;good&amp;rdquo; hashing, we are expecting not to have very common patterns, especially, of binary form.
+But again, this function fails on this condition.&lt;/p&gt;
+&lt;h2 id=&#34;the-art-of-primes&#34;&gt;The Art of Primes&lt;/h2&gt;
+&lt;p&gt;The second function is $s(P) = P \bmod M$.
+Where $M = 16411$.
+For this function, flipping any bit in a partition $P$ changes the hash code, because $M$ is chosen to be a prime.
+Actually, this condition on $M$ is too strong.
+For satisfying this property, it is sufficient that $M ≠ 2^i$ will hold.
+For example, $M = 15 · 12 · 97 = 17460$ (15 modules, 12 disks, 97 is a prime) is also &amp;ldquo;good&amp;rdquo;.&lt;/p&gt;
+&lt;p&gt;Since $M$ is prime, it seems that the following pattern is not common: $P = S + M · i$. But actually, primes that are close to a power of 2 are also not good. Knuth recommends to choose such $M$ that the following condition will not hold for any small integers $a$ and $j$: $r^j ≡ ± a \pmod M$. Where $r$ denotes the base of computation. From explanation of Knuth, the meaning of $r$ for our case is not too clear: whether $r=2$, $r=16$, or $r=256$? It seems the answer very depends on the type of input data.&lt;/p&gt;
+&lt;p&gt;By Knuth, if $r=2$, the chosen $M$ is not so good, since $M = 16411 = 2^{14} + 27$, and hence $2^{14} ≡ -27 \pmod M$. For $r=16$, we get that $16^4 ≡ -108 \pmod M$. For $r=256$, $256^2 ≡ -108 \pmod M$.&lt;/p&gt;
+&lt;p&gt;Knuth explains that such $M$ may produce a hash code that is a simple composition of key digits (in $r$ base system). Instead of trying to understand this explanation, we will give some intuition. Working with numbers, a programmer usually chooses powers of 2 for sizes of structures and buffers (e.g., $2^{10}$ bytes). Then he defines the format of such data and introduces headers (e.g. the header size = 20 bytes). Hence, the size of data without the header becomes very close to the power of 2 (in our example, $2^{10} - 20 = 1004$). On the other hand, embedding this structure to an outer packet (assume the size of this outer header is 30 bytes) leads to the total size being also close to the power of 2 ($2^{10} + 30 = 1054$). As result, most of numbers in our &amp;ldquo;binary&amp;rdquo; world are either powers of 2 or close to them. Therefore, such choice of $M$ increases collisions. In other words, not only powers of 2 are &lt;em&gt;evil&lt;/em&gt;, but primes closing to them are &lt;em&gt;evil&lt;/em&gt; too.&lt;/p&gt;
+&lt;p&gt;As an example of a &amp;ldquo;good&amp;rdquo; prime, let&amp;rsquo;s consider $M = 24571$. It is a bit smaller then the middle of $2^{14}$ and $2^{15}$.&lt;/p&gt;
+&lt;p&gt;Introducing a little change in this hashing function, we get better hashing even for $M = 2^{14}$: $s(P) = P \bmod N \bmod M$. In this case $N$ must be some &amp;ldquo;big&amp;rdquo; and &amp;ldquo;far&amp;rdquo; from a power of 2 prime number. The discussion of this method is out of scope of this Notes.&lt;/p&gt;
+&lt;h2 id=&#34;the-magic-of-golden-ratio&#34;&gt;The Magic of Golden Ratio&lt;/h2&gt;
+&lt;p&gt;We now present in details the multiplicative hashing. First, we discuss the properties of the function $f$: $f(P) = A · P \bmod W$.&lt;/p&gt;
+&lt;p&gt;The magic number $A$ is chosen to have the following nice properties: $W / A ≈ 1.6$ &amp;ndash; the golden ratio and $GCD(A, W) = 1$ ($A$ and $W$ are relatively prime or coprime). Therefore, the function $f$ is 1-1 on 32-bit integers. In other word, for any $P_1~ ≠ P_2$, $f(P_1) ≠ f(P_2)$ holds. This function has a role of perturbation or randomization of the input data (partitions).&lt;/p&gt;
+&lt;p&gt;Assume given a partition $P$. Let&amp;rsquo;s set the 0 bit in $P$. Then we get $f(P + 1) = (f(P) + A) \bmod W$. So the bit 0 dirties those bits of $f(P)$ that are set in $A$. This implies that $A$ must be chosen from the following range: $2^{31} &amp;lt; A &amp;lt; 2^{32}$, and in addition it must have a half of bits being set. By Knuth, the best choice is to define it to be the golden value of $W$: $W / A = 1.6 \ldots$ . In this case setting $i$-bit in $P$ dirties in $f(P)$ all the bits from $i$ to 31.&lt;/p&gt;
+&lt;p&gt;Using the properties of $f()$, we show the intuition why the function $s(P) = f(P) \div 2^{18}$ is a &amp;ldquo;good&amp;rdquo; hashing function.&lt;/p&gt;
+&lt;p&gt;The function $s$ remains 14 most significant bits of $f(P)$. Therefore, from the properties of $f()$, flipping any bit in $P$ will yield flipping at least in one bit of $s(P)$.
+The function $s$ puts into one slice $S$ all the partitions of the form: $P = (S · 2^{18} + i) · B \bmod 2^{32}$, where $B = 244002641$ (see for details the section Invertibility) and $0 ≤ i &amp;lt; 2^{18}$. Assume that $P_0 = S · B · 2^{18} \bmod 2^{32}$, then $P_i = (P_0 + i · B) \bmod 2^{32}$. The function $g(i) = i · B$ produces almost random 32-bit integers from 18-bit integers. Therefore, it is almost impossible to derive a &amp;ldquo;nice&amp;rdquo; sub-sequence from the values of set ${g(i) | 0 ≤ i &amp;lt; 2^{18}}$.&lt;/p&gt;
+&lt;h2 id=&#34;invertibility&#34;&gt;Invertibility&lt;/h2&gt;
+&lt;p&gt;Given a 14-bit slice $S$ and some 18-bit identifier $Id$, we are interested to compute the partition $P$ that is placed by the function $s$ at slice $S$. Note that given a partition $P$, the computation of $Id$ is also depends on the chosen method of hashing. We present for each hashing how the identifier and the inverse of $s()$ can be computed.&lt;/p&gt;
+&lt;p&gt;For the simplest function $s(P) = P \bmod 2^{14}$, the identifier is computed as follows: $Id = P \div 2^{14}$.
+Then its inverse is $p(S, Id) = S + Id · 2^{14}$.
+For prime $M$, the identifier is $Id = P \div M$ and the inverse function is $p(S, Id) = S + Id · M$.
+For multiplicative hashing, we have $Id = A · P \bmod 2^{14}$. Then $p(S, Id) = (S · 2^{18} + Id) · B \bmod 2^{32}$.
+This implies from the fact that $A · B ≡ 1 \pmod 2^{32}$ and the inverse of $f()$ is $f^{-1}(x) = x · B \bmod 2^{32}$.&lt;/p&gt;
+&lt;p&gt;We show the implementation of $p()$ in C code for the multiplicative hashing only:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;uint32_t&lt;/span&gt; M &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;14&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;uint32_t&lt;/span&gt; B &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;244002641&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;uint32_t&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;partition&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;uint32_t&lt;/span&gt; S, &lt;span style=&#34;color:#66d9ef&#34;&gt;uint32_t&lt;/span&gt; Id) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; (S &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;18&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; Id) &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; B;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;big-numbers&#34;&gt;Big Numbers&lt;/h2&gt;
+&lt;p&gt;In this section we discuss the behavior of multiplicative hashing on big partition numbers. Recall that flipping just one $i$-bit in $P$ has impact on $(32 - i)$ bits (from $i$ to 31) in $f(P)$. By the definition, $s(P)$ derives 14 most significant bits of $f(P)$. As result, for $i &amp;lt; 18$, the flipping $i$-bit dirties most of 14 bits of $s(P)$, while for $i ≥ 18$, it change less then 14 bits of $s(P)$: $32 - i ≤ 14$. For example, flipping the most significant 31-bit of the partition $P$ flips the only one 14-bit of the corresponding slice $S = s(P)$. This is not a real problem for our case, the partitions are still putted into different slides.&lt;/p&gt;
+&lt;p&gt;Another problem with flipping of most significant bits is following. For a set of partitions differing in most significant bits only, the number of collisions is greater then for the case that partitions are different in less significant bits. But due to the nice choice of $A$ (being golden ratio of $W$), this is still sufficiently good distribution. Intuitively, if the partitions differ in x most significant bits, then slices for them will also differ in x bits. So most of these partitions will be placed to different slices.&lt;/p&gt;
+&lt;p&gt;Note that the number of impacted bits in $s(P)$ decreases only for partitions with more then 18 bits. Even then, as described above, it does not mean that we will have a huge degradation of the hashing performance. But if we want to prevent any potentially dangerous case, we may extend the machine word to 64-bits, especially if the used architecture is also 64-bit. In this case, we just compute a new pair of integers $A$ and $B$ ($A$ is the golden ration of and is coprime with $W=2^{64}$, $B$ is coprime with $A$) and correct logical shifts. This is an example of implementation in C:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;uint64_t&lt;/span&gt; M &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;14&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;uint64_t&lt;/span&gt; A &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;11400714819323198485&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;uint64_t&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;slice&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;uint64_t&lt;/span&gt; P) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; (P &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; A) &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;50&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;example-of-big-partitions&#34;&gt;Example of Big Partitions&lt;/h3&gt;
+&lt;p&gt;The table contains computation of slices for partitions that differ only in three most significant bits. As we can see, corresponding slices also differ only in three bits. This property may be considered as drawback. But note that this case has no collisions.&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;binary $P$&lt;/th&gt;
+          &lt;th&gt;hex $P$&lt;/th&gt;
+          &lt;th&gt;binary $f(P)$&lt;/th&gt;
+          &lt;th&gt;binary $S$&lt;/th&gt;
+          &lt;th&gt;hex $S$&lt;/th&gt;
+          &lt;th&gt;dec $S$&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;000&lt;/strong&gt;10101010111010100100101011001&lt;/td&gt;
+          &lt;td&gt;155D4959&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;100&lt;/strong&gt;01101010010011100011110001001&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;100&lt;/strong&gt;01101010010&lt;/td&gt;
+          &lt;td&gt;$2352$&lt;/td&gt;
+          &lt;td&gt;$9042$&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;001&lt;/strong&gt;10101010111010100100101011001&lt;/td&gt;
+          &lt;td&gt;355D4959&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;101&lt;/strong&gt;01101010010011100011110001001&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;101&lt;/strong&gt;01101010010&lt;/td&gt;
+          &lt;td&gt;$2B52$&lt;/td&gt;
+          &lt;td&gt;$11090$&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;010&lt;/strong&gt;10101010111010100100101011001&lt;/td&gt;
+          &lt;td&gt;555D4959&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;110&lt;/strong&gt;01101010010011100011110001001&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;110&lt;/strong&gt;01101010010&lt;/td&gt;
+          &lt;td&gt;$3352$&lt;/td&gt;
+          &lt;td&gt;$13138$&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;011&lt;/strong&gt;10101010111010100100101011001&lt;/td&gt;
+          &lt;td&gt;755D4959&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;111&lt;/strong&gt;01101010010011100011110001001&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;111&lt;/strong&gt;01101010010&lt;/td&gt;
+          &lt;td&gt;$3B52$&lt;/td&gt;
+          &lt;td&gt;$15186$&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;100&lt;/strong&gt;10101010111010100100101011001&lt;/td&gt;
+          &lt;td&gt;955D4959&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;000&lt;/strong&gt;01101010010011100011110001001&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;000&lt;/strong&gt;01101010010&lt;/td&gt;
+          &lt;td&gt;$0352$&lt;/td&gt;
+          &lt;td&gt;$850$&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;101&lt;/strong&gt;10101010111010100100101011001&lt;/td&gt;
+          &lt;td&gt;B55D4959&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;001&lt;/strong&gt;01101010010011100011110001001&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;001&lt;/strong&gt;01101010010&lt;/td&gt;
+          &lt;td&gt;$0B52$&lt;/td&gt;
+          &lt;td&gt;$2898$&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;110&lt;/strong&gt;10101010111010100100101011001&lt;/td&gt;
+          &lt;td&gt;D55D4959&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;010&lt;/strong&gt;01101010010011100011110001001&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;010&lt;/strong&gt;01101010010&lt;/td&gt;
+          &lt;td&gt;$1352$&lt;/td&gt;
+          &lt;td&gt;$4946$&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;111&lt;/strong&gt;10101010111010100100101011001&lt;/td&gt;
+          &lt;td&gt;F55D4959&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;011&lt;/strong&gt;01101010010011100011110001001&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;011&lt;/strong&gt;01101010010&lt;/td&gt;
+          &lt;td&gt;$1B52$&lt;/td&gt;
+          &lt;td&gt;$6994$&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;TODO&lt;/p&gt;
+&lt;h3 id=&#34;links-and-references&#34;&gt;Links and References&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;T Corman, Ch Leiserson, R Rivest, &amp;ldquo;Introduction to Algorithms&amp;rdquo;, 1999&lt;/li&gt;
+&lt;li&gt;D Knuth, &amp;ldquo;Sorting and Searching&amp;rdquo;, volume 3 of &amp;ldquo;The Art of Computer Programming&amp;rdquo;, 1973. Section 12.3&lt;/li&gt;
+&lt;li&gt;Integer Hash Function, Thomas Wang&lt;/li&gt;
+&lt;li&gt;Selecting a Hash Function, Scott Gasch&lt;/li&gt;
+&lt;li&gt;Hash functions, Paul Hsieh&lt;/li&gt;
+&lt;li&gt;Wikipedia: Hash Table &amp;ndash; sites Thomas Wang that the multiplicative hash has &amp;ldquo;particularly poor clustering behavior&amp;rdquo;.&lt;/li&gt;
+&lt;li&gt;Prime Double Hash Table, Thomas Wang &amp;ndash; the wrong proof.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://web.archive.org/web/19990903133921/http://www.concentric.net/~Ttwang/tech/primehash.htm&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;http://web.archive.org/web/19990903133921/http://www.concentric.net/~Ttwang/tech/primehash.htm&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Wikipedia: Talking Hash Table &amp;ndash; note that the proof is wrong, see &amp;ldquo;Info about multiplicative hashing is wrong&amp;rdquo; section.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Perfect Distribution: GCD in Disguise</title>
       <link>/post/perfect-distribution/</link>
       <pubDate>Tue, 01 Aug 2017 07:29:43 +0000</pubDate>
