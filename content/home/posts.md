@@ -1,24 +1,22 @@
-+++
-# Recent Posts widget.
-# This widget displays recent posts from `content/post/`.
-widget = "posts"
-active = true
-date = "2016-04-20T00:00:00"
-draft = false
+---
+widget: collection
+active: true
+headless: true
+weight: 40
 
-title = "Recent Posts"
-subtitle = ""
+title: Recent Posts
+subtitle: ''
 
-# Order that this section will appear in.
-weight = 40
+content:
+  page_type: post
+  count: 5
+  offset: 0
+  order: desc
+  filters: {}
 
-# Show posts that contain the following tags. Default to any tags.
-tags = []
-tags_include = []
-tags_exclude = []
-
-# Number of posts to list.
-count = 5
-
-+++
-
+design:
+  columns: '1'
+  view: compact
+  background: {}
+  spacing: {}
+---
