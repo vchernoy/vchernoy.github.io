@@ -1,44 +1,1176 @@
-<!doctype html><html lang=en-us><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=generator content="Hugo Blox Builder 5.9.7"><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link rel=preload as=style href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto+Mono&family=Roboto:wght@400;700&display=swap"><link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto+Mono&family=Roboto:wght@400;700&display=swap" media=print onload='this.media="all"'><script src=/js/mathjax-config.js></script><link rel=stylesheet href=/css/vendor-bundle.min.26c458e6907dc03073573976b7f4044e.css media=print onload='this.media="all"'><script src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js integrity crossorigin=anonymous async></script><link rel=stylesheet href=/css/wowchemy.c0e352886d22860db4df90f1df196e9c.css><link rel=stylesheet href=/css/libs/chroma/github-light.min.css title=hl-light media=print onload='this.media="all"' disabled><link rel=stylesheet href=/css/libs/chroma/dracula.min.css title=hl-dark media=print onload='this.media="all"'><script async src="https://www.googletagmanager.com/gtag/js?id=UA-102853829-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","UA-102853829-1")</script><meta name=author content="Slava Chernoy"><meta name=description content="In this post, we return back to the combinatorial problem discussed in Introduction to Dynamic Programming and Memoization post.
+<!DOCTYPE html>
+<!-- This site was created with Hugo Blox. https://hugoblox.com -->
+<!-- Last Published: February 6, 2026 --><html lang="en-us" >
+
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  
+  
+    <meta name="generator" content="Hugo Blox Builder 5.9.7" />
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+
+  
+  
+  
+    
+      
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto+Mono&family=Roboto:wght@400;700&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto+Mono&family=Roboto:wght@400;700&display=swap" media="print" onload="this.media='all'">
+    
+  
+
+  
+  
+
+  
+  
+    
+    <script src="/js/mathjax-config.js"></script>
+  
+
+  
+
+  <link rel="stylesheet" href="/css/vendor-bundle.min.26c458e6907dc03073573976b7f4044e.css" media="print" onload="this.media='all'">
+
+  
+  
+  
+    
+    
+
+    
+    
+    
+    
+      
+      
+    
+    
+    
+
+    
+    
+    
+
+    
+
+    
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+  
+
+  
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.c0e352886d22860db4df90f1df196e9c.css" />
+
+  
+  
+  
+
+  
+  
+  
+  
+  
+  
+  
+    
+    
+    <link rel="stylesheet" href="/css/libs/chroma/github-light.min.css" title="hl-light" media="print" onload="this.media='all'" disabled>
+    <link rel="stylesheet" href="/css/libs/chroma/dracula.min.css" title="hl-dark" media="print" onload="this.media='all'" >
+  
+
+  
+  
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-102853829-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-102853829-1');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+
+
+
+
+
+
+  <meta name="author" content="Slava Chernoy" />
+
+
+
+
+
+  
+
+<meta name="description" content="In this post, we return back to the combinatorial problem discussed in Introduction to Dynamic Programming and Memoization post.
 We will show that generating functions may work great not only for single variable case (see The Art of Generating Functions),
 but also could be very useful for hacking two-variable relations (and of course, in general for multivariate case too).
 For making the post self-contained, we repeat the problem definition here.
 The Problem
 
-Compute the number of ways to choose $m$ elements from $n$ elements such that selected elements in one combination are not adjacent."><link rel=alternate hreflang=en-us href=/post/two-var-recursive-func/><link rel=canonical href=/post/two-var-recursive-func/><link rel=icon type=image/png href=/media/icon_hu_857dd55c234bc14f.png><link rel=apple-touch-icon type=image/png href=/media/icon_hu_88611cbd7a187137.png><meta name=theme-color content="#bbdefb"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/media/icon_hu_43cf117bf1a42c34.png"><meta property="og:type" content="article"><meta property="og:site_name" content><meta property="og:url" content="/post/two-var-recursive-func/"><meta property="og:title" content="Cracking Multivariate Recursive Equations Using Generating Functions | "><meta property="og:description" content="In this post, we return back to the combinatorial problem discussed in Introduction to Dynamic Programming and Memoization post.
+Compute the number of ways to choose $m$ elements from $n$ elements such that selected elements in one combination are not adjacent." />
+
+
+
+<link rel="alternate" hreflang="en-us" href="/post/two-var-recursive-func/" />
+<link rel="canonical" href="/post/two-var-recursive-func/" />
+
+
+
+
+
+<link rel="icon" type="image/png" href="/media/icon_hu_857dd55c234bc14f.png" />
+<link rel="apple-touch-icon" type="image/png" href="/media/icon_hu_88611cbd7a187137.png" />
+
+<meta name="theme-color" content="#bbdefb" />
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+<meta property="twitter:card" content="summary" />
+<meta property="twitter:image" content="/media/icon_hu_43cf117bf1a42c34.png" />
+
+
+
+  
+
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="" />
+<meta property="og:url" content="/post/two-var-recursive-func/" />
+<meta property="og:title" content="Cracking Multivariate Recursive Equations Using Generating Functions | " />
+<meta property="og:description" content="In this post, we return back to the combinatorial problem discussed in Introduction to Dynamic Programming and Memoization post.
 We will show that generating functions may work great not only for single variable case (see The Art of Generating Functions),
 but also could be very useful for hacking two-variable relations (and of course, in general for multivariate case too).
 For making the post self-contained, we repeat the problem definition here.
 The Problem
 
-Compute the number of ways to choose $m$ elements from $n$ elements such that selected elements in one combination are not adjacent."><meta property="og:image" content="/media/icon_hu_43cf117bf1a42c34.png"><meta property="og:locale" content="en-us"><meta property="article:published_time" content="2017-07-06T07:29:43+00:00"><meta property="article:modified_time" content="2017-07-06T07:29:43+00:00"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"/post/two-var-recursive-func/"},"headline":"Cracking Multivariate Recursive Equations Using Generating Functions","datePublished":"2017-07-06T07:29:43Z","dateModified":"2017-07-06T07:29:43Z","author":{"@type":"Person","name":"Slava Chernoy"},"publisher":{"@type":"Organization","name":"","logo":{"@type":"ImageObject","url":"/media/icon_hu_19349546d07106a3.png"}},"description":"\u003cp\u003eIn this post, we return back to the combinatorial problem discussed in \u003ca href=\"/post/intro-to-dp/\"\u003eIntroduction to Dynamic Programming and Memoization\u003c/a\u003e post.\nWe will show that generating functions may work great not only for single variable case (see \u003ca href=\"/post/gen-func-art/\"\u003eThe Art of Generating Functions\u003c/a\u003e),\nbut also could be very useful for hacking two-variable relations (and of course, in general for multivariate case too).\u003c/p\u003e\n\u003cp\u003eFor making the post self-contained, we repeat the problem definition here.\u003c/p\u003e\n\u003ch2 id=\"the-problem\"\u003eThe Problem\u003c/h2\u003e\n\u003cblockquote\u003e\n\u003cp\u003eCompute the number of ways to choose $m$ elements from $n$ elements such that selected elements in one combination are not adjacent.\u003c/p\u003e"}</script><title>Cracking Multivariate Recursive Equations Using Generating Functions |</title></head><body id=top data-spy=scroll data-offset=70 data-target=#TableOfContents class="page-wrapper dark" data-wc-page-id=b1c533f0f1613374ef6af11f5d4336c8><script src=/js/wowchemy-init.min.db21e13b9b5c4f4b947717750ec8b3cc.js></script><div class="page-header header--fixed"><header><nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id=navbar-main><div class=container-xl><div class="d-none d-lg-inline-flex"><a class=navbar-brand href=/></a></div><button type=button class=navbar-toggler data-toggle=collapse data-target=#navbar-content aria-controls=navbar-content aria-expanded=false aria-label="Toggle navigation">
-<span><i class="fas fa-bars"></i></span></button><div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none"><a class=navbar-brand href=/></a></div><div class="navbar-collapse main-menu-item collapse justify-content-start" id=navbar-content><ul class="navbar-nav d-md-inline-flex"><li class=nav-item><a class=nav-link href=/#about><span>Home</span></a></li><li class=nav-item><a class=nav-link href=/#posts><span>Posts</span></a></li></ul></div><ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2"></ul></div></nav></header></div><div class=page-body><article class=article><div class="article-container pt-3"><h1>Cracking Multivariate Recursive Equations Using Generating Functions</h1><div class=article-metadata><span class=article-date>Jul 6, 2017
-</span><span class=middot-divider></span>
-<span class=article-reading-time>3 min read</span></div></div><div class=article-container><div class=article-style><p>In this post, we return back to the combinatorial problem discussed in <a href=/post/intro-to-dp/>Introduction to Dynamic Programming and Memoization</a> post.
-We will show that generating functions may work great not only for single variable case (see <a href=/post/gen-func-art/>The Art of Generating Functions</a>),
-but also could be very useful for hacking two-variable relations (and of course, in general for multivariate case too).</p><p>For making the post self-contained, we repeat the problem definition here.</p><h2 id=the-problem>The Problem</h2><blockquote><p>Compute the number of ways to choose $m$ elements from $n$ elements such that selected elements in one combination are not adjacent.</p></blockquote><p>For example, for $n=4$ and $m=2$, the answer is $3$, since from the $4$-element set: $\lbrace 1,2,3,4 \rbrace$,
-there are three feasible $2$-element combinations: $\lbrace 1,4 \rbrace$, $\lbrace 2,4 \rbrace$, $\lbrace 1,3 \rbrace$.</p><p>Another example: for $n=5$ and $m=3$, there is only one $3$-element combination: $\lbrace 1,3,5 \rbrace$.</p><p>As we discussed in the first post, there is a nice recursive relation for this problem:</p><p>$$ F_{n, m} = F_{n - 1, m} + F_{n - 2, m - 1} + [n=m=0] + [n=m=1] $$</p><p>We assume that for any $n &lt; 0$ or $m &lt; 0$, $F_{n,m} = 0$.
-The indicator $[P]$ gives $1$ if the predicate $P$ is true.</p><h2 id=the-generating-function-for-f_nm>The Generating Function for $F_{n,m}$</h2><p>Let&rsquo;s introduce the generating function $\Phi(x,y)$ of two (floating point) variables $x$ and $y$:</p><p>$$\Phi(x,y) = \sum_{n,m} F_{n,m} x^n y^m$$</p><p>Substituting the definition of $F_{n,m}$ and simplifying the sums, we will get:</p><p>$ \Phi(x,y) $
+Compute the number of ways to choose $m$ elements from $n$ elements such that selected elements in one combination are not adjacent." /><meta property="og:image" content="/media/icon_hu_43cf117bf1a42c34.png" /><meta property="og:locale" content="en-us" />
+
+  
+    <meta
+      property="article:published_time"
+      content="2017-07-06T07:29:43&#43;00:00"
+    />
+  
+  
+    <meta property="article:modified_time" content="2017-07-06T07:29:43&#43;00:00">
+  
+
+
+
+
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "/post/two-var-recursive-func/"
+  },
+  "headline": "Cracking Multivariate Recursive Equations Using Generating Functions",
+  
+  "datePublished": "2017-07-06T07:29:43Z",
+  "dateModified": "2017-07-06T07:29:43Z",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Slava Chernoy"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "/media/icon_hu_19349546d07106a3.png"
+    }
+  },
+  "description": "\u003cp\u003eIn this post, we return back to the combinatorial problem discussed in \u003ca href=\"/post/intro-to-dp/\"\u003eIntroduction to Dynamic Programming and Memoization\u003c/a\u003e post.\nWe will show that generating functions may work great not only for single variable case (see \u003ca href=\"/post/gen-func-art/\"\u003eThe Art of Generating Functions\u003c/a\u003e),\nbut also could be very useful for hacking two-variable relations (and of course, in general for multivariate case too).\u003c/p\u003e\n\u003cp\u003eFor making the post self-contained, we repeat the problem definition here.\u003c/p\u003e\n\u003ch2 id=\"the-problem\"\u003eThe Problem\u003c/h2\u003e\n\u003cblockquote\u003e\n\u003cp\u003eCompute the number of ways to choose $m$ elements from $n$ elements such that selected elements in one combination are not adjacent.\u003c/p\u003e"
+}
+</script>
+
+  
+
+  
+
+
+
+
+  
+  
+  
+
+  
+  
+
+  
+
+
+  
+  <title>Cracking Multivariate Recursive Equations Using Generating Functions | </title>
+
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper  dark " data-wc-page-id="b1c533f0f1613374ef6af11f5d4336c8" >
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="/js/wowchemy-init.min.db21e13b9b5c4f4b947717750ec8b3cc.js"></script>
+
+  
+
+
+
+
+  <div class="page-header header--fixed">
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+<header>
+  <nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+    <div class="container-xl">
+
+      
+      <div class="d-none d-lg-inline-flex">
+        <a class="navbar-brand" href="/"></a>
+      </div>
+      
+
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+      <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+      
+      <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+        <a class="navbar-brand" href="/"></a>
+      </div>
+      
+
+      
+      
+      <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+        
+        <ul class="navbar-nav d-md-inline-flex">
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#about"><span>Home</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#posts"><span>Posts</span></a>
+          </li>
+
+          
+          
+
+        
+
+          
+        </ul>
+      </div>
+
+      <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+        
+        
+          
+        
+
+        
+        
+        
+
+        
+        
+        
+
+        
+        
+
+      </ul>
+
+    </div>
+  </nav>
+</header>
+
+
+  </div>
+
+  <div class="page-body">
+    
+    
+    
+
+    <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>Cracking Multivariate Recursive Equations Using Generating Functions</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Jul 6, 2017
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    3 min read
+  </span>
+  
+
+  
+  
+  
+  
+
+  
+  
+
+</div>
+
+    
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      <p>In this post, we return back to the combinatorial problem discussed in <a href="/post/intro-to-dp/">Introduction to Dynamic Programming and Memoization</a> post.
+We will show that generating functions may work great not only for single variable case (see <a href="/post/gen-func-art/">The Art of Generating Functions</a>),
+but also could be very useful for hacking two-variable relations (and of course, in general for multivariate case too).</p>
+<p>For making the post self-contained, we repeat the problem definition here.</p>
+<h2 id="the-problem">The Problem</h2>
+<blockquote>
+<p>Compute the number of ways to choose $m$ elements from $n$ elements such that selected elements in one combination are not adjacent.</p></blockquote>
+<p>For example, for $n=4$ and $m=2$, the answer is $3$, since from the $4$-element set: $\lbrace 1,2,3,4 \rbrace$,
+there are three feasible $2$-element combinations: $\lbrace 1,4 \rbrace$, $\lbrace 2,4 \rbrace$, $\lbrace 1,3 \rbrace$.</p>
+<p>Another example: for $n=5$ and $m=3$, there is only one $3$-element combination: $\lbrace 1,3,5 \rbrace$.</p>
+<p>As we discussed in the first post, there is a nice recursive relation for this problem:</p>
+<p>$$ F_{n, m} = F_{n - 1, m} + F_{n - 2, m - 1} + [n=m=0] + [n=m=1] $$</p>
+<p>We assume that for any $n &lt; 0$ or $m &lt; 0$, $F_{n,m} = 0$.
+The indicator $[P]$ gives $1$ if the predicate $P$ is true.</p>
+<h2 id="the-generating-function-for-f_nm">The Generating Function for $F_{n,m}$</h2>
+<p>Let&rsquo;s introduce the generating function $\Phi(x,y)$ of two (floating point) variables $x$ and $y$:</p>
+<p>$$\Phi(x,y) = \sum_{n,m} F_{n,m} x^n y^m$$</p>
+<p>Substituting the definition of $F_{n,m}$ and simplifying the sums, we will get:</p>
+<p>$ \Phi(x,y) $
 $ = \sum_{n,m} F_{n,m} x^n y^m $
 $ = \sum_{n,m} \left(F_{n - 1, m} + F_{n - 2, m - 1} + [n=m=1] + [n=m=0] \right) x^n y^m$
 $ = \sum_{n,m} F_{n - 1, m} x^n y^m + \sum_{n,m} F_{n - 2, m - 1} x^n y^m + x \cdot y + 1 $
 $ = x \sum_{n,m} F_{n - 1, m} x^{n-1} y^m + x^2 y \sum_{n,m} F_{n - 2, m - 1} x^{n-2} y^{m-1} + x \cdot y + 1 $
-$ = x \Phi(x,y) + x^2 y \Phi(x,y) + x \cdot y + 1 $</p><p>We have just found the simple representation for the generating function:</p><p>$$\Phi(x, y) = \frac{1 + x \cdot y}{1 - x - x^2 y}$$</p><h2 id=the-closed-form-for-f_nm>The Closed Form for $F_{n,m}$</h2><p>Using the infinite series: $ \frac{1}{1-z} = \sum_{k\geq 0} z^k $,
-we can make the following transforms:</p><p>$\Phi(x, y) $
+$ = x \Phi(x,y) + x^2 y \Phi(x,y) + x \cdot y + 1 $</p>
+<p>We have just found the simple representation for the generating function:</p>
+<p>$$\Phi(x, y) = \frac{1 + x \cdot y}{1 - x - x^2 y}$$</p>
+<h2 id="the-closed-form-for-f_nm">The Closed Form for $F_{n,m}$</h2>
+<p>Using the infinite series: $ \frac{1}{1-z} = \sum_{k\geq 0} z^k $,
+we can make the following transforms:</p>
+<p>$\Phi(x, y) $
 $ = \frac{1 + x \cdot y}{1 - x - x^2 y}$
 $ = (1 + x \cdot y) \sum_{k\geq 0} (x + x^2 y)^k $
 $ = (1 + x \cdot y) \sum_{0 \leq i \leq k} {k \choose i} x^{k+i} y^i $
-$ = \sum_{0 \leq i \leq k} {k \choose i} x^{k+i} y^i + \sum_{0 \leq i \leq k} {k \choose i} x^{k+i+1} y^{i+1}$</p><ol><li><p>Introducing the new variables: $n=k+i, m=i$, we can transform the first expression as follows:
+$ = \sum_{0 \leq i \leq k} {k \choose i} x^{k+i} y^i + \sum_{0 \leq i \leq k} {k \choose i} x^{k+i+1} y^{i+1}$</p>
+<ol>
+<li>
+<p>Introducing the new variables: $n=k+i, m=i$, we can transform the first expression as follows:
 $ \sum_{0 \leq i \leq k} {k \choose i} x^{k+i} y^i $
-$ = \sum_{m \geq 0, n \geq 2m} {n-m \choose m} x^{n} y^m $.</p></li><li><p>And introducing the new variables: $n=k+i+1, m=i+1$, we can transform the second expression similarly:
+$ = \sum_{m \geq 0, n \geq 2m} {n-m \choose m} x^{n} y^m $.</p>
+</li>
+<li>
+<p>And introducing the new variables: $n=k+i+1, m=i+1$, we can transform the second expression similarly:
 $ \sum_{0 \leq i \leq k} {k \choose i} x^{k+i+1} y^{i+1} $
-$ = \sum_{m \geq 1, n \geq 2m-1} {n-m \choose m-1} x^n y^m $.</p></li></ol><p>The last two transformations give us the closed form:</p><p>$F_{n, m} $
-$ = {n - m \choose m} + {n - m \choose m - 1}$.</p><p>Which actually equals to</p><p>$$ F_{n, m} = {n - m + 1 \choose m} $$</p><p>In the <a href=/post/efficient-implementation-non-adjacent-selection/>next post</a>, we discuss how to implement this closed form efficiently in Python—from a simple factorial-based solution to library implementations and modular arithmetic for competitive programming.</p></div><div class=article-tags><a class="badge badge-light" href=/tags/math/>Math</a>
-<a class="badge badge-light" href=/tags/python/>Python</a>
-<a class="badge badge-light" href=/tags/generating-function/>Generating Function</a>
-<a class="badge badge-light" href=/tags/recursion/>Recursion</a>
-<a class="badge badge-light" href=/tags/dynamic-programming/>Dynamic Programming</a>
-<a class="badge badge-light" href=/tags/memoization/>Memoization</a>
-<a class="badge badge-light" href=/tags/binomial/>Binomial</a>
-<a class="badge badge-light" href=/tags/multivariate-function/>Multivariate Function</a>
-<a class="badge badge-light" href=/tags/programming/>Programming</a>
-<a class="badge badge-light" href=/tags/combinatorics/>Combinatorics</a></div><div class=share-box><ul class=share><li><a href="https://twitter.com/intent/tweet?url=%2Fpost%2Ftwo-var-recursive-func%2F&amp;text=Cracking+Multivariate+Recursive+Equations+Using+Generating+Functions" target=_blank rel=noopener class=share-btn-twitter aria-label=twitter><i class="fab fa-twitter"></i></a></li><li><a href="https://www.facebook.com/sharer.php?u=%2Fpost%2Ftwo-var-recursive-func%2F&amp;t=Cracking+Multivariate+Recursive+Equations+Using+Generating+Functions" target=_blank rel=noopener class=share-btn-facebook aria-label=facebook><i class="fab fa-facebook"></i></a></li><li><a href="mailto:?subject=Cracking%20Multivariate%20Recursive%20Equations%20Using%20Generating%20Functions&amp;body=%2Fpost%2Ftwo-var-recursive-func%2F" target=_blank rel=noopener class=share-btn-email aria-label=envelope><i class="fas fa-envelope"></i></a></li><li><a href="https://www.linkedin.com/shareArticle?url=%2Fpost%2Ftwo-var-recursive-func%2F&amp;title=Cracking+Multivariate+Recursive+Equations+Using+Generating+Functions" target=_blank rel=noopener class=share-btn-linkedin aria-label=linkedin-in><i class="fab fa-linkedin-in"></i></a></li><li><a href="whatsapp://send?text=Cracking+Multivariate+Recursive+Equations+Using+Generating+Functions%20%2Fpost%2Ftwo-var-recursive-func%2F" target=_blank rel=noopener class=share-btn-whatsapp aria-label=whatsapp><i class="fab fa-whatsapp"></i></a></li><li><a href="https://service.weibo.com/share/share.php?url=%2Fpost%2Ftwo-var-recursive-func%2F&amp;title=Cracking+Multivariate+Recursive+Equations+Using+Generating+Functions" target=_blank rel=noopener class=share-btn-weibo aria-label=weibo><i class="fab fa-weibo"></i></a></li></ul></div><div class="media author-card content-widget-hr"><div class=media-body><h5 class=card-title><a href=/>Slava Chernoy</a></h5><h6 class=card-subtitle>Software Engineer</h6><ul class=network-icon aria-hidden=true><li><a href=https://linkedin.com/in/slava-chernoy-9859a81/ target=_blank rel=noopener><i class="fab fa-linkedin"></i></a></li><li><a href=https://github.com/vchernoy target=_blank rel=noopener><i class="fab fa-github"></i></a></li><li><a href=https://stackoverflow.com/users/276287/slava target=_blank rel=noopener><i class="fab fa-stack-overflow"></i></a></li></ul></div></div><section id=comments><div id=graphcomment></div><script type=text/javascript>window.graphcomment_id="B8a3Q3Al1kTk",function(){var e=document.createElement("script");e.type="text/javascript",e.async=!0,e.src="https://graphcomment.com/js/integration.js",(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(e)}()</script></section></div></article></div><div class=page-footer><div class=container><footer class=site-footer><p class=powered-by>Published with Hugo Blox Builder — the free, open source website builder that empowers creators.</p></footer></div></div><script src=/js/vendor-bundle.min.50933d940896e49f984a778650d5f7f5.js></script><script id=page-data type=application/json>{"use_headroom":true}</script><script src=/js/wowchemy-headroom.db4755770454eb63685f8de785c0a172.js type=module></script><script src=/en/js/wowchemy.min.b42cee516846615f6e61f624dc63a325.js></script></body></html>
+$ = \sum_{m \geq 1, n \geq 2m-1} {n-m \choose m-1} x^n y^m $.</p>
+</li>
+</ol>
+<p>The last two transformations give us the closed form:</p>
+<p>$F_{n, m} $
+$ = {n - m \choose m} + {n - m \choose m - 1}$.</p>
+<p>Which actually equals to</p>
+<p>$$ F_{n, m} = {n - m + 1 \choose m} $$</p>
+<p>In the <a href="/post/efficient-implementation-non-adjacent-selection/">next post</a>, we discuss how to implement this closed form efficiently in Python—from a simple factorial-based solution to library implementations and modular arithmetic for competitive programming.</p>
+
+    </div>
+
+    
+
+
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tags/math/">Math</a>
+  
+  <a class="badge badge-light" href="/tags/python/">Python</a>
+  
+  <a class="badge badge-light" href="/tags/generating-function/">Generating Function</a>
+  
+  <a class="badge badge-light" href="/tags/recursion/">Recursion</a>
+  
+  <a class="badge badge-light" href="/tags/dynamic-programming/">Dynamic Programming</a>
+  
+  <a class="badge badge-light" href="/tags/memoization/">Memoization</a>
+  
+  <a class="badge badge-light" href="/tags/binomial/">Binomial</a>
+  
+  <a class="badge badge-light" href="/tags/multivariate-function/">Multivariate Function</a>
+  
+  <a class="badge badge-light" href="/tags/programming/">Programming</a>
+  
+  <a class="badge badge-light" href="/tags/combinatorics/">Combinatorics</a>
+  
+</div>
+
+
+
+<div class="share-box">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=%2Fpost%2Ftwo-var-recursive-func%2F&amp;text=Cracking&#43;Multivariate&#43;Recursive&#43;Equations&#43;Using&#43;Generating&#43;Functions" target="_blank" rel="noopener" class="share-btn-twitter" aria-label="twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=%2Fpost%2Ftwo-var-recursive-func%2F&amp;t=Cracking&#43;Multivariate&#43;Recursive&#43;Equations&#43;Using&#43;Generating&#43;Functions" target="_blank" rel="noopener" class="share-btn-facebook" aria-label="facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      
+      
+        
+      
+      <li>
+        <a href="mailto:?subject=Cracking%20Multivariate%20Recursive%20Equations%20Using%20Generating%20Functions&amp;body=%2Fpost%2Ftwo-var-recursive-func%2F" target="_blank" rel="noopener" class="share-btn-email" aria-label="envelope">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=%2Fpost%2Ftwo-var-recursive-func%2F&amp;title=Cracking&#43;Multivariate&#43;Recursive&#43;Equations&#43;Using&#43;Generating&#43;Functions" target="_blank" rel="noopener" class="share-btn-linkedin" aria-label="linkedin-in">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      
+      
+      <li>
+        <a href="whatsapp://send?text=Cracking&#43;Multivariate&#43;Recursive&#43;Equations&#43;Using&#43;Generating&#43;Functions%20%2Fpost%2Ftwo-var-recursive-func%2F" target="_blank" rel="noopener" class="share-btn-whatsapp" aria-label="whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=%2Fpost%2Ftwo-var-recursive-func%2F&amp;title=Cracking&#43;Multivariate&#43;Recursive&#43;Equations&#43;Using&#43;Generating&#43;Functions" target="_blank" rel="noopener" class="share-btn-weibo" aria-label="weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="/">Slava Chernoy</a></h5>
+      <h6 class="card-subtitle">Software Engineer</h6>
+      
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://linkedin.com/in/slava-chernoy-9859a81/" target="_blank" rel="noopener">
+        <i class="fab fa-linkedin"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/vchernoy" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://stackoverflow.com/users/276287/slava" target="_blank" rel="noopener">
+        <i class="fab fa-stack-overflow"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+<section id="comments">
+  <div id="graphcomment"></div>
+<script type="text/javascript">
+ 
+window.graphcomment_id = 'B8a3Q3Al1kTk';
+ 
+(function() {
+    var gc = document.createElement('script'); gc.type = 'text/javascript'; gc.async = true;
+    gc.src = 'https://graphcomment.com/js/integration.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(gc);
+})();
+</script>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+  </div>
+</article>
+  </div>
+
+  <div class="page-footer">
+    
+    
+    <div class="container">
+      <footer class="site-footer">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  <p class="powered-by">
+    
+    
+    
+      
+      
+      
+      
+      
+      
+      Published with <!-- raw HTML omitted -->Hugo Blox Builder<!-- raw HTML omitted --> — the free, <!-- raw HTML omitted -->open source<!-- raw HTML omitted --> website builder that empowers creators.
+    
+  </p>
+</footer>
+
+    </div>
+    
+  </div>
+
+  
+
+
+<script src="/js/vendor-bundle.min.50933d940896e49f984a778650d5f7f5.js"></script>
+
+
+
+
+  
+
+  
+  
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script id="page-data" type="application/json">{"use_headroom":true}</script>
+
+
+  <script src="/js/wowchemy-headroom.db4755770454eb63685f8de785c0a172.js" type="module"></script>
+
+
+
+
+
+
+
+
+
+
+<script src="/en/js/wowchemy.min.b42cee516846615f6e61f624dc63a325.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
