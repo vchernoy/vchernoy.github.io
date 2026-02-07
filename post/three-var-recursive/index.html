@@ -290,17 +290,12 @@
 <meta name="description" content="This post extends the generating-function technique from the two-variable recursion to a three-variable case. I originally wrote this as an answer to a Math Stack Exchange question; here it is adapted for the blog with clearer exposition and code.
 The Problem
 We want to solve the recurrence
-$$
-\begin{aligned}
-a(m,n,k) &amp;= 2a(m-1,n-1,k-1) &#43; a(m-1,n-1,k) \
-&amp;&#43; a(m-1,n,k-1) &#43; a(m,n-1,k-1)
-\end{aligned}
-$$
+$$a(m,n,k) = 2a(m-1,n-1,k-1) &#43; a(m-1,n-1,k) &#43; a(m-1,n,k-1) &#43; a(m,n-1,k-1)$$
 where $m$, $n$, $k$ are nonnegative integers, with boundary conditions:
 
 $a(0,0,0) = a(1,0,0) = a(0,1,0) = a(0,0,1) = 1$
 $a(m,0,0) = a(0,m,0) = a(0,0,m) = 0$ for any $m &gt; 1$
-$a(m,n,k)$ is symmetric in $m$,$n$,$k$
+$a(m,n,k)$ is symmetric in $m$, $n$, $k$
 
 A subtlety: $a(0,1,1)$ is not defined by the recurrence alone, since it would require values like $a(-1,0,0)$. We take $a(m,n,k) = 0$ whenever any argument is negative." />
 
@@ -349,17 +344,12 @@ A subtlety: $a(0,1,1)$ is not defined by the recurrence alone, since it would re
 <meta property="og:description" content="This post extends the generating-function technique from the two-variable recursion to a three-variable case. I originally wrote this as an answer to a Math Stack Exchange question; here it is adapted for the blog with clearer exposition and code.
 The Problem
 We want to solve the recurrence
-$$
-\begin{aligned}
-a(m,n,k) &amp;= 2a(m-1,n-1,k-1) &#43; a(m-1,n-1,k) \
-&amp;&#43; a(m-1,n,k-1) &#43; a(m,n-1,k-1)
-\end{aligned}
-$$
+$$a(m,n,k) = 2a(m-1,n-1,k-1) &#43; a(m-1,n-1,k) &#43; a(m-1,n,k-1) &#43; a(m,n-1,k-1)$$
 where $m$, $n$, $k$ are nonnegative integers, with boundary conditions:
 
 $a(0,0,0) = a(1,0,0) = a(0,1,0) = a(0,0,1) = 1$
 $a(m,0,0) = a(0,m,0) = a(0,0,m) = 0$ for any $m &gt; 1$
-$a(m,n,k)$ is symmetric in $m$,$n$,$k$
+$a(m,n,k)$ is symmetric in $m$, $n$, $k$
 
 A subtlety: $a(0,1,1)$ is not defined by the recurrence alone, since it would require values like $a(-1,0,0)$. We take $a(m,n,k) = 0$ whenever any argument is negative." /><meta property="og:image" content="/media/icon_hu_43cf117bf1a42c34.png" /><meta property="og:locale" content="en-us" />
 
@@ -416,7 +406,7 @@ A subtlety: $a(0,1,1)$ is not defined by the recurrence alone, since it would re
       "url": "/media/icon_hu_19349546d07106a3.png"
     }
   },
-  "description": "\u003cp\u003eThis post extends the generating-function technique from the \u003ca href=\"/post/two-var-recursive-func/\"\u003etwo-variable recursion\u003c/a\u003e to a three-variable case. I originally wrote this as an answer to a \u003ca href=\"https://math.stackexchange.com/questions/1093271/how-to-solve-this-multivariable-recursion/2730331#2730331\" target=\"_blank\" rel=\"noopener\"\u003eMath Stack Exchange question\u003c/a\u003e; here it is adapted for the blog with clearer exposition and code.\u003c/p\u003e\n\u003ch2 id=\"the-problem\"\u003eThe Problem\u003c/h2\u003e\n\u003cp\u003eWe want to solve the recurrence\n$$\n\\begin{aligned}\na(m,n,k) \u0026amp;= 2a(m-1,n-1,k-1) + a(m-1,n-1,k) \\\n\u0026amp;+ a(m-1,n,k-1) + a(m,n-1,k-1)\n\\end{aligned}\n$$\nwhere $m$, $n$, $k$ are nonnegative integers, with boundary conditions:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e$a(0,0,0) = a(1,0,0) = a(0,1,0) = a(0,0,1) = 1$\u003c/li\u003e\n\u003cli\u003e$a(m,0,0) = a(0,m,0) = a(0,0,m) = 0$ for any $m \u0026gt; 1$\u003c/li\u003e\n\u003cli\u003e$a(m,n,k)$ is symmetric in $m$,$n$,$k$\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eA subtlety: $a(0,1,1)$ is not defined by the recurrence alone, since it would require values like $a(-1,0,0)$. We take $a(m,n,k) = 0$ whenever any argument is negative.\u003c/p\u003e"
+  "description": "\u003cp\u003eThis post extends the generating-function technique from the \u003ca href=\"/post/two-var-recursive-func/\"\u003etwo-variable recursion\u003c/a\u003e to a three-variable case. I originally wrote this as an answer to a \u003ca href=\"https://math.stackexchange.com/questions/1093271/how-to-solve-this-multivariable-recursion/2730331#2730331\" target=\"_blank\" rel=\"noopener\"\u003eMath Stack Exchange question\u003c/a\u003e; here it is adapted for the blog with clearer exposition and code.\u003c/p\u003e\n\u003ch2 id=\"the-problem\"\u003eThe Problem\u003c/h2\u003e\n\u003cp\u003eWe want to solve the recurrence\u003c/p\u003e\n\u003cp\u003e$$a(m,n,k) = 2a(m-1,n-1,k-1) + a(m-1,n-1,k) + a(m-1,n,k-1) + a(m,n-1,k-1)$$\u003c/p\u003e\n\u003cp\u003ewhere $m$, $n$, $k$ are nonnegative integers, with boundary conditions:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e$a(0,0,0) = a(1,0,0) = a(0,1,0) = a(0,0,1) = 1$\u003c/li\u003e\n\u003cli\u003e$a(m,0,0) = a(0,m,0) = a(0,0,m) = 0$ for any $m \u0026gt; 1$\u003c/li\u003e\n\u003cli\u003e$a(m,n,k)$ is symmetric in $m$, $n$, $k$\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eA subtlety: $a(0,1,1)$ is not defined by the recurrence alone, since it would require values like $a(-1,0,0)$. We take $a(m,n,k) = 0$ whenever any argument is negative.\u003c/p\u003e"
 }
 </script>
 
@@ -717,92 +707,58 @@ A subtlety: $a(0,1,1)$ is not defined by the recurrence alone, since it would re
     <div class="article-style">
       <p>This post extends the generating-function technique from the <a href="/post/two-var-recursive-func/">two-variable recursion</a> to a three-variable case. I originally wrote this as an answer to a <a href="https://math.stackexchange.com/questions/1093271/how-to-solve-this-multivariable-recursion/2730331#2730331" target="_blank" rel="noopener">Math Stack Exchange question</a>; here it is adapted for the blog with clearer exposition and code.</p>
 <h2 id="the-problem">The Problem</h2>
-<p>We want to solve the recurrence
-$$
-\begin{aligned}
-a(m,n,k) &amp;= 2a(m-1,n-1,k-1) + a(m-1,n-1,k) \
-&amp;+ a(m-1,n,k-1) + a(m,n-1,k-1)
-\end{aligned}
-$$
-where $m$, $n$, $k$ are nonnegative integers, with boundary conditions:</p>
+<p>We want to solve the recurrence</p>
+<p>$$a(m,n,k) = 2a(m-1,n-1,k-1) + a(m-1,n-1,k) + a(m-1,n,k-1) + a(m,n-1,k-1)$$</p>
+<p>where $m$, $n$, $k$ are nonnegative integers, with boundary conditions:</p>
 <ul>
 <li>$a(0,0,0) = a(1,0,0) = a(0,1,0) = a(0,0,1) = 1$</li>
 <li>$a(m,0,0) = a(0,m,0) = a(0,0,m) = 0$ for any $m &gt; 1$</li>
-<li>$a(m,n,k)$ is symmetric in $m$,$n$,$k$</li>
+<li>$a(m,n,k)$ is symmetric in $m$, $n$, $k$</li>
 </ul>
 <p>A subtlety: $a(0,1,1)$ is not defined by the recurrence alone, since it would require values like $a(-1,0,0)$. We take $a(m,n,k) = 0$ whenever any argument is negative.</p>
 <h2 id="the-generating-function">The Generating Function</h2>
 <p>Define</p>
 <p>$$\Phi(x,y,z) = \sum_{m,n,k \geq 0} a(m,n,k) \cdot x^m y^n z^k$$</p>
-<p>Using the initial values above, we can define $a(m,n,k)$ as follows:</p>
-<p>$$
-\begin{aligned}
-a(m, n, k) &amp;= 2a(m-1, n-1, k-1) + a(m-1, n-1, k) \
-&amp;+ a(m-1, n, k-1) + a(m, n-1, k-1) \
-&amp;+ [m=n=k=0] + [m=n=0 \wedge k=1] + [m=k=0 \wedge n=1] + [n=k=0 \wedge m=1]
-\end{aligned}
-$$</p>
-<p>believe there are still some initial conditions missing, since for example $a(0,1,1)$ is not well defined. Computing its value will result in negative arguments: $a(0,1,1) = 2a(-1, 0, 0) + a(-1, 0, 1) + a(-1, 1, 0) + a(0, 0, 0) = 2a(-1, 0, 0) + 2a(-1, 0, 1) + 1$.</p>
+<p>Using the initial values above, we can write the recurrence including boundary terms as:</p>
+<p>$$a(m, n, k) = 2a(m-1, n-1, k-1) + a(m-1, n-1, k) + a(m-1, n, k-1) + a(m, n-1, k-1) + [m=n=k=0] + [m=n=0 \wedge k=1] + [m=k=0 \wedge n=1] + [n=k=0 \wedge m=1]$$</p>
+<p>I believe there are still some initial conditions missing, since for example $a(0,1,1)$ is not well defined. Computing its value will result in negative arguments:</p>
+<p>$a(0,1,1) = 2a(-1, 0, 0) + a(-1, 0, 1) + a(-1, 1, 0) + a(0, 0, 0) = 2a(-1, 0, 0) + 2a(-1, 0, 1) + 1$.</p>
 <p>Adding the extra condition that $a(m,n,k)=0$ for any negative argument(s) solves the issue.</p>
-<p>Let&rsquo;s move forward and substitute the definition of $a(m,n,k)$ into the generating function:</p>
-<p>$$
-\begin{aligned}
-\Phi(x,y,z)
-&amp;=\sum_{m,n,k}a(m,n,k) \cdot x^m y^n z^k \
-&amp;= 2\sum_{m,n,k}a(m,n,k) \cdot x^{m+1} y^{n+1} z^{k+1} + \sum_{m,n,k}a(m,n,k) \cdot x^{m+1} y^{n+1} z^k + \sum_{m,n,k}a(m,n,k) \cdot x^{m+1} y^n z^{k+1}+\sum_{m,n,k}a(m,n,k) \cdot x^m y^{n+1} z^{k+1} + 1 + x + y + z \
-&amp;= 2\Phi(x,y,z) \cdot x y z + \Phi(x,y,z)\cdot x y + \Phi(x,y,z) \cdot x z + \Phi(x,y,z) \cdot y z + 1 + x + y + z \
-&amp;= \Phi(x,y,z)\left(2 x y z + x y + x z + y z\right) + 1 + x + y + z
-\end{aligned}
-$$</p>
-<p>Substituting the recurrence and collecting terms, we get</p>
-<p>$$
-\begin{aligned}
-\Phi(x,y,z)
-&amp;= \sum_{m,n,k} a(m,n,k) \cdot x^m y^n z^k \
-&amp;= 2\Phi \cdot xyz + \Phi \cdot xy + \Phi \cdot xz + \Phi \cdot yz + 1 + x + y + z
-\end{aligned}
-$$</p>
+<p>Substituting the recurrence into the generating function and collecting terms:</p>
+<p>$$ \Phi(x,y,z) =\sum_{m,n,k}a(m,n,k) \cdot x^m y^n z^k $$
+$$= 2\sum_{m,n,k}a(m,n,k) \cdot x^{m+1} y^{n+1} z^{k+1} + \sum_{m,n,k}a(m,n,
+k) \cdot x^{m+1} y^{n+1} z^k + \sum_{m,n,k}a(m,n,k) \cdot x^{m+1} y^n z^{k+1}
++\sum_{m,n,k}a(m,n,k) \cdot x^m y^{n+1} z^{k+1} + 1 + x + y + z $$
+$$ 2\Phi(x,y,z) \cdot x y z + \Phi(x,y,z)\cdot x y + \Phi(x,y,z) \cdot x z +
+\Phi(x,y,z) \cdot y z + 1 + x + y + z $$
+$$ \Phi(x,y,z)\left(2 x y z + x y + x z + y z\right) + 1 + x + y + z$$</p>
+<p>$\Phi(x,y,z) = \sum_{m,n,k} a(m,n,k), x^m y^n z^k$</p>
+<p>$= 2\Phi, xyz + \Phi, xy + \Phi, xz + \Phi, yz + 1 + x + y + z$</p>
 <p>where the boundary terms $1 + x + y + z$ come from $a(0,0,0)$, $a(1,0,0)$, $a(0,1,0)$, $a(0,0,1)$. Solving for $\Phi$:</p>
 <p>$$\Phi(x,y,z) = \frac{1 + x + y + z}{1 - 2xyz - xy - xz - yz}$$</p>
 <h2 id="from-generating-function-to-closed-form">From Generating Function to Closed Form</h2>
 <p>Using $\frac{1}{1-\rho} = \sum_{i \geq 0} \rho^i$ and the multinomial expansion</p>
 <p>$$(x_1+x_2+x_3+x_4)^N = \sum_{k_1+k_2+k_3+k_4=N} \binom{N}{k_1,k_2,k_3,k_4} x_1^{k_1} x_2^{k_2} x_3^{k_3} x_4^{k_4}$$</p>
 <p>with $\binom{N}{k_1,k_2,k_3,k_4} = \frac{N!}{k_1!\cdot k_2!\cdot k_3!\cdot k_4!}$, we expand the denominator. Let $\rho = 2xyz + xy + xz + yz$. Then</p>
-<p>$$
-\Phi = (1+x+y+z) \sum_{N \geq 0} \rho^N
-$$</p>
-<p>$$
-\begin{aligned}
-&amp;= \frac{1 + x + y + z}{1-2 x y z - x y - x z - y z} \
-&amp;= (1 + x + y + z) \sum_{N}(2 x y z + x y + x z + y z)^N \
-&amp;= (1 + x + y + z) \sum_{k_1+k_2+k_3+k_4=N} \binom{N} {k_1,k_2,k_3,k_4} (2 x y z)^{k_1} \cdot (x y)^{k_2} \cdot (x z)^{k_3} \cdot (y z)^{k_4}  \
-&amp;= (1 + x + y + z) \sum_{k_1+k_2+k_3+k_4=N} \binom{N} {k_1,k_2,k_3,k_4} 2^{k_1} x^{k_1+k_2+k_3} y^{k_1+k_2+k_4} z^{k_1+k_3+k_4} \
-&amp;= (1 + x + y + z) \sum_{k_1+k_2+k_3\leq N} \binom{N} {k_1,k_2,k_3,N-k_1-k_2-k_3} 2^{k_1} x^{k_1+k_2+k_3} y^{N-k_3} z^{N-k_2}
-\end{aligned}
-$$</p>
-<p>Writing $\rho^N$ with terms $(2xyz)^{k_1}(xy)^{k_2}(xz)^{k_3}(yz)^{k_4}$ where $k_1+k_2+k_3+k_4 = N$, and extracting the coefficient of $x^m y^n z^k$, yields the closed form:</p>
-<p>$$
-\begin{aligned}
-a(m,n,k)
-&amp;= \sum_{\max(m,n,k) \leq N \leq \frac{m+n+k}{2}}
-\binom{N}{m+n+k-2N, N-m, N-n, N-k} 2^{m+n+k-2N} \
-&amp;\quad + \text{three similar sums from the } 1, x, y, z \text{ terms}
-\end{aligned}
-$$</p>
-<p>The full expression has four sums corresponding to the four terms in the numerator $1+x+y+z$. The exact formulas are:</p>
-<p>$$
-\begin{aligned}
-a(m,n,k)
-&amp;= \sum_{N=\max(m,n,k)}^{\lfloor (m+n+k)/2 \rfloor}
-\binom{N}{m+n+k-2N, N-m, N-n, N-k} 2^{m+n+k-2N} \
-&amp;\quad + \sum_{N=\max(m-1,n,k)}^{\lfloor (m+n+k-1)/2 \rfloor}
-\binom{N}{m+n+k-2N-1, N-m+1, N-n, N-k} 2^{m+n+k-2N-1} \
-&amp;\quad + \sum_{N=\max(m,n-1,k)}^{\lfloor (m+n+k-1)/2 \rfloor}
-\binom{N}{m+n+k-2N-1, N-m, N-n+1, N-k} 2^{m+n+k-2N-1} \
-&amp;\quad + \sum_{N=\max(m,n,k-1)}^{\lfloor (m+n+k-1)/2 \rfloor}
-\binom{N}{m+n+k-2N-1, N-m, N-n, N-k+1} 2^{m+n+k-2N-1}
-\end{aligned}
-$$</p>
+<p>$$\Phi = (1+x+y+z) \sum_{N \geq 0} \rho^N$$</p>
+<p>Expanding $\rho^N$ with the multinomial theorem (and writing $k_4 = N - k_1 - k_2 - k_3$):</p>
+<p>$\Phi = \frac{1 + x + y + z}{1-2xyz - xy - xz - yz}$</p>
+<p>$= (1 + x + y + z) \sum_N (2xyz + xy + xz + yz)^N$</p>
+<p>$= (1 + x + y + z) \sum_{k_1+k_2+k_3+k_4=N} \binom{N}{k_1,k_2,k_3,k_4} (2xyz)^{k_1}(xy)^{k_2}(xz)^{k_3}(yz)^{k_4}$</p>
+<p>$= (1 + x + y + z) \sum_{k_1+k_2+k_3 \leq N} \binom{N}{k_1,k_2,k_3,N-k_1-k_2-k_3} 2^{k_1} x^{k_1+k_2+k_3} y^{N-k_3} z^{N-k_2}$</p>
+<p>$$= \frac{1 + x + y + z}{1-2 x y z - x y - x z - y z} $$
+$$= (1 + x + y + z) \sum_{N}(2 x y z + x y + x z + y z)^N $$
+$$= (1 + x + y + z) \sum_{k_1+k_2+k_3+k_4=N} \binom{N} {k_1,k_2,k_3,k_4} (2 x
+y z)^{k_1} \cdot (x y)^{k_2} \cdot (x z)^{k_3} \cdot (y z)^{k_4}$$
+$$= (1 + x + y + z) \sum_{k_1+k_2+k_3+k_4=N} \binom{N} {k_1,k_2,k_3,k_4} 2^
+{k_1} x^{k_1+k_2+k_3} y^{k_1+k_2+k_4} z^{k_1+k_3+k_4}$$
+$$= (1 + x + y + z) \sum_{k_1+k_2+k_3\leq N} \binom{N} {k_1,k_2,k_3,
+N-k_1-k_2-k_3} 2^{k_1} x^{k_1+k_2+k_3} y^{N-k_3} z^{N-k_2}$$</p>
+<p>Extracting the coefficient of $x^m y^n z^k$ gives the closed form. The full expression has four sums (from the numerator $1+x+y+z$):</p>
+<p>$$a(m,n,k) = \sum_{N=\max(m,n,k)}^{\lfloor (m+n+k)/2 \rfloor} \binom{N}{m+n+k-2N,, N-m,, N-n,, N-k} 2^{m+n+k-2N}$$</p>
+<p>$$+ \sum_{N=\max(m-1,n,k)}^{\lfloor (m+n+k-1)/2 \rfloor} \binom{N}{m+n+k-2N-1,, N-m+1,, N-n,, N-k} 2^{m+n+k-2N-1}$$</p>
+<p>$$+ \sum_{N=\max(m,n-1,k)}^{\lfloor (m+n+k-1)/2 \rfloor} \binom{N}{m+n+k-2N-1,, N-m,, N-n+1,, N-k} 2^{m+n+k-2N-1}$$</p>
+<p>$$+ \sum_{N=\max(m,n,k-1)}^{\lfloor (m+n+k-1)/2 \rfloor} \binom{N}{m+n+k-2N-1,, N-m,, N-n,, N-k+1} 2^{m+n+k-2N-1}$$</p>
 <p>There may be room to simplify this further; the symmetry in $m,n,k$ could help.</p>
 <h2 id="complexity">Complexity</h2>
 <ul>
