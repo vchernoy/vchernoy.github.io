@@ -13,24 +13,6 @@
     </image>
     
     <item>
-      <title></title>
-      <link>/home/about/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>/home/about/</guid>
-      <description>&lt;h1 id=&#34;about&#34;&gt;About&lt;/h1&gt;
-&lt;p&gt;Backend software engineer with focus on building infrastructure and distributed systems.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Recent Posts</title>
-      <link>/home/posts/</link>
-      <pubDate>Wed, 20 Apr 2016 00:00:00 +0000</pubDate>
-      <guid>/home/posts/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Cracking Multivariate Recursive Equations Using Generating Functions</title>
       <link>/post/two-var-recursive-func/</link>
       <pubDate>Thu, 06 Jul 2017 07:29:43 +0000</pubDate>

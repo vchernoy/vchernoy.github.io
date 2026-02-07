@@ -2,11 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>/home/about/</loc>
-  </url><url>
-    <loc>/home/posts/</loc>
-    <lastmod>2016-04-20T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>/</loc>
     <lastmod>2017-08-02T07:29:43+00:00</lastmod>
   </url><url>
@@ -64,11 +59,12 @@
     <loc>/post/intro-to-dp/</loc>
     <lastmod>2017-07-04T07:29:43+00:00</lastmod>
   </url><url>
-    <loc>/home/</loc>
-    <lastmod>2016-04-20T00:00:00+00:00</lastmod>
+    <loc>/authors/</loc>
   </url><url>
     <loc>/categories/</loc>
   </url><url>
     <loc>/publication_types/</loc>
+  </url><url>
+    <loc>/authors/admin/</loc>
   </url>
 </urlset>
