@@ -19,7 +19,7 @@
       <guid>/post/efficient-implementation-non-adjacent-selection/</guid>
       <description>&lt;p&gt;In the &lt;a href=&#34;/post/two-var-recursive-func/&#34;&gt;previous post&lt;/a&gt;, we derived the closed form for the non-adjacent selection problem:&lt;/p&gt;
 &lt;p&gt;$$ F_{n, m} = {n - m + 1 \choose m} $$&lt;/p&gt;
-&lt;p&gt;Now we discuss how to implement this efficiently in Python—from a simple factorial-based solution to library implementations and modular arithmetic for competitive programming.&lt;/p&gt;
+&lt;p&gt;Now we discuss how to implement this efficiently in Python—from a simple factorial-based solution to library implementations. For the common case of computing the answer &lt;strong&gt;modulo a large prime&lt;/strong&gt; (e.g. in competitive programming), see the &lt;a href=&#34;/post/binomial-modulo-prime/&#34;&gt;next post&lt;/a&gt;.&lt;/p&gt;
 &lt;h2 id=&#34;fast-solutions-based-on-binomials&#34;&gt;Fast Solutions Based on Binomials&lt;/h2&gt;
 &lt;p&gt;We can reflect the closed form in very trivial Python code:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-Python&#34; data-lang=&#34;Python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; math
@@ -110,73 +110,8 @@ therefore we observe even bigger gap in performance (yeahh again not formal clai
 &lt;p&gt;You can play with running tests on different $n$ and $m$.
 What I saw that actually there is no clear winner between the last 3 implementations.
 Probably, the most of the time is spent on the long arithmetic computation.&lt;/p&gt;
-&lt;h2 id=&#34;modular-arithmetics&#34;&gt;Modular Arithmetics&lt;/h2&gt;
-&lt;p&gt;In questions where it is required to count some objects, not rarely the answer might be very big even on very small input.
-In such case, typically it is asked to print the answer modulo some big prime integer, let&amp;rsquo;s say, $M=1000^3+7$.
-Since Python has built-in long arithmetics, we can apply modulo on the final result,
-but executing the entire algorithm with long arithmetics while knowing that only small part of it is really important is very costly,
-and of course, not that efficient.&lt;/p&gt;
-&lt;p&gt;Let&amp;rsquo;s look, briefly, at very simple change we can do for &lt;code&gt;f_binom&lt;/code&gt; function that will speed up the computation significantly:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; functools
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;M &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;**&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;9&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;7&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;f_binom_mod&lt;/span&gt;(n, m):
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;assert&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;and&lt;/span&gt; m &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;m:
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; binom_mod(n &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; m &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, m)
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;binom_mod&lt;/span&gt;(n, m):
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;assert&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt; m &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt; n
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; ((fact_mod(n) &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; inv_mod(fact_mod(m))) &lt;span style=&#34;color:#f92672&#34;&gt;%&lt;/span&gt; M &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; inv_mod(fact_mod(n &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; m))) &lt;span style=&#34;color:#f92672&#34;&gt;%&lt;/span&gt; M
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@functools.lru_cache&lt;/span&gt;(maxsize&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;None&lt;/span&gt;)
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;fact_mod&lt;/span&gt;(m):
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; m &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;:
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; (m &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; fact_mod(m &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)) &lt;span style=&#34;color:#f92672&#34;&gt;%&lt;/span&gt; M
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;inv_mod&lt;/span&gt;(x):
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; pow(x, M &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;, M)
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;As we can see, all the operations are computed modulo $M$.
-The function &lt;code&gt;fact_mod&lt;/code&gt; is recursive but uses Memoization.
-The most tricky part is how to implement modular-division.
-From &lt;a href=&#34;https://en.wikipedia.org/wiki/Fermat%27s_little_theorem&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Fermat&amp;rsquo;s little theorem&lt;/a&gt;,
-we know that if $M$ is prime and $0 &amp;lt; x &amp;lt; M$, then $x^{-1} \equiv x^{M-2} \pmod M$.
-This allows to compute the multiplicative inverse of $x$ using the Python&amp;rsquo;s built-in function
-&lt;a href=&#34;https://docs.python.org/3/library/functions.html#pow&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;pow&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Let&amp;rsquo;s test the new approach against other implementations:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;fact_mod(&lt;span style=&#34;color:#ae81ff&#34;&gt;10000&lt;/span&gt;) &lt;span style=&#34;color:#75715e&#34;&gt;# for caching factorials&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;funcs &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [f_binom_mod, f_binom, f_sci, f_sym]
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;test(&lt;span style=&#34;color:#ae81ff&#34;&gt;10000&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;1000&lt;/span&gt;, funcs)
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;test(&lt;span style=&#34;color:#ae81ff&#34;&gt;10000&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;2000&lt;/span&gt;, funcs)
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;test(&lt;span style=&#34;color:#ae81ff&#34;&gt;10000&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;3000&lt;/span&gt;, funcs)
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;It is not a surprise that taking the benefits of modular computations results in the huge speedup in running-time:&lt;/p&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;f(10000,1000): 450169549
-  f_binom_mod:   0.0000 sec, x 1.00
-      f_binom:   0.0073 sec, x 337.60
-        f_sci:   0.0011 sec, x 49.33
-        f_sym:   0.0076 sec, x 353.22
-
-f(10000,2000): 75198348
-  f_binom_mod:   0.0000 sec, x 1.00
-      f_binom:   0.0063 sec, x 368.94
-        f_sci:   0.0026 sec, x 153.33
-        f_sym:   0.0053 sec, x 308.93
-
-f(10000,3000): 679286557
-  f_binom_mod:   0.0000 sec, x 1.00
-      f_binom:   0.0060 sec, x 361.12
-        f_sci:   0.0056 sec, x 338.13
-        f_sym:   0.0053 sec, x 319.02
-&lt;/code&gt;&lt;/pre&gt;</description>
+&lt;p&gt;When the problem asks for the answer &lt;strong&gt;modulo a large prime&lt;/strong&gt; (e.g. $10^9+7$), computing everything mod $M$ from the start is much faster than using long integers. We cover that in a &lt;a href=&#34;/post/binomial-modulo-prime/&#34;&gt;separate post&lt;/a&gt;: binomial coefficients modulo a prime using Fermat&amp;rsquo;s little theorem.&lt;/p&gt;
+</description>
     </item>
     
     <item>

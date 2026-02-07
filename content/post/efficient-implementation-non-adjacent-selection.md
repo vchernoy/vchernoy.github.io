@@ -15,7 +15,7 @@ In the [previous post][two-var-recursive], we derived the closed form for the no
 
 $$ F_{n, m} = {n - m + 1 \choose m} $$
 
-Now we discuss how to implement this efficiently in Python—from a simple factorial-based solution to library implementations and modular arithmetic for competitive programming.
+Now we discuss how to implement this efficiently in Python—from a simple factorial-based solution to library implementations. For the common case of computing the answer **modulo a large prime** (e.g. in competitive programming), see the [next post][binom-mod].
 
 ## Fast Solutions Based on Binomials
 
@@ -142,86 +142,8 @@ You can play with running tests on different $n$ and $m$.
 What I saw that actually there is no clear winner between the last 3 implementations.
 Probably, the most of the time is spent on the long arithmetic computation.
 
-## Modular Arithmetics
-
-In questions where it is required to count some objects, not rarely the answer might be very big even on very small input.
-In such case, typically it is asked to print the answer modulo some big prime integer, let's say, $M=1000^3+7$.
-Since Python has built-in long arithmetics, we can apply modulo on the final result,
-but executing the entire algorithm with long arithmetics while knowing that only small part of it is really important is very costly,
-and of course, not that efficient.
-
-Let's look, briefly, at very simple change we can do for `f_binom` function that will speed up the computation significantly:
-
-```python
-import functools
-
-M = 10**9 + 7
-
-def f_binom_mod(n, m):
-    assert n >= 0 and m >= 0
-
-    if n + 1 < 2*m:
-        return 0
-
-    return binom_mod(n - m + 1, m)
-
-def binom_mod(n, m):
-    assert 0 <= m <= n
-
-    return ((fact_mod(n) * inv_mod(fact_mod(m))) % M * inv_mod(fact_mod(n - m))) % M
-
-@functools.lru_cache(maxsize=None)
-def fact_mod(m):
-    if m <= 1:
-        return 1
-
-    return (m * fact_mod(m - 1)) % M
-
-def inv_mod(x):
-    return pow(x, M - 2, M)
-```
-
-As we can see, all the operations are computed modulo $M$.
-The function `fact_mod` is recursive but uses Memoization.
-The most tricky part is how to implement modular-division.
-From [Fermat's little theorem](https://en.wikipedia.org/wiki/Fermat%27s_little_theorem),
-we know that if $M$ is prime and $0 < x < M$, then $x^{-1} \equiv x^{M-2} \pmod M$.
-This allows to compute the multiplicative inverse of $x$ using the Python's built-in function
-[pow](https://docs.python.org/3/library/functions.html#pow).
-
-Let's test the new approach against other implementations:
-
-```python
-fact_mod(10000) # for caching factorials
-
-funcs = [f_binom_mod, f_binom, f_sci, f_sym]
-
-test(10000, 1000, funcs)
-test(10000, 2000, funcs)
-test(10000, 3000, funcs)
-```
-
-It is not a surprise that taking the benefits of modular computations results in the huge speedup in running-time:
-
-```
-f(10000,1000): 450169549
-  f_binom_mod:   0.0000 sec, x 1.00
-      f_binom:   0.0073 sec, x 337.60
-        f_sci:   0.0011 sec, x 49.33
-        f_sym:   0.0076 sec, x 353.22
-
-f(10000,2000): 75198348
-  f_binom_mod:   0.0000 sec, x 1.00
-      f_binom:   0.0063 sec, x 368.94
-        f_sci:   0.0026 sec, x 153.33
-        f_sym:   0.0053 sec, x 308.93
-
-f(10000,3000): 679286557
-  f_binom_mod:   0.0000 sec, x 1.00
-      f_binom:   0.0060 sec, x 361.12
-        f_sci:   0.0056 sec, x 338.13
-        f_sym:   0.0053 sec, x 319.02
-```
+When the problem asks for the answer **modulo a large prime** (e.g. $10^9+7$), computing everything mod $M$ from the start is much faster than using long integers. We cover that in a [separate post][binom-mod]: binomial coefficients modulo a prime using Fermat's little theorem.
 
 [intro-to-dp]: /post/intro-to-dp/
 [two-var-recursive]: /post/two-var-recursive-func/
+[binom-mod]: /post/binomial-modulo-prime/

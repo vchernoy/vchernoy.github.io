@@ -81,9 +81,10 @@ Which actually equals to
 
 $$ F\_{n, m} = {n - m + 1 \choose m} $$
 
-In the [next post][efficient-impl], we discuss how to implement this closed form efficiently in Python—from a simple factorial-based solution to library implementations and modular arithmetic for competitive programming.
+In the [next post][efficient-impl], we implement this closed form in Python (factorial-based and with scipy/sympy). For computing the answer modulo a large prime, see [Binomial Coefficients Modulo a Prime][binom-mod].
 
 [intro-to-dp]: /post/intro-to-dp/
 [gen-func-art]: /post/gen-func-art/
 [efficient-impl]: /post/efficient-implementation-non-adjacent-selection/
+[binom-mod]: /post/binomial-modulo-prime/
 

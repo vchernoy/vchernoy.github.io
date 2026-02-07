@@ -68,7 +68,7 @@ $ = \sum_{m \geq 1, n \geq 2m-1} {n-m \choose m-1} x^n y^m $.&lt;/p&gt;
 $ = {n - m \choose m} + {n - m \choose m - 1}$.&lt;/p&gt;
 &lt;p&gt;Which actually equals to&lt;/p&gt;
 &lt;p&gt;$$ F_{n, m} = {n - m + 1 \choose m} $$&lt;/p&gt;
-&lt;p&gt;In the &lt;a href=&#34;/post/efficient-implementation-non-adjacent-selection/&#34;&gt;next post&lt;/a&gt;, we discuss how to implement this closed form efficiently in Python—from a simple factorial-based solution to library implementations and modular arithmetic for competitive programming.&lt;/p&gt;
+&lt;p&gt;In the &lt;a href=&#34;/post/efficient-implementation-non-adjacent-selection/&#34;&gt;next post&lt;/a&gt;, we implement this closed form in Python (factorial-based and with scipy/sympy). For computing the answer modulo a large prime, see &lt;a href=&#34;/post/binomial-modulo-prime/&#34;&gt;Binomial Coefficients Modulo a Prime&lt;/a&gt;.&lt;/p&gt;
 </description>
     </item>
     

@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<!-- This site was created with Hugo Blox. https://hugoblox.com -->
+<!-- Last Published: February 6, 2026 --><html lang="en-us" >
+
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  
+  
+    <meta name="generator" content="Hugo Blox Builder 5.9.7" />
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+
+  
+  
+  
+    
+      
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto+Mono&family=Roboto:wght@400;700&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto+Mono&family=Roboto:wght@400;700&display=swap" media="print" onload="this.media='all'">
+    
+  
+
+  
+  
+
+  
+  
+    
+    <script src="/js/mathjax-config.js"></script>
+  
+
+  
+
+  <link rel="stylesheet" href="/css/vendor-bundle.min.26c458e6907dc03073573976b7f4044e.css" media="print" onload="this.media='all'">
+
+  
+  
+  
+    
+    
+
+    
+    
+    
+    
+      
+      
+    
+    
+    
+
+    
+    
+    
+
+    
+
+    
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+  
+
+  
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.c0e352886d22860db4df90f1df196e9c.css" />
+
+  
+  
+  
+
+  
+  
+  
+  
+  
+  
+  
+    
+    
+    <link rel="stylesheet" href="/css/libs/chroma/github-light.min.css" title="hl-light" media="print" onload="this.media='all'" disabled>
+    <link rel="stylesheet" href="/css/libs/chroma/dracula.min.css" title="hl-dark" media="print" onload="this.media='all'" >
+  
+
+  
+  
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-102853829-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-102853829-1');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+
+
+
+
+
+
+  <meta name="author" content="Slava Chernoy" />
+
+
+
+
+
+  
+
+<meta name="description" content="In the previous post, we implemented the closed form $F_{n,m} = \binom{n-m&#43;1}{m}$ using Python&rsquo;s math.factorial, and with scipy and sympy. Here we cover the common competitive-programming case: computing the answer modulo a large prime $M$ (e.g. $M = 10^9&#43;7$).
+Why modulo?
+In counting problems, the result can be huge even for moderate input. Often the problem asks for the answer modulo a big prime so that it fits in a standard integer type. We could compute the full number and then take the remainder, but that forces expensive long-integer arithmetic. Computing everything modulo $M$ from the start is much faster." />
+
+
+
+<link rel="alternate" hreflang="en-us" href="/post/binomial-modulo-prime/" />
+<link rel="canonical" href="/post/binomial-modulo-prime/" />
+
+
+
+
+
+<link rel="icon" type="image/png" href="/media/icon_hu_857dd55c234bc14f.png" />
+<link rel="apple-touch-icon" type="image/png" href="/media/icon_hu_88611cbd7a187137.png" />
+
+<meta name="theme-color" content="#bbdefb" />
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+<meta property="twitter:card" content="summary" />
+<meta property="twitter:image" content="/media/icon_hu_43cf117bf1a42c34.png" />
+
+
+
+  
+
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="" />
+<meta property="og:url" content="/post/binomial-modulo-prime/" />
+<meta property="og:title" content="Binomial Coefficients Modulo a Prime: Fermat&#39;s Theorem and the Non-Adjacent Selection Problem | " />
+<meta property="og:description" content="In the previous post, we implemented the closed form $F_{n,m} = \binom{n-m&#43;1}{m}$ using Python&rsquo;s math.factorial, and with scipy and sympy. Here we cover the common competitive-programming case: computing the answer modulo a large prime $M$ (e.g. $M = 10^9&#43;7$).
+Why modulo?
+In counting problems, the result can be huge even for moderate input. Often the problem asks for the answer modulo a big prime so that it fits in a standard integer type. We could compute the full number and then take the remainder, but that forces expensive long-integer arithmetic. Computing everything modulo $M$ from the start is much faster." /><meta property="og:image" content="/media/icon_hu_43cf117bf1a42c34.png" /><meta property="og:locale" content="en-us" />
+
+  
+    <meta
+      property="article:published_time"
+      content="2017-07-08T07:29:43&#43;00:00"
+    />
+  
+  
+    <meta property="article:modified_time" content="2017-07-08T07:29:43&#43;00:00">
+  
+
+
+
+
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "/post/binomial-modulo-prime/"
+  },
+  "headline": "Binomial Coefficients Modulo a Prime: Fermat's Theorem and the Non-Adjacent Selection Problem",
+  
+  "datePublished": "2017-07-08T07:29:43Z",
+  "dateModified": "2017-07-08T07:29:43Z",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Slava Chernoy"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "/media/icon_hu_19349546d07106a3.png"
+    }
+  },
+  "description": "\u003cp\u003eIn the \u003ca href=\"/post/efficient-implementation-non-adjacent-selection/\"\u003eprevious post\u003c/a\u003e, we implemented the closed form $F_{n,m} = \\binom{n-m+1}{m}$ using Python\u0026rsquo;s \u003ccode\u003emath.factorial\u003c/code\u003e, and with \u003ccode\u003escipy\u003c/code\u003e and \u003ccode\u003esympy\u003c/code\u003e. Here we cover the common competitive-programming case: computing the answer \u003cstrong\u003emodulo a large prime\u003c/strong\u003e $M$ (e.g. $M = 10^9+7$).\u003c/p\u003e\n\u003ch2 id=\"why-modulo\"\u003eWhy modulo?\u003c/h2\u003e\n\u003cp\u003eIn counting problems, the result can be huge even for moderate input. Often the problem asks for the answer modulo a big prime so that it fits in a standard integer type. We could compute the full number and then take the remainder, but that forces expensive long-integer arithmetic. Computing \u003cstrong\u003eeverything\u003c/strong\u003e modulo $M$ from the start is much faster.\u003c/p\u003e"
+}
+</script>
+
+  
+
+  
+
+
+
+
+  
+  
+  
+
+  
+  
+
+  
+
+
+  
+  <title>Binomial Coefficients Modulo a Prime: Fermat&#39;s Theorem and the Non-Adjacent Selection Problem | </title>
+
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper  dark " data-wc-page-id="a69ff562cef405b46186df6f06252cab" >
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="/js/wowchemy-init.min.db21e13b9b5c4f4b947717750ec8b3cc.js"></script>
+
+  
+
+
+
+
+  <div class="page-header header--fixed">
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+<header>
+  <nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+    <div class="container-xl">
+
+      
+      <div class="d-none d-lg-inline-flex">
+        <a class="navbar-brand" href="/"></a>
+      </div>
+      
+
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+      <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+      
+      <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+        <a class="navbar-brand" href="/"></a>
+      </div>
+      
+
+      
+      
+      <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+        
+        <ul class="navbar-nav d-md-inline-flex">
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#about"><span>Home</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#posts"><span>Posts</span></a>
+          </li>
+
+          
+          
+
+        
+
+          
+        </ul>
+      </div>
+
+      <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+        
+        
+          
+        
+
+        
+        
+        
+
+        
+        
+        
+
+        
+        
+
+      </ul>
+
+    </div>
+  </nav>
+</header>
+
+
+  </div>
+
+  <div class="page-body">
+    
+    
+    
+
+    <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>Binomial Coefficients Modulo a Prime: Fermat&#39;s Theorem and the Non-Adjacent Selection Problem</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Jul 8, 2017
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    2 min read
+  </span>
+  
+
+  
+  
+  
+  
+
+  
+  
+
+</div>
+
+    
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      <p>In the <a href="/post/efficient-implementation-non-adjacent-selection/">previous post</a>, we implemented the closed form $F_{n,m} = \binom{n-m+1}{m}$ using Python&rsquo;s <code>math.factorial</code>, and with <code>scipy</code> and <code>sympy</code>. Here we cover the common competitive-programming case: computing the answer <strong>modulo a large prime</strong> $M$ (e.g. $M = 10^9+7$).</p>
+<h2 id="why-modulo">Why modulo?</h2>
+<p>In counting problems, the result can be huge even for moderate input. Often the problem asks for the answer modulo a big prime so that it fits in a standard integer type. We could compute the full number and then take the remainder, but that forces expensive long-integer arithmetic. Computing <strong>everything</strong> modulo $M$ from the start is much faster.</p>
+<h2 id="from-binomials-to-modular-inverses">From binomials to modular inverses</h2>
+<p>We have $F_{n,m} = \binom{n-m+1}{m} = \frac{(n-m+1)!}{m!,(n-2m+1)!}$. To compute this mod $M$, we need factorials mod $M$ and division mod $M$. Division mod $M$ is multiplication by the <strong>modular inverse</strong>: for prime $M$ and $0 &lt; x &lt; M$, the inverse of $x$ is $x^{M-2} \bmod M$ by <a href="https://en.wikipedia.org/wiki/Fermat%27s_little_theorem" target="_blank" rel="noopener">Fermat&rsquo;s little theorem</a>. In Python we can use <code>pow(x, M - 2, M)</code>.</p>
+<h2 id="implementation">Implementation</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> functools
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>M <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span><span style="color:#f92672">**</span><span style="color:#ae81ff">9</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">7</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">f_binom_mod</span>(n, m):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">assert</span> n <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">and</span> m <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> n <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>m:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> binom_mod(n <span style="color:#f92672">-</span> m <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>, m)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">binom_mod</span>(n, m):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">assert</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">&lt;=</span> m <span style="color:#f92672">&lt;=</span> n
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> ((fact_mod(n) <span style="color:#f92672">*</span> inv_mod(fact_mod(m))) <span style="color:#f92672">%</span> M <span style="color:#f92672">*</span> inv_mod(fact_mod(n <span style="color:#f92672">-</span> m))) <span style="color:#f92672">%</span> M
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@functools.lru_cache</span>(maxsize<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fact_mod</span>(m):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> m <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">1</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> (m <span style="color:#f92672">*</span> fact_mod(m <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)) <span style="color:#f92672">%</span> M
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">inv_mod</span>(x):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> pow(x, M <span style="color:#f92672">-</span> <span style="color:#ae81ff">2</span>, M)
+</span></span></code></pre></div><p>All operations stay in the ring of integers mod $M$. The only non-obvious part is modular division: we replace division by $d$ with multiplication by <code>inv_mod(d)</code> using Fermat&rsquo;s little theorem.</p>
+<h2 id="benchmarks">Benchmarks</h2>
+<p>Compared to computing the full binomial and then taking the remainder, the modular version avoids long arithmetic and is much faster:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>fact_mod(<span style="color:#ae81ff">10000</span>)  <span style="color:#75715e"># for caching factorials</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>funcs <span style="color:#f92672">=</span> [f_binom_mod, f_binom, f_sci, f_sym]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>test(<span style="color:#ae81ff">10000</span>, <span style="color:#ae81ff">1000</span>, funcs)
+</span></span><span style="display:flex;"><span>test(<span style="color:#ae81ff">10000</span>, <span style="color:#ae81ff">2000</span>, funcs)
+</span></span><span style="display:flex;"><span>test(<span style="color:#ae81ff">10000</span>, <span style="color:#ae81ff">3000</span>, funcs)
+</span></span></code></pre></div><p>Example output:</p>
+<pre tabindex="0"><code>f(10000,1000): 450169549
+  f_binom_mod:   0.0000 sec, x 1.00
+      f_binom:   0.0073 sec, x 337.60
+        f_sci:   0.0011 sec, x 49.33
+        f_sym:   0.0076 sec, x 353.22
+
+f(10000,2000): 75198348
+  f_binom_mod:   0.0000 sec, x 1.00
+      f_binom:   0.0063 sec, x 368.94
+        f_sci:   0.0026 sec, x 153.33
+        f_sym:   0.0053 sec, x 308.93
+
+f(10000,3000): 679286557
+  f_binom_mod:   0.0000 sec, x 1.00
+      f_binom:   0.0060 sec, x 361.12
+        f_sci:   0.0056 sec, x 338.13
+        f_sym:   0.0053 sec, x 319.02
+</code></pre><p>The same pattern—factorials mod $M$ plus Fermat-based inverses—works for any combinatorial formula that can be written in terms of factorials and binomials modulo a prime.</p>
+
+    </div>
+
+    
+
+
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tags/math/">Math</a>
+  
+  <a class="badge badge-light" href="/tags/python/">Python</a>
+  
+  <a class="badge badge-light" href="/tags/binomial/">Binomial</a>
+  
+  <a class="badge badge-light" href="/tags/combinatorics/">Combinatorics</a>
+  
+  <a class="badge badge-light" href="/tags/programming/">Programming</a>
+  
+  <a class="badge badge-light" href="/tags/modular-arithmetic/">Modular Arithmetic</a>
+  
+  <a class="badge badge-light" href="/tags/competitive-programming/">Competitive Programming</a>
+  
+</div>
+
+
+
+<div class="share-box">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=%2Fpost%2Fbinomial-modulo-prime%2F&amp;text=Binomial&#43;Coefficients&#43;Modulo&#43;a&#43;Prime%3A&#43;Fermat%27s&#43;Theorem&#43;and&#43;the&#43;Non-Adjacent&#43;Selection&#43;Problem" target="_blank" rel="noopener" class="share-btn-twitter" aria-label="twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=%2Fpost%2Fbinomial-modulo-prime%2F&amp;t=Binomial&#43;Coefficients&#43;Modulo&#43;a&#43;Prime%3A&#43;Fermat%27s&#43;Theorem&#43;and&#43;the&#43;Non-Adjacent&#43;Selection&#43;Problem" target="_blank" rel="noopener" class="share-btn-facebook" aria-label="facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      
+      
+        
+      
+      <li>
+        <a href="mailto:?subject=Binomial%20Coefficients%20Modulo%20a%20Prime%3A%20Fermat%27s%20Theorem%20and%20the%20Non-Adjacent%20Selection%20Problem&amp;body=%2Fpost%2Fbinomial-modulo-prime%2F" target="_blank" rel="noopener" class="share-btn-email" aria-label="envelope">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=%2Fpost%2Fbinomial-modulo-prime%2F&amp;title=Binomial&#43;Coefficients&#43;Modulo&#43;a&#43;Prime%3A&#43;Fermat%27s&#43;Theorem&#43;and&#43;the&#43;Non-Adjacent&#43;Selection&#43;Problem" target="_blank" rel="noopener" class="share-btn-linkedin" aria-label="linkedin-in">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      
+      
+      <li>
+        <a href="whatsapp://send?text=Binomial&#43;Coefficients&#43;Modulo&#43;a&#43;Prime%3A&#43;Fermat%27s&#43;Theorem&#43;and&#43;the&#43;Non-Adjacent&#43;Selection&#43;Problem%20%2Fpost%2Fbinomial-modulo-prime%2F" target="_blank" rel="noopener" class="share-btn-whatsapp" aria-label="whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=%2Fpost%2Fbinomial-modulo-prime%2F&amp;title=Binomial&#43;Coefficients&#43;Modulo&#43;a&#43;Prime%3A&#43;Fermat%27s&#43;Theorem&#43;and&#43;the&#43;Non-Adjacent&#43;Selection&#43;Problem" target="_blank" rel="noopener" class="share-btn-weibo" aria-label="weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="/">Slava Chernoy</a></h5>
+      <h6 class="card-subtitle">Software Engineer</h6>
+      
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://linkedin.com/in/slava-chernoy-9859a81/" target="_blank" rel="noopener">
+        <i class="fab fa-linkedin"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/vchernoy" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://stackoverflow.com/users/276287/slava" target="_blank" rel="noopener">
+        <i class="fab fa-stack-overflow"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+<section id="comments">
+  <div id="graphcomment"></div>
+<script type="text/javascript">
+ 
+window.graphcomment_id = 'B8a3Q3Al1kTk';
+ 
+(function() {
+    var gc = document.createElement('script'); gc.type = 'text/javascript'; gc.async = true;
+    gc.src = 'https://graphcomment.com/js/integration.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(gc);
+})();
+</script>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+  </div>
+</article>
+  </div>
+
+  <div class="page-footer">
+    
+    
+    <div class="container">
+      <footer class="site-footer">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  <p class="powered-by">
+    
+    
+    
+      
+      
+      
+      
+      
+      
+      Published with <!-- raw HTML omitted -->Hugo Blox Builder<!-- raw HTML omitted --> — the free, <!-- raw HTML omitted -->open source<!-- raw HTML omitted --> website builder that empowers creators.
+    
+  </p>
+</footer>
+
+    </div>
+    
+  </div>
+
+  
+
+
+<script src="/js/vendor-bundle.min.50933d940896e49f984a778650d5f7f5.js"></script>
+
+
+
+
+  
+
+  
+  
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script id="page-data" type="application/json">{"use_headroom":true}</script>
+
+
+  <script src="/js/wowchemy-headroom.db4755770454eb63685f8de785c0a172.js" type="module"></script>
+
+
+
+
+
+
+
+
+
+
+<script src="/en/js/wowchemy.min.b42cee516846615f6e61f624dc63a325.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
