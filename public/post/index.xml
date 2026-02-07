@@ -5,7 +5,7 @@
     <link>/post/</link>
       <atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     <description>Posts</description>
-    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Wed, 02 Aug 2017 07:29:43 +0000</lastBuildDate>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Sun, 08 Feb 2026 19:47:43 +0000</lastBuildDate>
     <image>
       <url>/media/icon_hu_43cf117bf1a42c34.png</url>
       <title>Posts</title>
@@ -13,12 +13,13 @@
     </image>
     
     <item>
-      <title>Perfect Distribution Based on GCD</title>
+      <title>Perfect Distribution: GCD in Disguise</title>
       <link>/post/perfect-distribution/</link>
       <pubDate>Tue, 01 Aug 2017 07:29:43 +0000</pubDate>
       <guid>/post/perfect-distribution/</guid>
-      <description>&lt;h2 id=&#34;perfect-distribution-based-on-gcd&#34;&gt;Perfect Distribution Based on GCD&lt;/h2&gt;
-&lt;p&gt;We discuss an algorithm that distributes $a$ ones among $n$ positions so that the gaps between consecutive ones differ by at most one—a &lt;strong&gt;perfect distribution&lt;/strong&gt;. The examples below are software engineering use cases for this algorithm.&lt;/p&gt;
+      <description>&lt;h2 id=&#34;perfect-distribution-gcd-in-disguise&#34;&gt;Perfect Distribution: GCD in Disguise&lt;/h2&gt;
+&lt;p&gt;We discuss an algorithm that distributes $a$ ones among $n$ positions so that the gaps between consecutive ones differ by at most one—a &lt;strong&gt;perfect distribution&lt;/strong&gt;. I developed it while working on profiling, stress, and negative testing of a system that needed exactly this kind of uniform spread. I am not aware of prior art; if you know of related work, I would be interested to hear.&lt;/p&gt;
+&lt;p&gt;The examples below are software engineering use cases for this algorithm.&lt;/p&gt;
 &lt;h3 id=&#34;use-case-0-text-spacing&#34;&gt;Use Case 0: Text spacing&lt;/h3&gt;
 &lt;p&gt;Given a string of characters $s$ and a number $n$ greater than the length of $s$,
 extend the string $s$ to length $n$ by inserting spaces between the words.
@@ -43,6 +44,8 @@ Such a profiling tool allows exploring the server state under various load condi
 Suppose we specify $230$ requests per second: then during every part, $2.3$ requests must be sent on average.
 In other words, the tool must send 2 requests in most parts and 3 in some parts.
 We need to choose which $30$ parts get the extra request; ${\cal PD}(30, 100)$ yields that array (a $1$ in cell $i$ means part $i$ gets 3 requests).&lt;/p&gt;
+&lt;h3 id=&#34;why-naive-approaches-fail&#34;&gt;Why naive approaches fail&lt;/h3&gt;
+&lt;p&gt;A natural idea is to place ones at multiples of $n/a$, e.g. &lt;code&gt;[1 if (i * a) % n &amp;lt; a else 0 for i in range(n)]&lt;/code&gt;, or to use &lt;code&gt;round(i * a / n)&lt;/code&gt; to decide. Such formulas can produce wrong counts (off-by-one), clusters at the boundaries, or gaps that differ by more than one. Another approach—repeatedly choosing the “emptiest” gap—avoids clustering but is harder to implement correctly and lacks the clean recurrence we want. ${\cal PD}$ gives the exact, unique fairest distribution in a few lines.&lt;/p&gt;
 &lt;p&gt;We present the general solution ${\cal PD}$ to the problem—for any specified input in the above examples, ${\cal PD}$ produces the exact solution.
 Any probabilistic or approximation solutions do not achieve the required exactness and are usually more complicated.
 The algorithm ${\cal PD}$ is simple, has a clear correctness proof, and admits $O(n)$ time and space complexity.
@@ -53,7 +56,7 @@ Moreover, it has a direct relation to Euclid&amp;rsquo;s algorithm for computing
 &lt;ul&gt;
 &lt;li&gt;POST: $res = {\cal GCD}(a, n)$.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;gcd&lt;/span&gt;(a, n):
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;gcd&lt;/span&gt;(a: int, n: int) &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; int:
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;assert&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt; n
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    res &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; n
@@ -69,7 +72,7 @@ Moreover, it has a direct relation to Euclid&amp;rsquo;s algorithm for computing
 &lt;li&gt;POST: $\sum_{i=0}^{n-1} res[i] = a$ (exactly $a$ ones).&lt;/li&gt;
 &lt;li&gt;POST: $res$ is perfectly distributed (gaps between consecutive ones differ by at most 1).&lt;/li&gt;
 &lt;/ul&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;pd&lt;/span&gt;(a, n):
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;pd&lt;/span&gt;(a: int, n: int) &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; list[int]:
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;assert&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt; n
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    res &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; n
@@ -82,7 +85,9 @@ Moreover, it has a direct relation to Euclid&amp;rsquo;s algorithm for computing
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            ofs &lt;span style=&#34;color:#f92672&#34;&gt;+=&lt;/span&gt; step &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; steps[i]
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; res
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;example-cal-pd2-10-a--2-n--10-so-n---a--8-zeros&#34;&gt;Example. ${\cal PD}(2, 10)$: $a = 2$, $n = 10$, so $n - a = 8$ zeros&lt;/h3&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;Why it works.&lt;/strong&gt; The algorithm treats $n$ positions as $a$ “blocks” of size $\lfloor n/a \rfloor$ or $\lceil n/a \rceil$. The recursive call ${\cal PD}(n \bmod a, a)$ decides which blocks get the extra slot (the remainder). Each block is filled by either repeating a perfect distribution of ones in a sub-interval (when $a \le n/2$) or by inverting zeros when $a &amp;gt; n/2$. The recurrence ensures that at every level, the pattern stays uniform—no block gets more than one extra slot, so gaps never differ by more than one.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Optimality.&lt;/strong&gt; The perfect distribution (gaps differ by at most 1) is unique up to the choice of which gaps are $\lfloor (n-a)/a \rfloor$ and which are $\lceil (n-a)/a \rceil$. The algorithm constructs this by induction: the base case $a=0$ is trivial; for $a&amp;gt;0$, the recursive call yields a perfect distribution for the “remainder” subproblem, and the interleaving step preserves the gap invariant.&lt;/p&gt;
+&lt;h3 id=&#34;example-cal-pd2-10-a--2-n--10-so-n---a--8-zeros&#34;&gt;Example. ${\cal PD}(2, 10)$: $a = 2$, $n = 10$, so $n - a = 8$ zeros&lt;/h3&gt;
 &lt;p&gt;We want to mix $2$ ones and $8$ zeros.
 The recursive call ${\cal PD}(0, 2)$ returns $[0, 0] = 0^2$, which is assigned to $arr$.
 Then the array $res$ is filled as follows: $[(1, 0, 0, 0, 0), (1, 0, 0, 0, 0)] = (1, 0^4)^2$, which is returned by ${\cal PD}(2, 10)$.&lt;/p&gt;
@@ -99,7 +104,7 @@ Then the array $res$ is filled as follows: $[(1, 0, 1, 1, 1), (1, 0, 1, 1, 1)] =
 &lt;p&gt;${\cal PD}(2, 10) : [1, 0, 0, 0, 0, 1, 0, 0, 0, 0] = 1, 0^4 , 1, 0^4$&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;${\cal PD}(3, 10) : [1, 0, 0, 1, 0, 0, 1, 0, 0, 0] = 1, 0^2 , 1, 0^2 , 1, 0^3$&lt;/p&gt;
+&lt;p&gt;${\cal PD}(3, 10) : [1, 0, 0, 1, 0, 0, 1, 0, 0, 0] = 1, 0^2 , 1, 0^2 , 1, 0^3$ — visual: &lt;code&gt;1 _ _ 1 _ _ 1 _ _ _&lt;/code&gt; (gaps between 1s: 2, 2, 3)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;${\cal PD}(4, 10) : [1, 0, 0, 1, 0, 1, 0, 0, 1, 0] = 1, 0^2 , 1, 0, 1, 0^2 , 1, 0$ $= (1, 0^2 , 1, 0)^2$&lt;/p&gt;
@@ -126,7 +131,7 @@ Then the array $res$ is filled as follows: $[(1, 0, 1, 1, 1), (1, 0, 1, 1, 1)] =
 &lt;h3 id=&#34;alternative-formulation-subtraction-based-slow-versions&#34;&gt;Alternative formulation: subtraction-based (slow) versions&lt;/h3&gt;
 &lt;p&gt;The same recurrence can be expressed using subtraction instead of modulo, which makes the symmetry with Euclid&amp;rsquo;s algorithm more explicit. These versions have the same recursion structure but do more work per step.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Slow GCD (subtraction-based):&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;gcd&lt;/span&gt;(a, n):
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;gcd&lt;/span&gt;(a: int, n: int) &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; int:
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;assert&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt; n
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    res &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; n
@@ -139,7 +144,7 @@ Then the array $res$ is filled as follows: $[(1, 0, 1, 1, 1), (1, 0, 1, 1, 1)] =
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; res
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;Slow PD (subtraction-based):&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;pd&lt;/span&gt;(a, n):
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;pd&lt;/span&gt;(a: int, n: int) &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; list[int]:
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;assert&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt; n
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    res &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; n
