@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<!-- This site was created with Hugo Blox. https://hugoblox.com -->
+<!-- Last Published: February 7, 2026 --><html lang="en-us" >
+
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  
+  
+    <meta name="generator" content="Hugo Blox Builder 5.9.7" />
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+
+  
+  
+  
+    
+      
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto+Mono&family=Roboto:wght@400;700&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto+Mono&family=Roboto:wght@400;700&display=swap" media="print" onload="this.media='all'">
+    
+  
+
+  
+  
+
+  
+  
+
+  
+
+  <link rel="stylesheet" href="/css/vendor-bundle.min.26c458e6907dc03073573976b7f4044e.css" media="print" onload="this.media='all'">
+
+  
+  
+  
+    
+    
+
+    
+    
+    
+    
+      
+      
+    
+    
+    
+
+    
+    
+    
+
+    
+
+    
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+        
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+  
+
+  
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.c0e352886d22860db4df90f1df196e9c.css" />
+
+  
+  
+  
+
+  
+  
+  
+  
+  
+  
+  
+    
+    
+    <link rel="stylesheet" href="/css/libs/chroma/github-light.min.css" title="hl-light" media="print" onload="this.media='all'" disabled>
+    <link rel="stylesheet" href="/css/libs/chroma/dracula.min.css" title="hl-dark" media="print" onload="this.media='all'" >
+  
+
+  
+  
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-102853829-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-102853829-1');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+
+
+
+
+
+
+  <meta name="author" content="Slava Chernoy" />
+
+
+
+
+
+  
+
+<meta name="description" content="A compact overview of the Oberon family of languages and how their ideas lead to Go. The lineage runs from Pascal and Modula-2 through Oberon and its variants to Go, with shared emphasis on simplicity, strong typing, and clear semantics.
+Oberon (1986) — Niklaus Wirth &amp; Jurg Gutknecht
+
+Evolved from Pascal and Modula-2; designed for simplicity and efficiency.
+Strong typing, modular programming, integrated development environment.
+Used in software and hardware (e.g. Ceres workstation); part of Project Oberon at ETH Zurich.
+
+Oberon-2 (1991) — Hanspeter Mössenböck
+
+Extension of Oberon with object-oriented features.
+Type-bound procedures, read-only export of variables and methods.
+Improved type safety and reusability.
+
+Modula-3 (1988) — Luca Cardelli, James Donahue, Greg Nelson, Paul Rovner, Andrew Birrell
+
+Evolution of Modula-2: simplicity, safety, systems programming.
+Garbage collection, exception handling, strong type system with modules.
+Concurrency and generic programming.
+
+Active Oberon (1997) — Jurg Gutknecht
+
+Extends Oberon with active objects and concurrency.
+Combines object-oriented and system-programming features.
+Runtime and language support for concurrent processes.
+
+Zonnon (2005) — Jurg Gutknecht
+
+Draws on Oberon, Active Oberon, and Modula-2.
+Component-oriented programming, concurrency and parallelism.
+Refined syntax and semantics.
+
+Oberon-07 (2007) — Niklaus Wirth
+
+Simplified, modernized Oberon.
+Removed deprecated features; clearer syntax and safer semantics.
+Streamlined compiler and language report.
+
+Component Pascal (1997)
+
+Clemens Szyperski: Component Pascal at Oberon Microsystems (1991–1997); component-based software; author of Component Software: Beyond Object-Oriented Programming.
+K. John Gough: Co-developed Gardens Point Component Pascal for .NET.
+
+Derived from Oberon-2 with stronger object-oriented and component-oriented features; designed for component-based software engineering and .NET integration (Gardens Point)." />
+
+
+
+<link rel="alternate" hreflang="en-us" href="/post/oberon-to-golang/" />
+<link rel="canonical" href="/post/oberon-to-golang/" />
+
+
+
+
+
+<link rel="icon" type="image/png" href="/media/icon_hu_857dd55c234bc14f.png" />
+<link rel="apple-touch-icon" type="image/png" href="/media/icon_hu_88611cbd7a187137.png" />
+
+<meta name="theme-color" content="#bbdefb" />
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+<meta property="twitter:card" content="summary" />
+<meta property="twitter:image" content="/media/icon_hu_43cf117bf1a42c34.png" />
+
+
+
+  
+
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="" />
+<meta property="og:url" content="/post/oberon-to-golang/" />
+<meta property="og:title" content="From Oberon to Go: A Short Family Tree | " />
+<meta property="og:description" content="A compact overview of the Oberon family of languages and how their ideas lead to Go. The lineage runs from Pascal and Modula-2 through Oberon and its variants to Go, with shared emphasis on simplicity, strong typing, and clear semantics.
+Oberon (1986) — Niklaus Wirth &amp; Jurg Gutknecht
+
+Evolved from Pascal and Modula-2; designed for simplicity and efficiency.
+Strong typing, modular programming, integrated development environment.
+Used in software and hardware (e.g. Ceres workstation); part of Project Oberon at ETH Zurich.
+
+Oberon-2 (1991) — Hanspeter Mössenböck
+
+Extension of Oberon with object-oriented features.
+Type-bound procedures, read-only export of variables and methods.
+Improved type safety and reusability.
+
+Modula-3 (1988) — Luca Cardelli, James Donahue, Greg Nelson, Paul Rovner, Andrew Birrell
+
+Evolution of Modula-2: simplicity, safety, systems programming.
+Garbage collection, exception handling, strong type system with modules.
+Concurrency and generic programming.
+
+Active Oberon (1997) — Jurg Gutknecht
+
+Extends Oberon with active objects and concurrency.
+Combines object-oriented and system-programming features.
+Runtime and language support for concurrent processes.
+
+Zonnon (2005) — Jurg Gutknecht
+
+Draws on Oberon, Active Oberon, and Modula-2.
+Component-oriented programming, concurrency and parallelism.
+Refined syntax and semantics.
+
+Oberon-07 (2007) — Niklaus Wirth
+
+Simplified, modernized Oberon.
+Removed deprecated features; clearer syntax and safer semantics.
+Streamlined compiler and language report.
+
+Component Pascal (1997)
+
+Clemens Szyperski: Component Pascal at Oberon Microsystems (1991–1997); component-based software; author of Component Software: Beyond Object-Oriented Programming.
+K. John Gough: Co-developed Gardens Point Component Pascal for .NET.
+
+Derived from Oberon-2 with stronger object-oriented and component-oriented features; designed for component-based software engineering and .NET integration (Gardens Point)." /><meta property="og:image" content="/media/icon_hu_43cf117bf1a42c34.png" /><meta property="og:locale" content="en-us" />
+
+  
+    <meta
+      property="article:published_time"
+      content="2025-02-02T12:00:00&#43;00:00"
+    />
+  
+  
+    <meta property="article:modified_time" content="2025-02-02T12:00:00&#43;00:00">
+  
+
+
+
+
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "/post/oberon-to-golang/"
+  },
+  "headline": "From Oberon to Go: A Short Family Tree",
+  
+  "datePublished": "2025-02-02T12:00:00Z",
+  "dateModified": "2025-02-02T12:00:00Z",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Slava Chernoy"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "/media/icon_hu_19349546d07106a3.png"
+    }
+  },
+  "description": "\u003cp\u003eA compact overview of the Oberon family of languages and how their ideas lead to Go. The lineage runs from Pascal and Modula-2 through Oberon and its variants to Go, with shared emphasis on simplicity, strong typing, and clear semantics.\u003c/p\u003e\n\u003ch2 id=\"oberon-1986--niklaus-wirth--jurg-gutknecht\"\u003eOberon (1986) — Niklaus Wirth \u0026amp; Jurg Gutknecht\u003c/h2\u003e\n\u003cul\u003e\n\u003cli\u003eEvolved from Pascal and Modula-2; designed for simplicity and efficiency.\u003c/li\u003e\n\u003cli\u003eStrong typing, modular programming, integrated development environment.\u003c/li\u003e\n\u003cli\u003eUsed in software and hardware (e.g. Ceres workstation); part of Project Oberon at ETH Zurich.\u003c/li\u003e\n\u003c/ul\u003e\n\u003ch2 id=\"oberon-2-1991--hanspeter-mössenböck\"\u003eOberon-2 (1991) — Hanspeter Mössenböck\u003c/h2\u003e\n\u003cul\u003e\n\u003cli\u003eExtension of Oberon with object-oriented features.\u003c/li\u003e\n\u003cli\u003eType-bound procedures, read-only export of variables and methods.\u003c/li\u003e\n\u003cli\u003eImproved type safety and reusability.\u003c/li\u003e\n\u003c/ul\u003e\n\u003ch2 id=\"modula-3-1988--luca-cardelli-james-donahue-greg-nelson-paul-rovner-andrew-birrell\"\u003eModula-3 (1988) — Luca Cardelli, James Donahue, Greg Nelson, Paul Rovner, Andrew Birrell\u003c/h2\u003e\n\u003cul\u003e\n\u003cli\u003eEvolution of Modula-2: simplicity, safety, systems programming.\u003c/li\u003e\n\u003cli\u003eGarbage collection, exception handling, strong type system with modules.\u003c/li\u003e\n\u003cli\u003eConcurrency and generic programming.\u003c/li\u003e\n\u003c/ul\u003e\n\u003ch2 id=\"active-oberon-1997--jurg-gutknecht\"\u003eActive Oberon (1997) — Jurg Gutknecht\u003c/h2\u003e\n\u003cul\u003e\n\u003cli\u003eExtends Oberon with active objects and concurrency.\u003c/li\u003e\n\u003cli\u003eCombines object-oriented and system-programming features.\u003c/li\u003e\n\u003cli\u003eRuntime and language support for concurrent processes.\u003c/li\u003e\n\u003c/ul\u003e\n\u003ch2 id=\"zonnon-2005--jurg-gutknecht\"\u003eZonnon (2005) — Jurg Gutknecht\u003c/h2\u003e\n\u003cul\u003e\n\u003cli\u003eDraws on Oberon, Active Oberon, and Modula-2.\u003c/li\u003e\n\u003cli\u003eComponent-oriented programming, concurrency and parallelism.\u003c/li\u003e\n\u003cli\u003eRefined syntax and semantics.\u003c/li\u003e\n\u003c/ul\u003e\n\u003ch2 id=\"oberon-07-2007--niklaus-wirth\"\u003eOberon-07 (2007) — Niklaus Wirth\u003c/h2\u003e\n\u003cul\u003e\n\u003cli\u003eSimplified, modernized Oberon.\u003c/li\u003e\n\u003cli\u003eRemoved deprecated features; clearer syntax and safer semantics.\u003c/li\u003e\n\u003cli\u003eStreamlined compiler and language report.\u003c/li\u003e\n\u003c/ul\u003e\n\u003ch2 id=\"component-pascal-1997\"\u003eComponent Pascal (1997)\u003c/h2\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eClemens Szyperski:\u003c/strong\u003e Component Pascal at Oberon Microsystems (1991–1997); component-based software; author of \u003cem\u003eComponent Software: Beyond Object-Oriented Programming\u003c/em\u003e.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eK. John Gough:\u003c/strong\u003e Co-developed Gardens Point Component Pascal for .NET.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eDerived from Oberon-2 with stronger object-oriented and component-oriented features; designed for component-based software engineering and .NET integration (Gardens Point).\u003c/p\u003e"
+}
+</script>
+
+  
+
+  
+
+
+
+
+  
+  
+  
+
+  
+  
+
+  
+
+
+  
+  <title>From Oberon to Go: A Short Family Tree | </title>
+
+  
+  
+  
+    
+<link rel="stylesheet" href="/css/custom.css" />
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper  dark " data-wc-page-id="66855da9054f0e42fd236916907c9575" >
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="/js/wowchemy-init.min.db21e13b9b5c4f4b947717750ec8b3cc.js"></script>
+
+  
+
+
+
+
+  <div class="page-header header--fixed">
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+<header>
+  <nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+    <div class="container-xl">
+
+      
+      <div class="d-none d-lg-inline-flex">
+        <a class="navbar-brand" href="/"></a>
+      </div>
+      
+
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+      <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+      
+      <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+        <a class="navbar-brand" href="/"></a>
+      </div>
+      
+
+      
+      
+      <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+        
+        <ul class="navbar-nav d-md-inline-flex">
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#about"><span>Home</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#posts"><span>Posts</span></a>
+          </li>
+
+          
+          
+
+        
+
+          
+        </ul>
+      </div>
+
+      <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+        
+        
+          
+        
+
+        
+        
+        
+
+        
+        
+        
+
+        
+        
+
+      </ul>
+
+    </div>
+  </nav>
+</header>
+
+
+  </div>
+
+  <div class="page-body">
+    
+    
+    
+
+    <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>From Oberon to Go: A Short Family Tree</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Feb 2, 2025
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    2 min read
+  </span>
+  
+
+  
+  
+  
+  
+
+  
+  
+
+</div>
+
+    
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      <p>A compact overview of the Oberon family of languages and how their ideas lead to Go. The lineage runs from Pascal and Modula-2 through Oberon and its variants to Go, with shared emphasis on simplicity, strong typing, and clear semantics.</p>
+<h2 id="oberon-1986--niklaus-wirth--jurg-gutknecht">Oberon (1986) — Niklaus Wirth &amp; Jurg Gutknecht</h2>
+<ul>
+<li>Evolved from Pascal and Modula-2; designed for simplicity and efficiency.</li>
+<li>Strong typing, modular programming, integrated development environment.</li>
+<li>Used in software and hardware (e.g. Ceres workstation); part of Project Oberon at ETH Zurich.</li>
+</ul>
+<h2 id="oberon-2-1991--hanspeter-mössenböck">Oberon-2 (1991) — Hanspeter Mössenböck</h2>
+<ul>
+<li>Extension of Oberon with object-oriented features.</li>
+<li>Type-bound procedures, read-only export of variables and methods.</li>
+<li>Improved type safety and reusability.</li>
+</ul>
+<h2 id="modula-3-1988--luca-cardelli-james-donahue-greg-nelson-paul-rovner-andrew-birrell">Modula-3 (1988) — Luca Cardelli, James Donahue, Greg Nelson, Paul Rovner, Andrew Birrell</h2>
+<ul>
+<li>Evolution of Modula-2: simplicity, safety, systems programming.</li>
+<li>Garbage collection, exception handling, strong type system with modules.</li>
+<li>Concurrency and generic programming.</li>
+</ul>
+<h2 id="active-oberon-1997--jurg-gutknecht">Active Oberon (1997) — Jurg Gutknecht</h2>
+<ul>
+<li>Extends Oberon with active objects and concurrency.</li>
+<li>Combines object-oriented and system-programming features.</li>
+<li>Runtime and language support for concurrent processes.</li>
+</ul>
+<h2 id="zonnon-2005--jurg-gutknecht">Zonnon (2005) — Jurg Gutknecht</h2>
+<ul>
+<li>Draws on Oberon, Active Oberon, and Modula-2.</li>
+<li>Component-oriented programming, concurrency and parallelism.</li>
+<li>Refined syntax and semantics.</li>
+</ul>
+<h2 id="oberon-07-2007--niklaus-wirth">Oberon-07 (2007) — Niklaus Wirth</h2>
+<ul>
+<li>Simplified, modernized Oberon.</li>
+<li>Removed deprecated features; clearer syntax and safer semantics.</li>
+<li>Streamlined compiler and language report.</li>
+</ul>
+<h2 id="component-pascal-1997">Component Pascal (1997)</h2>
+<ul>
+<li><strong>Clemens Szyperski:</strong> Component Pascal at Oberon Microsystems (1991–1997); component-based software; author of <em>Component Software: Beyond Object-Oriented Programming</em>.</li>
+<li><strong>K. John Gough:</strong> Co-developed Gardens Point Component Pascal for .NET.</li>
+</ul>
+<p>Derived from Oberon-2 with stronger object-oriented and component-oriented features; designed for component-based software engineering and .NET integration (Gardens Point).</p>
+<h2 id="go--robert-griesemer-rob-pike-ken-thompson">Go — Robert Griesemer, Rob Pike, Ken Thompson</h2>
+<ul>
+<li>Designed at Google (from 2007); open-sourced 2009, first stable release 2012.</li>
+<li>Influenced by the simplicity and efficiency of Oberon and the Wirth tradition.</li>
+<li>Targets multicore and networked systems: goroutines, channels, fast compilation.</li>
+<li>Garbage-collected, statically typed, simple syntax.</li>
+</ul>
+<h2 id="how-it-connects">How it connects</h2>
+<ul>
+<li><strong>Simplicity and efficiency:</strong> Go inherits Oberon’s focus on clear, maintainable code.</li>
+<li><strong>Concurrency:</strong> Builds on ideas from Modula-3 and Active Oberon.</li>
+<li><strong>Type safety:</strong> Strong static typing throughout the family.</li>
+<li><strong>Components:</strong> Component Pascal’s component-oriented design is part of the same design culture.</li>
+<li><strong>Implementation and runtimes:</strong> Work on JIT and dynamic optimization (e.g. Michael Franz) influenced modern compilers and runtimes; Go prioritizes fast compilation and efficient execution in that spirit.</li>
+</ul>
+
+    </div>
+
+    
+
+
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tags/oberon/">Oberon</a>
+  
+  <a class="badge badge-light" href="/tags/go/">Go</a>
+  
+  <a class="badge badge-light" href="/tags/golang/">Golang</a>
+  
+  <a class="badge badge-light" href="/tags/programming-languages/">Programming Languages</a>
+  
+  <a class="badge badge-light" href="/tags/wirth/">Wirth</a>
+  
+  <a class="badge badge-light" href="/tags/modula/">Modula</a>
+  
+  <a class="badge badge-light" href="/tags/pascal/">Pascal</a>
+  
+</div>
+
+
+
+<div class="share-box">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=%2Fpost%2Foberon-to-golang%2F&amp;text=From&#43;Oberon&#43;to&#43;Go%3A&#43;A&#43;Short&#43;Family&#43;Tree" target="_blank" rel="noopener" class="share-btn-twitter" aria-label="twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=%2Fpost%2Foberon-to-golang%2F&amp;t=From&#43;Oberon&#43;to&#43;Go%3A&#43;A&#43;Short&#43;Family&#43;Tree" target="_blank" rel="noopener" class="share-btn-facebook" aria-label="facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      
+      
+        
+      
+      <li>
+        <a href="mailto:?subject=From%20Oberon%20to%20Go%3A%20A%20Short%20Family%20Tree&amp;body=%2Fpost%2Foberon-to-golang%2F" target="_blank" rel="noopener" class="share-btn-email" aria-label="envelope">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=%2Fpost%2Foberon-to-golang%2F&amp;title=From&#43;Oberon&#43;to&#43;Go%3A&#43;A&#43;Short&#43;Family&#43;Tree" target="_blank" rel="noopener" class="share-btn-linkedin" aria-label="linkedin-in">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      
+      
+      <li>
+        <a href="whatsapp://send?text=From&#43;Oberon&#43;to&#43;Go%3A&#43;A&#43;Short&#43;Family&#43;Tree%20%2Fpost%2Foberon-to-golang%2F" target="_blank" rel="noopener" class="share-btn-whatsapp" aria-label="whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=%2Fpost%2Foberon-to-golang%2F&amp;title=From&#43;Oberon&#43;to&#43;Go%3A&#43;A&#43;Short&#43;Family&#43;Tree" target="_blank" rel="noopener" class="share-btn-weibo" aria-label="weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="/">Slava Chernoy</a></h5>
+      <h6 class="card-subtitle">Software Engineer</h6>
+      
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://linkedin.com/in/slava-chernoy-9859a81/" target="_blank" rel="noopener">
+        <i class="fab fa-linkedin"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/vchernoy" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://stackoverflow.com/users/276287/slava" target="_blank" rel="noopener">
+        <i class="fab fa-stack-overflow"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+<section id="comments">
+  <div id="graphcomment"></div>
+<script type="text/javascript">
+ 
+window.graphcomment_id = 'B8a3Q3Al1kTk';
+ 
+(function() {
+    var gc = document.createElement('script'); gc.type = 'text/javascript'; gc.async = true;
+    gc.src = 'https://graphcomment.com/js/integration.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(gc);
+})();
+</script>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+  </div>
+</article>
+  </div>
+
+  <div class="page-footer">
+    
+    
+    <div class="container">
+      <footer class="site-footer">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  <p class="powered-by">
+    
+    
+    
+      
+      
+      
+      
+      
+      
+      Published with <!-- raw HTML omitted -->Hugo Blox Builder<!-- raw HTML omitted --> — the free, <!-- raw HTML omitted -->open source<!-- raw HTML omitted --> website builder that empowers creators.
+    
+  </p>
+</footer>
+
+    </div>
+    
+  </div>
+
+  
+
+
+<script src="/js/vendor-bundle.min.50933d940896e49f984a778650d5f7f5.js"></script>
+
+
+
+
+  
+
+  
+  
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script id="page-data" type="application/json">{"use_headroom":true}</script>
+
+
+  <script src="/js/wowchemy-headroom.db4755770454eb63685f8de785c0a172.js" type="module"></script>
+
+
+
+
+
+
+
+
+
+
+<script src="/en/js/wowchemy.min.b42cee516846615f6e61f624dc63a325.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

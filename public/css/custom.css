@@ -1,0 +1,27 @@
+/* Widen article content so long math expressions are not cut off.
+   Theme default is .article-container { max-width: 760px } */
+
+/* Article (post) body: wider than default 760px so long math fits */
+.article-container {
+  max-width: min(1100px, 96vw);
+}
+
+.article-style {
+  max-width: none;
+}
+
+/* Let long display math and inline math scroll horizontally instead of clipping */
+.article-style .math,
+.article-style .MathJax,
+.article-style [class^="katex"],
+.article-style .arithmatex {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Optional: add a bit of padding so scrollable math doesn't touch the edge */
+.article-style .math-display,
+.article-style .MathJax_Display {
+  padding: 0.25em 0;
+}

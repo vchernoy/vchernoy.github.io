@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Modula | </title>
+    <link>/tags/modula/</link>
+      <atom:link href="/tags/modula/index.xml" rel="self" type="application/rss+xml" />
+    <description>Modula</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Sun, 02 Feb 2025 12:00:00 +0000</lastBuildDate>
+    <image>
+      <url>/media/icon_hu_43cf117bf1a42c34.png</url>
+      <title>Modula</title>
+      <link>/tags/modula/</link>
+    </image>
+    
+    <item>
+      <title>From Oberon to Go: A Short Family Tree</title>
+      <link>/post/oberon-to-golang/</link>
+      <pubDate>Sun, 02 Feb 2025 12:00:00 +0000</pubDate>
+      <guid>/post/oberon-to-golang/</guid>
+      <description>&lt;p&gt;A compact overview of the Oberon family of languages and how their ideas lead to Go. The lineage runs from Pascal and Modula-2 through Oberon and its variants to Go, with shared emphasis on simplicity, strong typing, and clear semantics.&lt;/p&gt;
+&lt;h2 id=&#34;oberon-1986--niklaus-wirth--jurg-gutknecht&#34;&gt;Oberon (1986) — Niklaus Wirth &amp;amp; Jurg Gutknecht&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Evolved from Pascal and Modula-2; designed for simplicity and efficiency.&lt;/li&gt;
+&lt;li&gt;Strong typing, modular programming, integrated development environment.&lt;/li&gt;
+&lt;li&gt;Used in software and hardware (e.g. Ceres workstation); part of Project Oberon at ETH Zurich.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;oberon-2-1991--hanspeter-mössenböck&#34;&gt;Oberon-2 (1991) — Hanspeter Mössenböck&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Extension of Oberon with object-oriented features.&lt;/li&gt;
+&lt;li&gt;Type-bound procedures, read-only export of variables and methods.&lt;/li&gt;
+&lt;li&gt;Improved type safety and reusability.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;modula-3-1988--luca-cardelli-james-donahue-greg-nelson-paul-rovner-andrew-birrell&#34;&gt;Modula-3 (1988) — Luca Cardelli, James Donahue, Greg Nelson, Paul Rovner, Andrew Birrell&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Evolution of Modula-2: simplicity, safety, systems programming.&lt;/li&gt;
+&lt;li&gt;Garbage collection, exception handling, strong type system with modules.&lt;/li&gt;
+&lt;li&gt;Concurrency and generic programming.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;active-oberon-1997--jurg-gutknecht&#34;&gt;Active Oberon (1997) — Jurg Gutknecht&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Extends Oberon with active objects and concurrency.&lt;/li&gt;
+&lt;li&gt;Combines object-oriented and system-programming features.&lt;/li&gt;
+&lt;li&gt;Runtime and language support for concurrent processes.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;zonnon-2005--jurg-gutknecht&#34;&gt;Zonnon (2005) — Jurg Gutknecht&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Draws on Oberon, Active Oberon, and Modula-2.&lt;/li&gt;
+&lt;li&gt;Component-oriented programming, concurrency and parallelism.&lt;/li&gt;
+&lt;li&gt;Refined syntax and semantics.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;oberon-07-2007--niklaus-wirth&#34;&gt;Oberon-07 (2007) — Niklaus Wirth&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Simplified, modernized Oberon.&lt;/li&gt;
+&lt;li&gt;Removed deprecated features; clearer syntax and safer semantics.&lt;/li&gt;
+&lt;li&gt;Streamlined compiler and language report.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;component-pascal-1997&#34;&gt;Component Pascal (1997)&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Clemens Szyperski:&lt;/strong&gt; Component Pascal at Oberon Microsystems (1991–1997); component-based software; author of &lt;em&gt;Component Software: Beyond Object-Oriented Programming&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;K. John Gough:&lt;/strong&gt; Co-developed Gardens Point Component Pascal for .NET.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Derived from Oberon-2 with stronger object-oriented and component-oriented features; designed for component-based software engineering and .NET integration (Gardens Point).&lt;/p&gt;
+&lt;h2 id=&#34;go--robert-griesemer-rob-pike-ken-thompson&#34;&gt;Go — Robert Griesemer, Rob Pike, Ken Thompson&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Designed at Google (from 2007); open-sourced 2009, first stable release 2012.&lt;/li&gt;
+&lt;li&gt;Influenced by the simplicity and efficiency of Oberon and the Wirth tradition.&lt;/li&gt;
+&lt;li&gt;Targets multicore and networked systems: goroutines, channels, fast compilation.&lt;/li&gt;
+&lt;li&gt;Garbage-collected, statically typed, simple syntax.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;how-it-connects&#34;&gt;How it connects&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Simplicity and efficiency:&lt;/strong&gt; Go inherits Oberon’s focus on clear, maintainable code.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Concurrency:&lt;/strong&gt; Builds on ideas from Modula-3 and Active Oberon.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Type safety:&lt;/strong&gt; Strong static typing throughout the family.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Components:&lt;/strong&gt; Component Pascal’s component-oriented design is part of the same design culture.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Implementation and runtimes:&lt;/strong&gt; Work on JIT and dynamic optimization (e.g. Michael Franz) influenced modern compilers and runtimes; Go prioritizes fast compilation and efficient execution in that spirit.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

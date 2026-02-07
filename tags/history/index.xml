@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>History | </title>
+    <link>/tags/history/</link>
+      <atom:link href="/tags/history/index.xml" rel="self" type="application/rss+xml" />
+    <description>History</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Sat, 01 Feb 2025 12:00:00 +0000</lastBuildDate>
+    <image>
+      <url>/media/icon_hu_43cf117bf1a42c34.png</url>
+      <title>History</title>
+      <link>/tags/history/</link>
+    </image>
+    
+    <item>
+      <title>From Oberon to Go in Faces</title>
+      <link>/post/oberon-in-faces/</link>
+      <pubDate>Sat, 01 Feb 2025 12:00:00 +0000</pubDate>
+      <guid>/post/oberon-in-faces/</guid>
+      <description>&lt;p&gt;Short portraits of people in the Oberon and Modula lineage—language designers, compiler writers, and researchers—whose work leads, in spirit or in person, toward Go.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Niklaus Wirth&lt;/strong&gt;&lt;br&gt;
+Inventor of Pascal (1970), Modula-2 (1978), and Oberon (1986). He also designed Oberon-07 (2007). His work stressed simplicity and efficiency and influenced many modern languages.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Hanspeter Mössenböck&lt;/strong&gt;&lt;br&gt;
+Developed Oberon-2 (1991) and the compiler generator Coco/R. His work on compiler construction and development tools has had a lasting impact.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Jurg Gutknecht&lt;/strong&gt;&lt;br&gt;
+Co-developer of Oberon. Designed Active Oberon (1997) and Zonnon (2005), extending the Oberon family and exploring concurrency and new language paradigms.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Michael Franz&lt;/strong&gt;&lt;br&gt;
+His 1994 PhD thesis was on code generation on the fly. He pioneered techniques in just-in-time (JIT) compilation and dynamic optimization that influenced modern runtimes and language implementations.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Clemens Szyperski&lt;/strong&gt;&lt;br&gt;
+Worked on Component Pascal at Oberon Microsystems (1991–1997). His PhD focused on object-orientation in operating systems. He is known for component-based software engineering and the book &lt;em&gt;Component Software: Beyond Object-Oriented Programming&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Cuno Pfister&lt;/strong&gt;&lt;br&gt;
+Known for embedded systems and the Internet of Things (IoT). He has authored books and developed tools and frameworks in these areas.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Josef Templ&lt;/strong&gt;&lt;br&gt;
+His PhD thesis focused on metaprogramming in Oberon, contributing to the use of metaprogramming techniques in practice.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Ralph Sommerer&lt;/strong&gt;&lt;br&gt;
+His PhD addressed integrating online documents. He developed Oberon Script—a lightweight compiler and runtime that compiles Oberon to JavaScript for interactive web clients (e.g. JMLC 2006).&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;K. John Gough&lt;/strong&gt;&lt;br&gt;
+Co-developed Gardens Point Component Pascal for .NET, enabling Component Pascal on the .NET framework.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;J. Stanley Warford&lt;/strong&gt;&lt;br&gt;
+Known for computer science education, especially his textbooks on computer architecture and assembly language.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Michael Spivey&lt;/strong&gt;&lt;br&gt;
+Known for the Oxford Oberon-2 compiler, contributing to the development and optimization of Oberon-2.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Luca Cardelli, James Donahue, Greg Nelson, Paul Rovner, Andrew Birrell&lt;/strong&gt;&lt;br&gt;
+Designers of Modula-3 (1988), an evolution of Modula-2 emphasizing simplicity, safety, systems programming, and generics.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Robert Griesemer&lt;/strong&gt;&lt;br&gt;
+Co-designer of Go at Google. His PhD focused on programming languages for vector computers. Go is influenced by Oberon’s simplicity and efficiency and is widely used for its performance and concurrency support, continuing the Wirth tradition.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

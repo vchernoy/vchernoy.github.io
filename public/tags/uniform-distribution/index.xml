@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Uniform Distribution | </title>
+    <link>/tags/uniform-distribution/</link>
+      <atom:link href="/tags/uniform-distribution/index.xml" rel="self" type="application/rss+xml" />
+    <description>Uniform Distribution</description>
+    <generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>en-us</language><lastBuildDate>Tue, 01 Aug 2017 07:29:43 +0000</lastBuildDate>
+    <image>
+      <url>/media/icon_hu_43cf117bf1a42c34.png</url>
+      <title>Uniform Distribution</title>
+      <link>/tags/uniform-distribution/</link>
+    </image>
+    
+    <item>
+      <title>Perfect Distribution: GCD in Disguise</title>
+      <link>/post/perfect-distribution/</link>
+      <pubDate>Tue, 01 Aug 2017 07:29:43 +0000</pubDate>
+      <guid>/post/perfect-distribution/</guid>
+      <description>&lt;h2 id=&#34;perfect-distribution-gcd-in-disguise&#34;&gt;Perfect Distribution: GCD in Disguise&lt;/h2&gt;
+&lt;p&gt;We discuss an algorithm that distributes $a$ ones among $n$ positions so that the gaps between consecutive ones differ by at most one—a &lt;strong&gt;perfect distribution&lt;/strong&gt;. I developed it while working on profiling, stress, and negative testing of a system that needed exactly this kind of uniform spread. I am not aware of prior art; if you know of related work, I would be interested to hear.&lt;/p&gt;
+&lt;p&gt;The examples below are software engineering use cases for this algorithm.&lt;/p&gt;
+&lt;h3 id=&#34;use-case-0-text-spacing&#34;&gt;Use Case 0: Text spacing&lt;/h3&gt;
+&lt;p&gt;Given a string of characters $s$ and a number $n$ greater than the length of $s$,
+extend the string $s$ to length $n$ by inserting spaces between the words.
+The key requirement is that the distances between two consecutive words be uniform.&lt;/p&gt;
+&lt;h3 id=&#34;use-case-1-stress-testing&#34;&gt;Use Case 1: Stress testing&lt;/h3&gt;
+&lt;p&gt;Assume we want to stress-test a server.
+Our test contains positive and negative requests.
+Suppose we want to send $1000$ requests, $300$ of which are negative.
+Our test tool might send requests simultaneously or sequentially,
+but we require that the negative requests arrive at the server with uniform distribution.
+I.e., we want to avoid sending 300 negative followed by 700 positive requests.
+Using the algorithm, we simply distribute the 300 negative requests by calling ${\cal PD}(300, 1000)$:
+cell $i$ is $1$ if and only if request $i$ is negative.
+The test tool then uses the array to send requests (possibly sequentially).&lt;/p&gt;
+&lt;h3 id=&#34;use-case-2-rate-limiting--profiling&#34;&gt;Use Case 2: Rate limiting / profiling&lt;/h3&gt;
+&lt;p&gt;Assume the test tool can run performance tests—creating stress and measuring throughput (requests per second).
+We want to extend the test tool with a profiling feature: specify the number of requests sent per second.
+E.g., a performance test shows the server handles $1000$ requests per second.
+We want the test tool to send requests at a specified rate, say $500$, $200$, $20$, or even $0.2$ requests per second (one request every 5 seconds).
+Such a profiling tool allows exploring the server state under various load conditions: CPU, memory, threads depending on the number of requests received.&lt;/p&gt;
+&lt;p&gt;The test tool may divide 1 second into $100$ parts, each $20$ milliseconds.
+Suppose we specify $230$ requests per second: then during every part, $2.3$ requests must be sent on average.
+In other words, the tool must send 2 requests in most parts and 3 in some parts.
+We need to choose which $30$ parts get the extra request; ${\cal PD}(30, 100)$ yields that array (a $1$ in cell $i$ means part $i$ gets 3 requests).&lt;/p&gt;
+&lt;h3 id=&#34;why-naive-approaches-fail&#34;&gt;Why naive approaches fail&lt;/h3&gt;
+&lt;p&gt;A natural idea is to place ones at multiples of $n/a$, e.g. &lt;code&gt;[1 if (i * a) % n &amp;lt; a else 0 for i in range(n)]&lt;/code&gt;, or to use &lt;code&gt;round(i * a / n)&lt;/code&gt; to decide. Such formulas can produce wrong counts (off-by-one), clusters at the boundaries, or gaps that differ by more than one. Another approach—repeatedly choosing the “emptiest” gap—avoids clustering but is harder to implement correctly and lacks the clean recurrence we want. ${\cal PD}$ gives the exact, unique fairest distribution in a few lines.&lt;/p&gt;
+&lt;p&gt;We present the general solution ${\cal PD}$ to the problem—for any specified input in the above examples, ${\cal PD}$ produces the exact solution.
+Any probabilistic or approximation solutions do not achieve the required exactness and are usually more complicated.
+The algorithm ${\cal PD}$ is simple, has a clear correctness proof, and admits $O(n)$ time and space complexity.
+Moreover, it has a direct relation to Euclid&amp;rsquo;s algorithm for computing the Greatest Common Divisor, denoted here by ${\cal GCD}$.&lt;/p&gt;
+&lt;h3 id=&#34;notation&#34;&gt;Notation&lt;/h3&gt;
+&lt;p&gt;&lt;em&gt;POST&lt;/em&gt; denotes a condition that the procedure guarantees will hold after the call.&lt;/p&gt;
+&lt;h3 id=&#34;euclids-algorithm-cal-gcd&#34;&gt;Euclid&amp;rsquo;s Algorithm ${\cal GCD}$&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;POST: $res = {\cal GCD}(a, n)$.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;gcd&lt;/span&gt;(a: int, n: int) &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; int:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;assert&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt; n
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    res &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; n
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        res &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; gcd(n &lt;span style=&#34;color:#f92672&#34;&gt;%&lt;/span&gt; a, a)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; res
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;deterministic-algorithm-of-perfect-distribution-cal-pd&#34;&gt;Deterministic algorithm of perfect distribution ${\cal PD}$&lt;/h3&gt;
+&lt;p&gt;The recurrence mirrors Euclid&amp;rsquo;s algorithm: ${\cal PD}(a, n)$ calls ${\cal PD}(n \bmod a, a)$, so the recursion depth is $O(\log \min(a, n))$ and total time is $O(n)$.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;POST: size of $res$ is $n$.&lt;/li&gt;
+&lt;li&gt;POST: $\forall i,, res[i] \in {0, 1}$.&lt;/li&gt;
+&lt;li&gt;POST: $\sum_{i=0}^{n-1} res[i] = a$ (exactly $a$ ones).&lt;/li&gt;
+&lt;li&gt;POST: $res$ is perfectly distributed (gaps between consecutive ones differ by at most 1).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;pd&lt;/span&gt;(a: int, n: int) &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; list[int]:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;assert&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt; n
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    res &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; n
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        steps &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pd(n &lt;span style=&#34;color:#f92672&#34;&gt;%&lt;/span&gt; a, a)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        step &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;//&lt;/span&gt; a
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ofs &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; i &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(a):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            res[ofs] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            ofs &lt;span style=&#34;color:#f92672&#34;&gt;+=&lt;/span&gt; step &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; steps[i]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; res
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;Why it works.&lt;/strong&gt; The algorithm treats $n$ positions as $a$ “blocks” of size $\lfloor n/a \rfloor$ or $\lceil n/a \rceil$. The recursive call ${\cal PD}(n \bmod a, a)$ decides which blocks get the extra slot (the remainder). Each block is filled by either repeating a perfect distribution of ones in a sub-interval (when $a \le n/2$) or by inverting zeros when $a &amp;gt; n/2$. The recurrence ensures that at every level, the pattern stays uniform—no block gets more than one extra slot, so gaps never differ by more than one.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Optimality.&lt;/strong&gt; The perfect distribution (gaps differ by at most 1) is unique up to the choice of which gaps are $\lfloor (n-a)/a \rfloor$ and which are $\lceil (n-a)/a \rceil$. The algorithm constructs this by induction: the base case $a=0$ is trivial; for $a&amp;gt;0$, the recursive call yields a perfect distribution for the “remainder” subproblem, and the interleaving step preserves the gap invariant.&lt;/p&gt;
+&lt;h3 id=&#34;example-cal-pd2-10-a--2-n--10-so-n---a--8-zeros&#34;&gt;Example. ${\cal PD}(2, 10)$: $a = 2$, $n = 10$, so $n - a = 8$ zeros&lt;/h3&gt;
+&lt;p&gt;We want to mix $2$ ones and $8$ zeros.
+The recursive call ${\cal PD}(0, 2)$ returns $[0, 0] = 0^2$, which is assigned to $arr$.
+Then the array $res$ is filled as follows: $[(1, 0, 0, 0, 0), (1, 0, 0, 0, 0)] = (1, 0^4)^2$, which is returned by ${\cal PD}(2, 10)$.&lt;/p&gt;
+&lt;h3 id=&#34;example-cal-pd8-10-a--8-n--10-so-n---a--2-zeros&#34;&gt;Example. ${\cal PD}(8, 10)$: $a = 8$, $n = 10$, so $n - a = 2$ zeros&lt;/h3&gt;
+&lt;p&gt;We want to mix $8$ ones and $2$ zeros.
+The recursive call ${\cal PD}(2, 8)$ returns $[1, 0, 0, 0, 1, 0, 0, 0] = (1, 0^3)^2$, which is assigned to $arr$.
+Then the array $res$ is filled as follows: $[(1, 0, 1, 1, 1), (1, 0, 1, 1, 1)] = (1, 0, 1^3)^2$, which is returned by ${\cal PD}(8, 10)$.&lt;/p&gt;
+&lt;h3 id=&#34;examples&#34;&gt;Examples.&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;${\cal PD}(1, 10) : [1, 0, \ldots, 0] = 1, 0^9$&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;${\cal PD}(2, 10) : [1, 0, 0, 0, 0, 1, 0, 0, 0, 0] = 1, 0^4 , 1, 0^4$&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;${\cal PD}(3, 10) : [1, 0, 0, 1, 0, 0, 1, 0, 0, 0] = 1, 0^2 , 1, 0^2 , 1, 0^3$ — visual: &lt;code&gt;1 _ _ 1 _ _ 1 _ _ _&lt;/code&gt; (gaps between 1s: 2, 2, 3)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;${\cal PD}(4, 10) : [1, 0, 0, 1, 0, 1, 0, 0, 1, 0] = 1, 0^2 , 1, 0, 1, 0^2 , 1, 0$ $= (1, 0^2 , 1, 0)^2$&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;${\cal PD}(5, 10) : [1, 0, 1, 0, 1, 0, 1, 0, 1, 0] = (1, 0)^5$&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;${\cal PD}(6, 10) : [1, 0, 1, 1, 0, 1, 0, 1, 1, 0] = 1, 0, 1^2 , 0, 1, 0, 1^2 , 0$ $ = (1, 0, 1^2 , 0)^2$&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;${\cal PD}(0, 2) : [0, 0] = 0^2$&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;${\cal PD}(2, 6) : [1, 0, 0, 1, 0, 0] = 1, 0^2 , 1, 0^2 = (1, 0^2)^2$&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;${\cal PD}(6, 8) : [1, 0, 1, 1, 1, 0, 1, 1] = 1, 0, 1^3, 0, 1^2 = (1, 0, 1^2)^2$&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;${\cal PD}(8, 14) : [1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0] = (1, 0, 1, 1, 0, 1, 0)^2$ $ = ((1, 0, 1)^2 , 0)^2$&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;alternative-formulation-subtraction-based-slow-versions&#34;&gt;Alternative formulation: subtraction-based (slow) versions&lt;/h3&gt;
+&lt;p&gt;The same recurrence can be expressed using subtraction instead of modulo, which makes the symmetry with Euclid&amp;rsquo;s algorithm more explicit. These versions have the same recursion structure but do more work per step.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Slow GCD (subtraction-based):&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;gcd&lt;/span&gt;(a: int, n: int) &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; int:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;assert&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt; n
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    res &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; n
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        b &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; a
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; b &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; a:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            res &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; gcd(a, b)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            res &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; gcd(b, a)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; res
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;Slow PD (subtraction-based):&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;pd&lt;/span&gt;(a: int, n: int) &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; list[int]:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;assert&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt; n
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    res &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; n
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ofs &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        b &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; a
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; b &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; a:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            arr &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pd(a, b)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; i &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(b):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                res[ofs] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; arr[i]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                ofs &lt;span style=&#34;color:#f92672&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; arr[i]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            arr &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pd(b, a)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; i &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(a):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                res[ofs] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; arr[i]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                ofs &lt;span style=&#34;color:#f92672&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; arr[i]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; res
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

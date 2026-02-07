@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<!-- This site was created with Hugo Blox. https://hugoblox.com -->
+<!-- Last Published: February 7, 2026 --><html lang="en-us" >
+
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  
+  
+    <meta name="generator" content="Hugo Blox Builder 5.9.7" />
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+
+  
+  
+  
+    
+      
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto+Mono&family=Roboto:wght@400;700&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto+Mono&family=Roboto:wght@400;700&display=swap" media="print" onload="this.media='all'">
+    
+  
+
+  
+  
+
+  
+  
+    
+    <script src="/js/mathjax-config.js"></script>
+  
+
+  
+
+  <link rel="stylesheet" href="/css/vendor-bundle.min.26c458e6907dc03073573976b7f4044e.css" media="print" onload="this.media='all'">
+
+  
+  
+  
+    
+    
+
+    
+    
+    
+    
+      
+      
+    
+    
+    
+
+    
+    
+    
+
+    
+
+    
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+  
+
+  
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.c0e352886d22860db4df90f1df196e9c.css" />
+
+  
+  
+  
+
+  
+  
+  
+  
+  
+  
+  
+    
+    
+    <link rel="stylesheet" href="/css/libs/chroma/github-light.min.css" title="hl-light" media="print" onload="this.media='all'" disabled>
+    <link rel="stylesheet" href="/css/libs/chroma/dracula.min.css" title="hl-dark" media="print" onload="this.media='all'" >
+  
+
+  
+  
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-102853829-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-102853829-1');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+
+
+
+
+
+
+  <meta name="author" content="Slava Chernoy" />
+
+
+
+
+
+  
+
+<meta name="description" content="This post extends the generating-function technique from the two-variable recursion to a three-variable case. I originally wrote this as an answer to a Math Stack Exchange question; here it is adapted for the blog with clearer exposition and code.
+The Problem
+We want to solve the recurrence
+$a_{n,m,k} = 2a_{n-1,m-1,k-1} &#43; a_{n-1,m-1,k}$
+$ &#43; a_{n,m-1,k-1} &#43; a_{n-1,m,k-1}$
+where $m$, $n$, $k$ are nonnegative integers, with boundary conditions:
+
+$a_{0,0,0} = a_{0,1,0} = a_{1,0,0} = a_{0,0,1} = 1$
+$a_{n,0,0} = a_{0,n,0} = a_{0,0,n} = 0$ for any $n &gt; 1$
+$a_{n,m,k}$ is symmetric in $n$, $m$, $k$
+
+A subtlety: $a_{1,0,1}$ is not defined by the recurrence alone, since it would require values like $a_{0,-1,0}$. We take $a_{n,m,k} = 0$ whenever any subscript is negative." />
+
+
+
+<link rel="alternate" hreflang="en-us" href="/post/three-var-recursive/" />
+<link rel="canonical" href="/post/three-var-recursive/" />
+
+
+
+
+
+<link rel="icon" type="image/png" href="/media/icon_hu_857dd55c234bc14f.png" />
+<link rel="apple-touch-icon" type="image/png" href="/media/icon_hu_88611cbd7a187137.png" />
+
+<meta name="theme-color" content="#bbdefb" />
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+<meta property="twitter:card" content="summary" />
+<meta property="twitter:image" content="/media/icon_hu_43cf117bf1a42c34.png" />
+
+
+
+  
+
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="" />
+<meta property="og:url" content="/post/three-var-recursive/" />
+<meta property="og:title" content="Solving a Three-Variable Recursion via Generating Functions | " />
+<meta property="og:description" content="This post extends the generating-function technique from the two-variable recursion to a three-variable case. I originally wrote this as an answer to a Math Stack Exchange question; here it is adapted for the blog with clearer exposition and code.
+The Problem
+We want to solve the recurrence
+$a_{n,m,k} = 2a_{n-1,m-1,k-1} &#43; a_{n-1,m-1,k}$
+$ &#43; a_{n,m-1,k-1} &#43; a_{n-1,m,k-1}$
+where $m$, $n$, $k$ are nonnegative integers, with boundary conditions:
+
+$a_{0,0,0} = a_{0,1,0} = a_{1,0,0} = a_{0,0,1} = 1$
+$a_{n,0,0} = a_{0,n,0} = a_{0,0,n} = 0$ for any $n &gt; 1$
+$a_{n,m,k}$ is symmetric in $n$, $m$, $k$
+
+A subtlety: $a_{1,0,1}$ is not defined by the recurrence alone, since it would require values like $a_{0,-1,0}$. We take $a_{n,m,k} = 0$ whenever any subscript is negative." /><meta property="og:image" content="/media/icon_hu_43cf117bf1a42c34.png" /><meta property="og:locale" content="en-us" />
+
+  
+    <meta
+      property="article:published_time"
+      content="2018-04-10T03:14:00&#43;00:00"
+    />
+  
+  
+    <meta property="article:modified_time" content="2018-04-10T03:14:00&#43;00:00">
+  
+
+
+
+
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "/post/three-var-recursive/"
+  },
+  "headline": "Solving a Three-Variable Recursion via Generating Functions",
+  
+  "datePublished": "2018-04-10T03:14:00Z",
+  "dateModified": "2018-04-10T03:14:00Z",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Slava Chernoy"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "/media/icon_hu_19349546d07106a3.png"
+    }
+  },
+  "description": "\u003cp\u003eThis post extends the generating-function technique from the \u003ca href=\"/post/two-var-recursive-func/\"\u003etwo-variable recursion\u003c/a\u003e to a three-variable case. I originally wrote this as an answer to a \u003ca href=\"https://math.stackexchange.com/questions/1093271/how-to-solve-this-multivariable-recursion/2730331#2730331\" target=\"_blank\" rel=\"noopener\"\u003eMath Stack Exchange question\u003c/a\u003e; here it is adapted for the blog with clearer exposition and code.\u003c/p\u003e\n\u003ch2 id=\"the-problem\"\u003eThe Problem\u003c/h2\u003e\n\u003cp\u003eWe want to solve the recurrence\u003c/p\u003e\n\u003cp\u003e$a_{n,m,k} = 2a_{n-1,m-1,k-1} + a_{n-1,m-1,k}$\n$ + a_{n,m-1,k-1} + a_{n-1,m,k-1}$\u003c/p\u003e\n\u003cp\u003ewhere $m$, $n$, $k$ are nonnegative integers, with boundary conditions:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e$a_{0,0,0} = a_{0,1,0} = a_{1,0,0} = a_{0,0,1} = 1$\u003c/li\u003e\n\u003cli\u003e$a_{n,0,0} = a_{0,n,0} = a_{0,0,n} = 0$ for any $n \u0026gt; 1$\u003c/li\u003e\n\u003cli\u003e$a_{n,m,k}$ is symmetric in $n$, $m$, $k$\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eA subtlety: $a_{1,0,1}$ is not defined by the recurrence alone, since it would require values like $a_{0,-1,0}$. We take $a_{n,m,k} = 0$ whenever any subscript is negative.\u003c/p\u003e"
+}
+</script>
+
+  
+
+  
+
+
+
+
+  
+  
+  
+
+  
+  
+
+  
+
+
+  
+  <title>Solving a Three-Variable Recursion via Generating Functions | </title>
+
+  
+  
+  
+    
+<link rel="stylesheet" href="/css/custom.css" />
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper  dark " data-wc-page-id="4c9c8f16dead6430a48b42c7144f87c6" >
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="/js/wowchemy-init.min.db21e13b9b5c4f4b947717750ec8b3cc.js"></script>
+
+  
+
+
+
+
+  <div class="page-header header--fixed">
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+<header>
+  <nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+    <div class="container-xl">
+
+      
+      <div class="d-none d-lg-inline-flex">
+        <a class="navbar-brand" href="/"></a>
+      </div>
+      
+
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+      <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+      
+      <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+        <a class="navbar-brand" href="/"></a>
+      </div>
+      
+
+      
+      
+      <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+        
+        <ul class="navbar-nav d-md-inline-flex">
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#about"><span>Home</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#posts"><span>Posts</span></a>
+          </li>
+
+          
+          
+
+        
+
+          
+        </ul>
+      </div>
+
+      <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+        
+        
+          
+        
+
+        
+        
+        
+
+        
+        
+        
+
+        
+        
+
+      </ul>
+
+    </div>
+  </nav>
+</header>
+
+
+  </div>
+
+  <div class="page-body">
+    
+    
+    
+
+    <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>Solving a Three-Variable Recursion via Generating Functions</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Apr 10, 2018
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    5 min read
+  </span>
+  
+
+  
+  
+  
+  
+
+  
+  
+
+</div>
+
+    
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      <p>This post extends the generating-function technique from the <a href="/post/two-var-recursive-func/">two-variable recursion</a> to a three-variable case. I originally wrote this as an answer to a <a href="https://math.stackexchange.com/questions/1093271/how-to-solve-this-multivariable-recursion/2730331#2730331" target="_blank" rel="noopener">Math Stack Exchange question</a>; here it is adapted for the blog with clearer exposition and code.</p>
+<h2 id="the-problem">The Problem</h2>
+<p>We want to solve the recurrence</p>
+<p>$a_{n,m,k} = 2a_{n-1,m-1,k-1} + a_{n-1,m-1,k}$
+$ + a_{n,m-1,k-1} + a_{n-1,m,k-1}$</p>
+<p>where $m$, $n$, $k$ are nonnegative integers, with boundary conditions:</p>
+<ul>
+<li>$a_{0,0,0} = a_{0,1,0} = a_{1,0,0} = a_{0,0,1} = 1$</li>
+<li>$a_{n,0,0} = a_{0,n,0} = a_{0,0,n} = 0$ for any $n &gt; 1$</li>
+<li>$a_{n,m,k}$ is symmetric in $n$, $m$, $k$</li>
+</ul>
+<p>A subtlety: $a_{1,0,1}$ is not defined by the recurrence alone, since it would require values like $a_{0,-1,0}$. We take $a_{n,m,k} = 0$ whenever any subscript is negative.</p>
+<h2 id="the-generating-function">The Generating Function</h2>
+<p>Define</p>
+<p>$$\Phi(x,y,z) = \sum_{n,m,k \geq 0} a_{n,m,k} \cdot x^n y^m z^k$$</p>
+<p>Using the initial values above, we can write the recurrence including boundary terms as follows:</p>
+<p>$a_{n,m,k} = 2a_{n-1,m-1,k-1} + a_{n-1,m-1,k}$
+$ + a_{n,m-1,k-1} + a_{n-1,m,k-1}$
+$ + [n=m=k=0] + [n=m=0 \wedge k=1]$
+$ + [n=k=0 \wedge m=1] + [m=k=0 \wedge n=1]$</p>
+<p>Substituting the recurrence into the generating function and collecting terms:</p>
+<p>$\Phi(x,y,z) = \sum_{n,m,k} a_{n,m,k} \cdot x^n y^m z^k $
+$ = 2\sum_{n,m,k} a_{n,m,k} \cdot x^{n+1} y^{m+1} z^{k+1} $
+$   + \sum_{n,m,k} a_{n,m,k} \cdot x^{n+1} y^{m+1} z^k $
+$   + \sum_{n,m,k} a_{n,m,k} \cdot x^{n+1} y^m z^{k+1} $
+$   + \sum_{n,m,k} a_{n,m,k} \cdot x^n y^{m+1} z^{k+1} $
+$   + 1 + x + y + z $
+$ = 2 \Phi \cdot x y z + \Phi \cdot x y + \Phi \cdot x z + \Phi \cdot y z + 1 + x + y + z$
+$ = \Phi \cdot ( 2 x y z + x y + x z + y z ) + 1 + x + y + z$</p>
+<p>where the boundary terms $1 + x + y + z$ come from $a_{0,0,0}$, $a_{1,0,0}$, $a_{0,1,0}$, $a_{0,0,1}$.</p>
+<p>Solving for $\Phi$:</p>
+<p>$$\Phi(x,y,z) = \frac{1 + x + y + z}{1 - 2xyz - xy - xz - yz}$$</p>
+<h2 id="from-generating-function-to-closed-form">From Generating Function to Closed Form</h2>
+<p>Using</p>
+<p>$$\frac{1}{1-\rho} = \sum_{i \geq 0} \rho^i$$</p>
+<p>and the multinomial expansion</p>
+<p>$$(x_1+x_2+x_3+x_4)^N = \sum_{r_1+r_2+r_3+r_4=N} \binom{N}{r_1,r_2,r_3,r_4} x_1^{r_1} x_2^{r_2} x_3^{r_3} x_4^{r_4}$$</p>
+<p>with</p>
+<p>$$\binom{N}{r_1,r_2,r_3,r_4} = \frac{N!}{r_1!\cdot r_2!\cdot r_3!\cdot r_4!}$$</p>
+<p>we expand the denominator of $\Phi$. Let $\rho = 2xyz + xy + xz + yz$. Then</p>
+<p>$$\Phi = \frac{1+x+y+z}{1-\rho} = (1+x+y+z) \sum_{N \geq 0} \rho^N$$</p>
+<p>Expanding $\rho^N$ with the multinomial theorem (and writing $r_4 = N - r_1 - r_2 - r_3$):</p>
+<p>$\sum_{N \geq 0} \rho^N = \sum_{N}(2 x y z + x y + x z + y z)^N $
+$ = \sum_{r_1+r_2+r_3+r_4=N} \binom{N} {r_1,r_2,r_3,r_4} (2 x y z)^{r_1} \cdot (x y)^{r_2} \cdot (x z)^{r_3} \cdot (y z)^{r_4}$
+$ = \sum_{r_1+r_2+r_3+r_4=N} \binom{N} {r_1,r_2,r_3,r_4} 2^{r_1} x^{r_1+r_2+r_3} y^{r_1+r_2+r_4} z^{r_1+r_3+r_4}$
+$ = \sum_{r_1+r_2+r_3 \leq N} \binom{N} {r_1,r_2,r_3, N-r_1-r_2-r_3} 2^{r_1} x^{r_1+r_2+r_3} y^{N-r_3} z^{N-r_2}$</p>
+<p>So we have</p>
+<p>$$ \Phi = (1 + x + y + z) \sum_{r_1+r_2+r_3 \leq N} \binom{N} {r_1,r_2,r_3, N-r_1-r_2-r_3} 2^{r_1} x^{r_1+r_2+r_3} y^{N-r_3} z^{N-r_2}$$</p>
+<p>Extracting the coefficient of $x^n y^m z^k$ gives the closed form. The full expression has four sums (from the numerator $1+x+y+z$):</p>
+<p>$$a_{n,m,k} = \sum_{N=\max(n,m,k)}^{ (n+m+k)/2 } \binom{N}{n+m+k-2N, N-n, N-m, N-k} 2^{n+m+k-2N}$$
+$$ + \sum_{N=\max(n,m-1,k)}^{ (n+m+k-1)/2 } \binom{N}{n+m+k-2N-1, N-n, N-m+1, N-k} 2^{n+m+k-2N-1}$$
+$$ + \sum_{N=\max(n-1,m,k)}^{ (n+m+k-1)/2 } \binom{N}{n+m+k-2N-1, N-n+1, N-m, N-k} 2^{n+m+k-2N-1}$$
+$$ + \sum_{N=\max(n,m,k-1)}^{ (n+m+k-1)/2 } \binom{N}{n+m+k-2N-1, N-n, N-m, N-k+1} 2^{n+m+k-2N-1}$$</p>
+<p>There may be room to simplify this further; the symmetry in $n,m,k$ could help.</p>
+<h2 id="complexity">Complexity</h2>
+<p><strong>Recursion with memoization (DP):</strong></p>
+<ul>
+<li>time and space: $\Theta(n \cdot m \cdot k)$.</li>
+</ul>
+<p><strong>Closed form:</strong></p>
+<ul>
+<li>Precompute factorials, then loop over $N$;</li>
+<li>time and space: $\Theta(n+m+k)$,</li>
+<li>we ignore the cost of arithmetic on large integers.</li>
+</ul>
+<h2 id="implementation">Implementation</h2>
+<p>Both the recursive and closed-form versions in Python:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> functools
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> math
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#a6e22e">@functools.lru_cache</span>(maxsize<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">a_rec</span>(n: int, m: int, k: int) <span style="color:#f92672">-&gt;</span> int:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> (n <span style="color:#f92672">&lt;=</span> m <span style="color:#f92672">&lt;=</span> k):
+</span></span><span style="display:flex;"><span>        n,m,k <span style="color:#f92672">=</span> sorted([n,m,k])
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> a_rec(n,m,k)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> n <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> n <span style="color:#f92672">+</span> m <span style="color:#f92672">+</span> k <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">1</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> n <span style="color:#f92672">+</span> m <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">or</span> n <span style="color:#f92672">+</span> k <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">or</span> m <span style="color:#f92672">+</span> k <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> n <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> int(m <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&gt;=</span> k)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> (
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> a_rec(n <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>, m <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>, k <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">+</span> a_rec(n <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>, m <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>, k)
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">+</span> a_rec(n <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>, m, k <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">+</span> a_rec(n, m <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>, k <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    )
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#a6e22e">@functools.lru_cache</span>(maxsize<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">binom4</span>(N: int, r1: int, r2: int, r3: int) <span style="color:#f92672">-&gt;</span> int:
+</span></span><span style="display:flex;"><span>    r4 <span style="color:#f92672">=</span> N <span style="color:#f92672">-</span> r1 <span style="color:#f92672">-</span> r2 <span style="color:#f92672">-</span> r3
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> math<span style="color:#f92672">.</span>factorial(N) <span style="color:#f92672">//</span> (
+</span></span><span style="display:flex;"><span>        math<span style="color:#f92672">.</span>factorial(r1) <span style="color:#f92672">*</span> math<span style="color:#f92672">.</span>factorial(r2)
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">*</span> math<span style="color:#f92672">.</span>factorial(r3) <span style="color:#f92672">*</span> math<span style="color:#f92672">.</span>factorial(r4)
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">a_closed</span>(n: int, m: int, k: int) <span style="color:#f92672">-&gt;</span> int:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> min(n, m, k) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    s <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> N <span style="color:#f92672">in</span> range(max(n, m, k), (n <span style="color:#f92672">+</span> m <span style="color:#f92672">+</span> k) <span style="color:#f92672">//</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>):
+</span></span><span style="display:flex;"><span>        s <span style="color:#f92672">+=</span> binom4(N, N <span style="color:#f92672">-</span> n, N <span style="color:#f92672">-</span> m, N <span style="color:#f92672">-</span> k) <span style="color:#f92672">*</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">**</span> (n <span style="color:#f92672">+</span> m <span style="color:#f92672">+</span> k <span style="color:#f92672">-</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> N)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> N <span style="color:#f92672">in</span> range(max(n, m <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>, k), (n <span style="color:#f92672">+</span> m <span style="color:#f92672">+</span> k <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">//</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>):
+</span></span><span style="display:flex;"><span>        s <span style="color:#f92672">+=</span> binom4(N, N <span style="color:#f92672">-</span> n, N <span style="color:#f92672">-</span> m <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>, N <span style="color:#f92672">-</span> k) <span style="color:#f92672">*</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">**</span> (n <span style="color:#f92672">+</span> m <span style="color:#f92672">+</span> k <span style="color:#f92672">-</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> N <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> N <span style="color:#f92672">in</span> range(max(n <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>, m, k), (n <span style="color:#f92672">+</span> m <span style="color:#f92672">+</span> k <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">//</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>):
+</span></span><span style="display:flex;"><span>        s <span style="color:#f92672">+=</span> binom4(N, N <span style="color:#f92672">-</span> n <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>, N <span style="color:#f92672">-</span> m, N <span style="color:#f92672">-</span> k) <span style="color:#f92672">*</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">**</span> (n <span style="color:#f92672">+</span> m <span style="color:#f92672">+</span> k <span style="color:#f92672">-</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> N <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> N <span style="color:#f92672">in</span> range(max(n, m, k <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>), (n <span style="color:#f92672">+</span> m <span style="color:#f92672">+</span> k <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">//</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>):
+</span></span><span style="display:flex;"><span>        s <span style="color:#f92672">+=</span> binom4(N, N <span style="color:#f92672">-</span> n, N <span style="color:#f92672">-</span> m, N <span style="color:#f92672">-</span> k <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">*</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">**</span> (n <span style="color:#f92672">+</span> m <span style="color:#f92672">+</span> k <span style="color:#f92672">-</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> N <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> s
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> timeit
+</span></span><span style="display:flex;"><span>setup_code <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;from __main__ import a_rec, a_closed&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>execution_time <span style="color:#f92672">=</span> timeit<span style="color:#f92672">.</span>timeit(<span style="color:#e6db74">&#39;a_rec(200, 300, 400)&#39;</span>, setup<span style="color:#f92672">=</span>setup_code, number<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Execution time for recursive:   </span><span style="color:#e6db74">{</span>execution_time<span style="color:#e6db74">}</span><span style="color:#e6db74"> seconds&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>execution_time <span style="color:#f92672">=</span> timeit<span style="color:#f92672">.</span>timeit(<span style="color:#e6db74">&#39;a_closed(200, 300, 400)&#39;</span>, setup<span style="color:#f92672">=</span>setup_code, number<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Execution time for closed form: </span><span style="color:#e6db74">{</span>execution_time<span style="color:#e6db74">}</span><span style="color:#e6db74"> seconds&#34;</span>)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Execution time for recursive:   8.308788761030883 seconds
+</span></span><span style="display:flex;"><span>Execution time for closed form: 0.003819321980699897 seconds
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Sanity check</span>
+</span></span><span style="display:flex;"><span>res0 <span style="color:#f92672">=</span> a_rec(<span style="color:#ae81ff">100</span>, <span style="color:#ae81ff">200</span>, <span style="color:#ae81ff">210</span>)
+</span></span><span style="display:flex;"><span>res1 <span style="color:#f92672">=</span> a_closed(<span style="color:#ae81ff">100</span>, <span style="color:#ae81ff">200</span>, <span style="color:#ae81ff">210</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Recursive: </span><span style="color:#e6db74">{</span>res0<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Closed:    </span><span style="color:#e6db74">{</span>res1<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Match: </span><span style="color:#e6db74">{</span>res0 <span style="color:#f92672">==</span> res1<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span></code></pre></div><p>We did not exploit the symmetry $a_{n,m,k} = a_{\sigma(n,m,k)}$ for permutations $\sigma$; it could speed up computation but does not obviously simplify the closed expression.</p>
+<hr>
+<p><em>Originally answered on <a href="https://math.stackexchange.com/questions/1093271/how-to-solve-this-multivariable-recursion/2730331#2730331" target="_blank" rel="noopener">Math Stack Exchange</a>.</em></p>
+
+    </div>
+
+    
+
+
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tags/math/">Math</a>
+  
+  <a class="badge badge-light" href="/tags/python/">Python</a>
+  
+  <a class="badge badge-light" href="/tags/generating-function/">Generating Function</a>
+  
+  <a class="badge badge-light" href="/tags/recursion/">Recursion</a>
+  
+  <a class="badge badge-light" href="/tags/combinatorics/">Combinatorics</a>
+  
+  <a class="badge badge-light" href="/tags/dynamic-programming/">Dynamic Programming</a>
+  
+  <a class="badge badge-light" href="/tags/multivariate-function/">Multivariate Function</a>
+  
+</div>
+
+
+
+<div class="share-box">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=%2Fpost%2Fthree-var-recursive%2F&amp;text=Solving&#43;a&#43;Three-Variable&#43;Recursion&#43;via&#43;Generating&#43;Functions" target="_blank" rel="noopener" class="share-btn-twitter" aria-label="twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=%2Fpost%2Fthree-var-recursive%2F&amp;t=Solving&#43;a&#43;Three-Variable&#43;Recursion&#43;via&#43;Generating&#43;Functions" target="_blank" rel="noopener" class="share-btn-facebook" aria-label="facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      
+      
+        
+      
+      <li>
+        <a href="mailto:?subject=Solving%20a%20Three-Variable%20Recursion%20via%20Generating%20Functions&amp;body=%2Fpost%2Fthree-var-recursive%2F" target="_blank" rel="noopener" class="share-btn-email" aria-label="envelope">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=%2Fpost%2Fthree-var-recursive%2F&amp;title=Solving&#43;a&#43;Three-Variable&#43;Recursion&#43;via&#43;Generating&#43;Functions" target="_blank" rel="noopener" class="share-btn-linkedin" aria-label="linkedin-in">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      
+      
+      <li>
+        <a href="whatsapp://send?text=Solving&#43;a&#43;Three-Variable&#43;Recursion&#43;via&#43;Generating&#43;Functions%20%2Fpost%2Fthree-var-recursive%2F" target="_blank" rel="noopener" class="share-btn-whatsapp" aria-label="whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=%2Fpost%2Fthree-var-recursive%2F&amp;title=Solving&#43;a&#43;Three-Variable&#43;Recursion&#43;via&#43;Generating&#43;Functions" target="_blank" rel="noopener" class="share-btn-weibo" aria-label="weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="/">Slava Chernoy</a></h5>
+      <h6 class="card-subtitle">Software Engineer</h6>
+      
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://linkedin.com/in/slava-chernoy-9859a81/" target="_blank" rel="noopener">
+        <i class="fab fa-linkedin"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/vchernoy" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://stackoverflow.com/users/276287/slava" target="_blank" rel="noopener">
+        <i class="fab fa-stack-overflow"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+<section id="comments">
+  <div id="graphcomment"></div>
+<script type="text/javascript">
+ 
+window.graphcomment_id = 'B8a3Q3Al1kTk';
+ 
+(function() {
+    var gc = document.createElement('script'); gc.type = 'text/javascript'; gc.async = true;
+    gc.src = 'https://graphcomment.com/js/integration.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(gc);
+})();
+</script>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+  </div>
+</article>
+  </div>
+
+  <div class="page-footer">
+    
+    
+    <div class="container">
+      <footer class="site-footer">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  <p class="powered-by">
+    
+    
+    
+      
+      
+      
+      
+      
+      
+      Published with <!-- raw HTML omitted -->Hugo Blox Builder<!-- raw HTML omitted --> — the free, <!-- raw HTML omitted -->open source<!-- raw HTML omitted --> website builder that empowers creators.
+    
+  </p>
+</footer>
+
+    </div>
+    
+  </div>
+
+  
+
+
+<script src="/js/vendor-bundle.min.50933d940896e49f984a778650d5f7f5.js"></script>
+
+
+
+
+  
+
+  
+  
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script id="page-data" type="application/json">{"use_headroom":true}</script>
+
+
+  <script src="/js/wowchemy-headroom.db4755770454eb63685f8de785c0a172.js" type="module"></script>
+
+
+
+
+
+
+
+
+
+
+<script src="/en/js/wowchemy.min.b42cee516846615f6e61f624dc63a325.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
